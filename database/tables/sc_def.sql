@@ -36,11 +36,10 @@ DO
                     ,sc_def_description    text        NOT NULL
                     ,sc_def_package text
                     ,sc_def_is_system_locked      boolean     NOT NULL    DEFAULT false
-                    ,sc_def_sc_data_type_id bigint     NOT NULL
+                    ,sc_def_data_type_id bigint     NOT NULL REFERENCES musesuperchar.data_type (data_type_id)
                     ,sc_def_values_list     text[]
                     ,sc_def_list_query      text
                     ,sc_def_is_default_required boolean NOT NULL   DEFAULT false
-                    ,sc_def_validator jsonb
                 );
                 
                 ALTER TABLE  musesuperchar.sc_def OWNER TO admin;
@@ -71,7 +70,7 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_system_locked IS
                 $DOC$If true, we do not allow manual editing of the super characteristic's definition via the normal user interfaces.  The expectation is that such a super characteristic is managed via an extension package only.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_sc_data_type_id IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_data_type_id IS
                 $DOC$The kind of information stored by this super characteristic.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_values_list IS
@@ -82,42 +81,6 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_default_required IS
                 $DOC$Determines whether or not this Super Characteristic is, by default, required by any groups to which it is added.$DOC$;
-
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_other_superchar_validator IS
-                $DOC$A set of JSON objects which follow the spec:
-
-[{
-    "<sc_def_internal_name>": {
-        "ifExistsRequire": <true/default false>,
-        "ifNotExistsDisallow": <true/default false>,
-        "ifValidatorRequire": {
-            "validatorTypeCode": <known validator type code>,
-            "validatorTypeId": <known validator type id>,
-            "validatorRegExp": <a true/false evaluating regexp>,
-            "validatorNumericRange": <a PostgreSQL compatible numeric range definition>,
-            "validatorDateRange": <a PostgreSQL compatible date range definition>
-        },
-        ifValidatorApplyValidation: [
-            {
-                "ifAlwaysValidate": <true/default false>,
-                "ifValidatorTypeCode": <known validator type code>,
-                "ifValidatorTypeId": <known validator type id>,
-                "ifValidatorRegExp": <a true/false evaluating regexp>,
-                "ifValidatorNumericRange": <a PostgreSQL compatible numeric range definition>,
-                "ifValidatorDateRange": <a PostgreSQL compatible date range definition>,
-                "thenValidatorFailsMessageText": <What to tell a user if validation fails>,
-                "thenValidatorTypeCode": <known validator type code>,
-                "thenValidatorTypeId": <known validator type id>,
-                "thenValidatorRegExp": <a true/false evaluating regexp>,
-                "thenValidatorNumericRange": <a PostgreSQL compatible numeric range definition>,
-                "thenValidatorDateRange": <a PostgreSQL compatible date range definition>
-            }
-        ],
-    }
-}]
-
-If an object is self-referential, only the "ifValidatorApplyValidation" object of array element 0 is applied and "ifAlwaysValidate" is assumed true (in the object only for convenience/clarity/completeness).  ifExistsRequire checks to see if the named characteristic is added to the record in any state; if true, the subject characteristic is automatically added as well.  ifNotExistsDisallow is true, the subject characteristic is automatically removed if the object characteristic is removed.  Otherwise, any automatically added characteristics are left even if added automatically.  If this field is null or otherwise empty, the field is subject to no valiation and any entry of the appropriate type, including null/empty/etc, are is valid.
-    $DOC$;
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
