@@ -73,7 +73,7 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_data_type_id IS
                 $DOC$The kind of information stored by this super characteristic.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def.sc_def_values_list IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_values_list IS
                 $DOC$If the super characteristic is a simple list of values, we record that here.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_list_query IS
