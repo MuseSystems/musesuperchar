@@ -1,0 +1,111 @@
+/*************************************************************************
+ *************************************************************************
+ **
+ ** File:         conditional_validation_rule.sql
+ ** Project:      Muse Systems xTuple Super Characteristics
+ ** Author:       Steven C. Buttgereit
+ **
+ ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ **
+ ** Contact:
+ ** muse.information@musesystems.com  :: https://muse.systems
+ ** 
+ ** Licensing restrictions apply.  Please refer to your Master Services
+ ** Agreement or governing Statement of Work for complete terms and 
+ ** conditions.
+ **
+ *************************************************************************
+ ************************************************************************/
+
+DO
+    $BODY$
+        DECLARE
+            
+        BEGIN
+
+            -- Create the table if it does not exist.  Apply deltas if it does and it's needed.
+            IF NOT EXISTS(SELECT     true 
+                          FROM         musextputils.v_basic_catalog 
+                          WHERE     table_schema_name = 'musesuperchar' 
+                                  AND table_name = 'conditional_validation_rule') THEN
+                -- The table doesn't exist, so let's create it.
+                CREATE TABLE musesuperchar.conditional_validation_rule (
+                     conditional_validation_rule_id    bigserial    NOT NULL    PRIMARY KEY
+                    ,conditional_validation_rule_validation_rule_id bigint NOT NULL REFERENCES musesuperchar.validation_rule (validation_rule_id)
+                    ,conditional_validation_rule_if_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validation_type (validation_type_id)
+                    ,conditional_validation_rule_if_validator_regexp text 
+                    ,conditional_validation_rule_if_validator_numrange numrange
+                    ,conditional_validation_rule_if_validator_daterange daterange 
+                    ,conditional_validation_rule_then_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validation_type (validation_type_id) 
+                    ,conditional_validation_rule_then_validator_regexp text
+                    ,conditional_validation_rule_then_validator_numrange numrange
+                    ,conditional_validation_rule_then_validator_daterange daterange
+                    ,conditional_validation_rule_fails_message_text text NOT NULL
+                );
+                
+                ALTER TABLE  musesuperchar.conditional_validation_rule OWNER TO admin;
+
+                REVOKE ALL ON TABLE musesuperchar.conditional_validation_rule FROM public;
+                GRANT ALL ON TABLE musesuperchar.conditional_validation_rule TO admin;
+                GRANT ALL ON TABLE musesuperchar.conditional_validation_rule TO xtrole;
+                
+                COMMENT ON TABLE musesuperchar.conditional_validation_rule 
+                    IS $DOC$Defines one or more conditional $DOC$;
+
+                -- Column Comments
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_id IS
+                $DOC$A surrogate key by which to uniquely identify each record. This is the primary key.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_validation_rule_id IS
+                $DOC$Conditional validation rules attach to a validation rule as child records.  This is a reference to the parent validation rule which identifies the subject and object characteristics being evaluated.  The "if" fields refer to the object characteristic and the "then" fields apply a validation to the subject if the "if" rule is true.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_if_validator_type_id IS
+                $DOC$The type of validation to perform on the object characteristic to see if the "then" validation should be performed on the the subject characteristic.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_if_validator_regexp IS
+                $DOC$If the "if" validator is a text type this is the regular expression which to apply to the object characteristic value.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_if_validator_numrange IS
+                $DOC$If the "if" validator is a numeric type this is the regular expression which to apply to the object characteristic value.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_if_validator_daterange IS
+                $DOC$If the "if" validator is a date type this is the regular expression which to apply to the object characteristic value.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_then_validator_type_id IS
+                $DOC$The type of validation to apply to the subject characteristic if the "if" test performed on the object characteristic is true.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_then_validator_regexp IS
+                $DOC$If the "if" test performed on the object characteristic evaluates true and the validation type is a text type, this validation should be performed on the subject characteristic.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_then_validator_numrange IS
+                $DOC$If the "if" test performed on the object characteristic evaluates true and the validation type is a numeric type, this validation should be performed on the subject characteristic.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_then_validator_daterange IS
+                $DOC$If the "if" test performed on the object characteristic evaluates true and the validation type is a date type, this validation should be performed on the subject characteristic.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_fails_message_text IS
+                $DOC$If the validation is applied to the subject characteristic and fails, this value is the message displayed to the end user.  This message should typically appear on an aborted save.$DOC$;
+
+
+                -- Let's now add the audit columns and triggers
+                PERFORM musextputils.add_common_table_columns(   'musesuperchar'
+                                                                ,'conditional_validation_rule'
+                                                                ,'conditional_validation_rule_date_created'
+                                                                ,'conditional_validation_rule_role_created'
+                                                                ,'conditional_validation_rule_date_deactivated'
+                                                                ,'conditional_validation_rule_role_deactivated' 
+                                                                ,'conditional_validation_rule_date_modified'
+                                                                ,'conditional_validation_rule_wallclock_modified'
+                                                                ,'conditional_validation_rule_role_modified'
+                                                                ,'conditional_validation_rule_row_version_number'
+                                                                ,'conditional_validation_rule_is_active');
+                
+
+            ELSE
+                -- Deltas go here.  Be sure to check if each is really needed.
+
+            END IF;
+            
+
+        END;
+    $BODY$;
