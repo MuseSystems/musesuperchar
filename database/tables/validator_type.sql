@@ -38,6 +38,7 @@ DO
                     ,validator_type_is_text boolean NOT NULL DEFAULT false
                     ,validator_type_is_numeric boolean NOT NULL DEFAULT false
                     ,validator_type_is_date boolean NOT NULL DEFAULT false
+                    ,validator_type_display_order integer NOT NULL DEFAULT 99999
                 );
                 
                 ALTER TABLE  musesuperchar.validator_type OWNER TO admin;
@@ -74,6 +75,8 @@ DO
                 COMMENT ON COLUMN musesuperchar.validator_type.validator_type_is_date IS
                 $DOC$If true, this validator is appropriate for data types which can generalize meaningfully to date data.$DOC$;
 
+                COMMENT ON COLUMN musesuperchar.validator_type.validator_type_display_order IS 
+                $DOC$The display order in the user interface with lower numbers appearing first.$DOC$;
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
