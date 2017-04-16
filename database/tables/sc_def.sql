@@ -64,7 +64,7 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_description IS
                 $DOC$A description of what the purpose of the field is.  This may be placed in such things as hover-over, tool text sorts of displays. Should be end user friendly.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def_pkghead_id IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_pkghead_id IS
                 $DOC$If the super characteristic is managed via a package, the managing package id appears here.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_system_locked IS
