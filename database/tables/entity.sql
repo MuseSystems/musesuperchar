@@ -33,6 +33,7 @@ DO
                      entity_id    bigserial    NOT NULL    PRIMARY KEY
                     ,entity_schema  text         NOT NULL
                     ,entity_table   text         NOT NULL
+                    ,entity_pk_column text       NOT NULL
                     ,entity_display_name   text         NOT NULL
                     ,entity_is_system_locked boolean      NOT NULL   DEFAULT false
                     ,UNIQUE(entity_schema, entity_table)
@@ -57,6 +58,9 @@ DO
                 COMMENT ON COLUMN musesuperchar.entity.entity_table IS
                     $DOC$The name of the table itself.$DOC$;
 
+                COMMENT ON COLUMN musesuperchar.entity.entity_pk_column IS
+                    $DOC$The name of the entity table's primary key column. We expect this to be a single column, surrogate key for the entity table.$DOC$;
+
                 COMMENT ON COLUMN musesuperchar.entity.entity_display_name IS
                     $DOC$A non-technical name to display in user interfaces.$DOC$;
 
@@ -77,7 +81,14 @@ DO
                                                                 ,'entity_row_version_number'
                                                                 ,'entity_is_active');
                 
-
+                -- Add the trigger to the target table(s).
+                DROP TRIGGER IF EXISTS a10_trig_a_id_manage_sc_entity_tables ON musesuperchar.entity;
+                
+                CREATE TRIGGER a10_trig_a_id_manage_sc_entity_tables AFTER INSERT OR DELETE
+                    ON musesuperchar.entity FOR EACH ROW 
+                    EXECUTE PROCEDURE musesuperchar.trig_a_id_manage_sc_entity_tables();
+                
+                
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 
