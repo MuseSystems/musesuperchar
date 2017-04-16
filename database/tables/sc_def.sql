@@ -70,13 +70,13 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_system_locked IS
                 $DOC$If true, we do not allow manual editing of the super characteristic's definition via the normal user interfaces.  The expectation is that such a super characteristic is managed via an extension package only.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_data_type_id IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def.sc_def_data_type_id IS
                 $DOC$The kind of information stored by this super characteristic.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_values_list IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def.sc_def_values_list IS
                 $DOC$If the super characteristic is a simple list of values, we record that here.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def_list_query IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_list_query IS
                 $DOC$Allows the definition of a list as a standard "poopulate" query.  Note that this is security sensitive since it allows creating SQL queries (think JavaScript "exec()") and it requires the maintainListQuery permission.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_default_required IS
