@@ -32,11 +32,11 @@ DO
                 CREATE TABLE musesuperchar.conditional_validation_rule (
                      conditional_validation_rule_id    bigserial    NOT NULL    PRIMARY KEY
                     ,conditional_validation_rule_validation_rule_id bigint NOT NULL REFERENCES musesuperchar.validation_rule (validation_rule_id)
-                    ,conditional_validation_rule_if_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validation_type (validation_type_id)
+                    ,conditional_validation_rule_if_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validator_type (validator_type_id)
                     ,conditional_validation_rule_if_validator_regexp text 
                     ,conditional_validation_rule_if_validator_numrange numrange
                     ,conditional_validation_rule_if_validator_daterange daterange 
-                    ,conditional_validation_rule_then_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validation_type (validation_type_id) 
+                    ,conditional_validation_rule_then_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validator_type (validator_type_id) 
                     ,conditional_validation_rule_then_validator_regexp text
                     ,conditional_validation_rule_then_validator_numrange numrange
                     ,conditional_validation_rule_then_validator_daterange daterange

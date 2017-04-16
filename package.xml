@@ -41,7 +41,7 @@
     </loadpriv>
     
     <createtable file="database/tables/data_type.sql" name="data_type" />
-    <createtable file="database/tables/validation_type.sql" name="validation_type" />
+    <createtable file="database/tables/validator_type.sql" name="validator_type" />
     <createtable file="database/tables/entity.sql" name="entity" />
     <createtable file="database/tables/entity_package.sql" name="entity_package" />
     <createtable file="database/tables/sc_def.sql" name="sc_def" />
