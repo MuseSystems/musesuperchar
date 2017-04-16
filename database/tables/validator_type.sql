@@ -32,7 +32,7 @@ DO
                 CREATE TABLE musesuperchar.validator_type (
                      validator_type_id    bigserial    NOT NULL    PRIMARY KEY
                     ,validator_type_internal_name text NOT NULL    UNIQUE 
-                    ,validator_type_display_name text NOT NULL UNIQUE
+                    ,validator_type_display_name text NOT NULL
                     ,validator_type_description text NOT NULL
                     ,validator_type_is_user_visible boolean NOT NULL DEFAULT true
                     ,validator_type_is_text boolean NOT NULL DEFAULT false
