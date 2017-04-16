@@ -49,7 +49,7 @@
          </message>
      </prerequisite>
     <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
-        Grants the user the ability to create, remove, or modify super charateristics.  This permission is typically assigned to power users who are capable of managing user defined data. 
+        Grants the user the ability to create, remove, or modify super charateristics.  This permission is typically assigned to power users who are capable of managing user defined data. This permission does not confer the ability to create or remove super characteristic groups, but does allow for the management of super characteristic to group assignments.
     </loadpriv>
 
     <loadpriv name="maintainListQuery" module="Muse Systems Super Characteristics">
@@ -59,6 +59,15 @@
     <loadpriv name="maintainSystemLockedRecordsManually" module="Muse Systems Super Characteristics">
         Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system. 
     </loadpriv>
+
+    <loadpriv name="maintainEntities" module="Muse Systems Super Characteristics">
+        Grants a user the ability to add or remove "entities" as being valid for super characteristics.  An entity is another table within the system.  Note that this is a sensitive permission since removing an entity from recognition also deletes and super characteristic data for that entity.
+    </loadpriv>
+    
+    <loadpriv name="maintainGroups" module="Muse Systems Super Characteristics">
+        Grants a user the ability to maintain super characteristic groups, specifically creating or deleting groups.
+    </loadpriv>
+    
     
     <initscript file="database/misc/early_create_musemetrics.sql" />
 
