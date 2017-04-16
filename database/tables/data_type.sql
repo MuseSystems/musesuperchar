@@ -37,6 +37,7 @@ DO
                     ,data_type_is_text boolean NOT NULL DEFAULT false
                     ,data_type_is_numeric boolean NOT NULL DEFAULT false
                     ,data_type_is_date boolean NOT NULL DEFAULT false
+                    ,data_type_display_order integer NOT NULL DEFAULT 99999
                 );
                 
                 ALTER TABLE  musesuperchar.data_type OWNER TO admin;
@@ -69,6 +70,9 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_is_date IS
                 $DOC$If true, the data type can be meaningfully generalized as a type which can accept date validators.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.data_type_display_order IS 
+                $DOC$The display order in the user interface with lower numbers appearing first.$DOC$;
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
