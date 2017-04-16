@@ -70,7 +70,7 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_system_locked IS
                 $DOC$If true, we do not allow manual editing of the super characteristic's definition via the normal user interfaces.  The expectation is that such a super characteristic is managed via an extension package only.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def.sc_def_data_type_id IS
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_data_type_id IS
                 $DOC$The kind of information stored by this super characteristic.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def.sc_def_values_list IS
