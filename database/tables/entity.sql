@@ -34,7 +34,6 @@ DO
                     ,entity_schema  text         NOT NULL
                     ,entity_table   text         NOT NULL
                     ,entity_display_name   text         NOT NULL
-                    ,entity_package text
                     ,entity_is_system_locked boolean      NOT NULL   DEFAULT false
                     ,UNIQUE(entity_schema, entity_table)
                 );
@@ -60,9 +59,6 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.entity.entity_display_name IS
                     $DOC$A non-technical name to display in user interfaces.$DOC$;
-
-                COMMENT ON COLUMN musesuperchar.entity.entity_package IS 
-                    $DOC$If this entity is entered via the result of a package installation, this holds the name of the managing package.  When this field is not null it also indicates that this entity entry is considered a "system" entity, meaning that the functionality of some other part of the system is expecting that this value (might at least) exists.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.entity.entity_is_system_locked IS
                     $DOC$When this value is true, this entity is not managable via the user interface.  It must be managed via its installing package (see entity_package for the managing package).$DOC$;
