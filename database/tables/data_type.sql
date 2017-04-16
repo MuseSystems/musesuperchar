@@ -71,7 +71,7 @@ DO
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_is_date IS
                 $DOC$If true, the data type can be meaningfully generalized as a type which can accept date validators.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.data_type_display_order IS 
+                COMMENT ON COLUMN musesuperchar.data_type.data_type_display_order IS 
                 $DOC$The display order in the user interface with lower numbers appearing first.$DOC$;
 
                 -- Let's now add the audit columns and triggers
