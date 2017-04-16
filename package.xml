@@ -1,0 +1,54 @@
+<package id="musesuperchar"
+         name="musesuperchar"
+         developer="Muse Systems"
+         descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
+         version="0.1.0"
+         updater="2.2.5">
+
+    <pkgnotes>
+        A package to provide an enhanced, more broadly functional user defined field functionality.
+    </pkgnotes>
+    <prerequisite type="Query"
+                name="xTuple ERP version">
+        <query>
+            WITH version AS (
+            SELECT 
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^([[:digit:]]+)\..*'))::integer as major_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
+             )
+             SELECT 
+                    (major_version = 4 AND minor_version = 10 AND patch_version >= 1)
+                OR  (major_version = 4 AND minor_version > 10)
+                OR  (major_version > 4)
+             FROM version;
+        </query>
+        <message>
+            This package must be installed against xTuple ERP version 4.10.1 or later.  This package has only been tested against version 4.10.1 and may not work in later version without updating.
+        </message>
+    </prerequisite>
+
+    <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
+        Grants the user the ability to create, remove, or modify super charateristics.  This permission is typically assigned to power users who are capable of managing user defined data. 
+    </loadpriv>
+
+    <loadpriv name="maintainListQuery" module="Muse Systems Super Characteristics">
+        Grants a user the ability to maintain combobox/select list queries.  This permission is highly security sensitive as it will allow entry of arbitrary SQL which will be executed in the context of the end user that is making use of such a super characteristic.  As such this permission should only ever be granted to those with a pre-existing high level of trust.  To use this privilege, a user must also have the maintainSuperCharacteristic privilege.
+    </loadpriv>
+    
+    <loadpriv name="maintainSystemLockedRecordsManually" module="Muse Systems Super Characteristics">
+        Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system. 
+    </loadpriv>
+    
+    <createtable file="database/tables/data_type.sql" name="data_type" />
+    <createtable file="database/tables/validation_type.sql" name="validation_type" />
+    <createtable file="database/tables/entity.sql" name="entity" />
+    <createtable file="database/tables/entity_package.sql" name="entity_package" />
+    <createtable file="database/tables/sc_def.sql" name="sc_def" />
+    <createtable file="database/tables/sc_group.sql" name="sc_group" />
+    <createtable file="database/tables/sc_def_sc_group_ass.sql" name="sc_def_sc_group_ass" />
+    <createtable file="database/tables/entity_sc_group_ass.sql" name="entity_sc_group_ass" />
+    <createtable file="database/tables/validation_rule.sql" name="validation_rule" />
+    <createtable file="database/tables/conditional_validation_rule.sql" name="conditional_validation_rule" />
+    
+</package>
