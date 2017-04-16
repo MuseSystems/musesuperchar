@@ -50,7 +50,7 @@ DO
                 GRANT ALL ON TABLE musesuperchar.conditional_validation_rule TO xtrole;
                 
                 COMMENT ON TABLE musesuperchar.conditional_validation_rule 
-                    IS $DOC$Defines one or more conditional $DOC$;
+                    IS $DOC$Defines one or more conditional validation rule to apply.  Depending on the values of the object characteristic in the owning musesuperchar.validation_rule table, we can validate the values of the subject characteristic.$DOC$;
 
                 -- Column Comments
                 COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_id IS
