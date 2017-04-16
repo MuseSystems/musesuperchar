@@ -37,6 +37,8 @@ DO
                     ,data_type_is_text boolean NOT NULL DEFAULT false
                     ,data_type_is_numeric boolean NOT NULL DEFAULT false
                     ,data_type_is_date boolean NOT NULL DEFAULT false
+                    ,data_type_is_flag boolean NOT NULL DEFAULT false
+                    ,data_type_is_user_visible boolean NOT NULL DEFAULT false
                     ,data_type_display_order integer NOT NULL DEFAULT 99999
                 );
                 
@@ -70,6 +72,12 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_is_date IS
                 $DOC$If true, the data type can be meaningfully generalized as a type which can accept date validators.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.data_type.data_type_is_flag IS
+                $DOC$If true, the data type can be meaningfully generalized as a boolean type which can accept boolean validators.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.data_type.data_type_is_user_visible IS
+                $DOC$If true, the data type can be assigned to normal user created fields via the UI.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_display_order IS 
                 $DOC$The display order in the user interface with lower numbers appearing first.$DOC$;
