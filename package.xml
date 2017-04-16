@@ -27,7 +27,27 @@
             This package must be installed against xTuple ERP version 4.10.1 or later.  This package has only been tested against version 4.10.1 and may not work in later version without updating.
         </message>
     </prerequisite>
-
+    <prerequisite type="Query"
+                   name="Muse Systems xTuple Utilities">
+         <query>
+                WITH version AS (
+                   SELECT 
+                       (SELECT substring(pkghead_version,E'^([[:digit:]]+)\..*'))::integer as major_version,
+                       (SELECT substring(pkghead_version,E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
+                       (SELECT substring(pkghead_version,E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as      patch_version
+                    FROM pkghead
+                    WHERE pkghead_name = 'musextputils'
+                )
+                SELECT 
+                       (major_version = 2 AND minor_version = 2 AND patch_version >= 0)
+                   OR  (major_version = 2 AND minor_version > 2)
+                   OR  (major_version > 2)
+                FROM version;
+         </query>    
+         <message>
+             This package requires that the Muse Systems xTuple Utilities version 2.2.0 or any higher version 1 series is installed prior to installation of this package.
+         </message>
+     </prerequisite>
     <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
         Grants the user the ability to create, remove, or modify super charateristics.  This permission is typically assigned to power users who are capable of managing user defined data. 
     </loadpriv>
@@ -40,6 +60,10 @@
         Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system. 
     </loadpriv>
     
+    <initscript file="database/misc/early_create_musemetrics.sql" />
+
+    <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
+
     <createtable file="database/tables/data_type.sql" name="data_type" />
     <createtable file="database/tables/validator_type.sql" name="validator_type" />
     <createtable file="database/tables/entity.sql" name="entity" />
@@ -50,5 +74,9 @@
     <createtable file="database/tables/entity_sc_group_ass.sql" name="entity_sc_group_ass" />
     <createtable file="database/tables/validation_rule.sql" name="validation_rule" />
     <createtable file="database/tables/conditional_validation_rule.sql" name="conditional_validation_rule" />
+        
+    <finalscript file="database/misc/data_types_seed_data.sql" />
+    <finalscript file="database/misc/validator_types_seed_data.sql" />
+    <finalscript file="database/misc/entities_seed_data.sql" />
     
 </package>
