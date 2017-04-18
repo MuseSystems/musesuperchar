@@ -30,6 +30,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                 vEntityPkColmnName text;
                 vEntityFkColmnName text;
                 vEntityDataColmnName text;
+
+                vEntityDefaultGroupId bigint;
             BEGIN
 
                 -- If we're being called on a new record insert, we'll create
@@ -103,6 +105,31 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                     END IF;
 
+                    -- Next setup the default group for the entity.
+                    -- First create the group and then do the assignment.  These
+                    -- are system locked since we manage them with the entity.
+                    INSERT INTO musesuperchar.sc_group (
+                             sc_group_internal_name
+                            ,sc_group_display_name
+                            ,sc_group_description
+                            ,sc_group_is_system_locked)
+                        VALUES
+                            (vEntityTableName ||'_mssc_dflt_grp'
+                            ,NEW.entity_display_name ||' General'
+                            ,'A general purpose group for characteristics assigned to the ' ||
+                                NEW.entity_display_name ||' record type.'
+                            ,true)
+                        RETURNING sc_group_id INTO vEntityDefaultGroupId;
+
+                    INSERT INTO musesuperchar.entity_sc_group_ass (
+                             entity_sc_group_ass_entity_id
+                            ,entity_sc_group_ass_sc_group_id
+                            ,entity_sc_group_ass_is_system_locked)
+                        VALUES 
+                            (NEW.entity_id
+                            ,vEntityDefaultGroupId
+                            ,true);
+
                     -- Now we return
                     RETURN NEW;
                 
@@ -118,7 +145,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                                     AND table_name = vEntityTableName
                                     AND function_schema_name = 'musextputils'
                                     AND function_name = 'trig_b_iu_audit_field_maintenance') THEN 
-                    
+
                         EXECUTE format('DELETE FROM musesuperchar.%1$I',
                             vEntityTableName);
 
@@ -127,6 +154,15 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                     -- The table drop.
                     EXECUTE format('DROP TABLE musesuperchar.%1$I',
                             vEntityTableName);
+
+                    -- Finally delete the default group and related entity/group
+                    -- assignments.
+                    DELETE FROM musesuperchar.entity_sc_group_ass
+                        WHERE entity_sc_group_ass_entity_id = OLD.entity_id;
+
+                    DELETE FROM musesuperchar.sc_group 
+                        WHERE sc_group_internal_name = 
+                                vEntityTableName || '_mssc_dflt_grp';
 
                     -- Now we return.
                     RETURN OLD;
