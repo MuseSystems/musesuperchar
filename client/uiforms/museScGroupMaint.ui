@@ -40,20 +40,20 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="groupsEntitiesHBoxLayout">
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="groupsGroupBox">
        <property name="title">
         <string>Super Characteristic Groups</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="XTreeWidget" name="xtreewidget_2"/>
+         <widget class="XTreeWidget" name="groupListXTreeWidget"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="groupsButtonsHBoxLayout">
           <item>
-           <spacer name="horizontalSpacer_2">
+           <spacer name="groupsButtonsLeftSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -66,19 +66,30 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="groupAddPushButton">
             <property name="text">
              <string>Add</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_3">
+           <widget class="QPushButton" name="groupEditPushButton">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="groupDeletePushButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="groupsButtonsCenterSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Maximum</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -89,14 +100,14 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="groupAssignPushButton">
             <property name="text">
-             <string>Delete</string>
+             <string>Assign to Entities</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="groupsButtonsRightSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -114,18 +125,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="entitiesGroupBox">
        <property name="title">
         <string>Known Record Types</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="XTreeWidget" name="xtreewidget_3"/>
+         <widget class="XTreeWidget" name="entityListXTreeWidget"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="entitiesButtonsHBoxLayout">
           <item>
-           <spacer name="horizontalSpacer_4">
+           <spacer name="entitiesButtonsLeftSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -138,37 +149,28 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="entityAddPushButton">
             <property name="text">
              <string>Add</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           <widget class="QPushButton" name="entityEditPushButton">
+            <property name="text">
+             <string>Edit</string>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Maximum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="entityDeletePushButton">
             <property name="text">
              <string>Delete</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_6">
+           <spacer name="entitiesButtonsRightSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -188,18 +190,18 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupLayoutGroupBox">
      <property name="title">
       <string>&lt;GROUP&gt; Super Characteristic &amp; Layout</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="XTreeWidget" name="xtreewidget"/>
+       <widget class="XTreeWidget" name="groupLayoutXTreeWidget"/>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="groupLayoutButtonsHBoxLayout">
         <item>
-         <spacer name="horizontalSpacer_7">
+         <spacer name="groupLayoutButtonsLeftSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -212,21 +214,28 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="groupLayoutAddPushButton">
           <property name="text">
-           <string>Add Row</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="groupLayoutEditPushButton">
           <property name="text">
-           <string>Remove Row</string>
+           <string>Edit</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
+         <widget class="QPushButton" name="groupLayoutDeletePushButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="groupLayoutButtonsCenterSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -242,21 +251,33 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="groupLayoutMoveUpPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>41</width>
+            <height>41</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Move Row Up</string>
+           <string>^</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="groupLayoutMoveDownPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>41</width>
+            <height>41</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Move Row Down</string>
+           <string>v</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_8">
+         <spacer name="groupLayoutButtonsRightSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -278,7 +299,7 @@
  <customwidgets>
   <customwidget>
    <class>XTreeWidget</class>
-   <extends>QTreeWidget</extends>
+   <extends></extends>
    <header>xtreewidget.h</header>
   </customwidget>
  </customwidgets>
