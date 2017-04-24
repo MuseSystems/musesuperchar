@@ -20,7 +20,7 @@ to be bound by its terms.</comment>
   <property name="windowTitle">
    <string>New Form</string>
   </property>
-  <layout class="QHBoxLayout" name="_outerHBoxLayout">
+  <layout class="QHBoxLayout" name="outerHBoxLayout">
    <item>
     <layout class="QVBoxLayout" name="outerVBoxLayout">
      <item>
@@ -128,7 +128,7 @@ to be bound by its terms.</comment>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="_panesHBoxLayout">
+      <layout class="QHBoxLayout" name="panesHBoxLayout">
        <item>
         <layout class="QVBoxLayout" name="availEntitiesVBoxLayout">
          <item>
