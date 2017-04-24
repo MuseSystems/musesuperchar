@@ -39,7 +39,7 @@ DO
                     ,sc_def_data_type_id bigint     NOT NULL REFERENCES musesuperchar.data_type (data_type_id)
                     ,sc_def_values_list     text[]
                     ,sc_def_list_query      text
-                    ,sc_def_is_default_required boolean NOT NULL   DEFAULT false
+                    ,sc_def_is_searchable boolean NOT NULL   DEFAULT false
                 );
                 
                 ALTER TABLE  musesuperchar.sc_def OWNER TO admin;
@@ -79,8 +79,8 @@ DO
                 COMMENT ON COLUMN musesuperchar.sc_def.sc_def_list_query IS
                 $DOC$Allows the definition of a list as a standard "poopulate" query.  Note that this is security sensitive since it allows creating SQL queries (think JavaScript "exec()") and it requires the maintainListQuery permission.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_default_required IS
-                $DOC$Determines whether or not this Super Characteristic is, by default, required by any groups to which it is added.$DOC$;
+                COMMENT ON COLUMN musesuperchar.sc_def.sc_def_is_searchable IS
+                $DOC$Determines whether or not if the super characteristic is searchable; this only applies if there is an appropriate/relevant search available for the entity type.$DOC$;
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
