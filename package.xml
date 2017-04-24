@@ -81,9 +81,15 @@
     <createtable file="database/tables/sc_group.sql" name="sc_group" />
     <createtable file="database/tables/sc_def_sc_group_ass.sql" name="sc_def_sc_group_ass" />
     <createtable file="database/tables/entity_sc_group_ass.sql" name="entity_sc_group_ass" />
-    <createtable file="database/tables/validation_rule.sql" name="validation_rule" />
     <createtable file="database/tables/conditional_validation_rule.sql" name="conditional_validation_rule" />
         
+    <loadappui file="client/uiforms/museScGroupMaint.ui" order="20">Muse Systems Super Characteristic Group/Entity Maintenance (setup subform).</loadappui>
+    <loadappui file="client/uiforms/museSuperCharMaint.ui" order="20">Muse Systems Super Characteristic Maintenance (setup subform).</loadappui>
+    
+    
+    <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
+    
+
     <finalscript file="database/misc/data_types_seed_data.sql" />
     <finalscript file="database/misc/validator_types_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
