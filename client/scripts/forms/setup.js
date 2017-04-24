@@ -46,13 +46,24 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    var name = qsTr("Muse SuperChar Group/Entity");
-    var uiName = "museScGroupMaint";
-    var modeVal = mywindow.mode("maintainSuperCharGroups");
     
-    mywindow.insert( name, uiName, setup.Configure, Xt.ProductsModule | 
-        Xt.InventoryModule | Xt.CRMModule | Xt.SalesModule | Xt.AccountingModule, 
-        modeVal, modeVal);
+    // Add the group/entity maintenance form to setup.
+    var scGroupName = qsTr("Super Characteristic Groups/Entities");
+    var scGroupUiName = "museScGroupMaint";
+    var scGroupModeVal = mywindow.mode("maintainSuperCharGroups");
+    
+    mywindow.insert( scGroupName, scGroupUiName, setup.MasterInformation, 
+        Xt.ProductsModule | Xt.InventoryModule | Xt.CRMModule | Xt.SalesModule | 
+        Xt.AccountingModule, scGroupModeVal, scGroupModeVal);
+
+    // Add the characteristic maintenance form to setup.
+    var superCharName = qsTr("Super Characteristics");
+    var superCharUiName = "museSuperCharMaint";
+    var superCharModeVal = mywindow.mode("maintainSuperCharateristics");
+    
+    mywindow.insert( superCharName, superCharUiName, setup.MasterInformation, 
+        Xt.ProductsModule | Xt.InventoryModule | Xt.CRMModule | Xt.SalesModule | 
+        Xt.AccountingModule, superCharModeVal, superCharModeVal);
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
