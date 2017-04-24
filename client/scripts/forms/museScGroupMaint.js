@@ -30,7 +30,9 @@ if(!this.MuseUtils) {
     include("museUtils");
 }
 
-
+if(!this.MuseSuperChar.Data) {
+    include("museScData");
+}
 
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
