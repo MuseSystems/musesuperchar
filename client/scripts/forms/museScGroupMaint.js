@@ -41,7 +41,37 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
-    
+    var entitiesButtonsHBoxLayout = mywindow.findChild("entitiesButtonsHBoxLayout");
+    var entitiesButtonsLeftSpacer = mywindow.findChild("entitiesButtonsLeftSpacer");
+    var entitiesButtonsRightSpacer = mywindow.findChild("entitiesButtonsRightSpacer");
+    var entitiesGroupBox = mywindow.findChild("entitiesGroupBox");
+    var entityAddPushButton = mywindow.findChild("entityAddPushButton");
+    var entityDeletePushButton = mywindow.findChild("entityDeletePushButton");
+    var entityEditPushButton = mywindow.findChild("entityEditPushButton");
+    var entityListXTreeWidget = mywindow.findChild("entityListXTreeWidget");
+    var groupAddPushButton = mywindow.findChild("groupAddPushButton");
+    var groupAssignPushButton = mywindow.findChild("groupAssignPushButton");
+    var groupDeletePushButton = mywindow.findChild("groupDeletePushButton");
+    var groupEditPushButton = mywindow.findChild("groupEditPushButton");
+    var groupLayoutAddPushButton = mywindow.findChild("groupLayoutAddPushButton");
+    var groupLayoutButtonsCenterSpacer = mywindow.findChild("groupLayoutButtonsCenterSpacer");
+    var groupLayoutButtonsHBoxLayout = mywindow.findChild("groupLayoutButtonsHBoxLayout");
+    var groupLayoutButtonsLeftSpacer = mywindow.findChild("groupLayoutButtonsLeftSpacer");
+    var groupLayoutButtonsRightSpacer = mywindow.findChild("groupLayoutButtonsRightSpacer");
+    var groupLayoutDeletePushButton = mywindow.findChild("groupLayoutDeletePushButton");
+    var groupLayoutEditPushButton = mywindow.findChild("groupLayoutEditPushButton");
+    var groupLayoutGroupBox = mywindow.findChild("groupLayoutGroupBox");
+    var groupLayoutMoveDownPushButton = mywindow.findChild("groupLayoutMoveDownPushButton");
+    var groupLayoutMoveUpPushButton = mywindow.findChild("groupLayoutMoveUpPushButton");
+    var groupLayoutXTreeWidget = mywindow.findChild("groupLayoutXTreeWidget");
+    var groupListXTreeWidget = mywindow.findChild("groupListXTreeWidget");
+    var groupsButtonsCenterSpacer = mywindow.findChild("groupsButtonsCenterSpacer");
+    var groupsButtonsHBoxLayout = mywindow.findChild("groupsButtonsHBoxLayout");
+    var groupsButtonsLeftSpacer = mywindow.findChild("groupsButtonsLeftSpacer");
+    var groupsButtonsRightSpacer = mywindow.findChild("groupsButtonsRightSpacer");
+    var groupsEntitiesHBoxLayout = mywindow.findChild("groupsEntitiesHBoxLayout");
+    var groupsGroupBox = mywindow.findChild("groupsGroupBox");
+
     
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation

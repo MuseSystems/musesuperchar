@@ -41,7 +41,59 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
-    
+    var assignedGroupsListGroupBox = mywindow.findChild("assignedGroupsListGroupBox");
+    var assignedGroupsListXTreeWidget = mywindow.findChild("assignedGroupsListXTreeWidget");
+    var condValAddPushButton = mywindow.findChild("condValAddPushButton");
+    var condValButtonsHBoxLayout = mywindow.findChild("condValButtonsHBoxLayout");
+    var condValButtonsLeftSpacer = mywindow.findChild("condValButtonsLeftSpacer");
+    var condValButtonsRightSpacer = mywindow.findChild("condValButtonsRightSpacer");
+    var condValDeletePushButton = mywindow.findChild("condValDeletePushButton");
+    var condValEditPushButton = mywindow.findChild("condValEditPushButton");
+    var condValGroupBox = mywindow.findChild("condValGroupBox");
+    var condValHBoxLayout = mywindow.findChild("condValHBoxLayout");
+    var condValXTreeWidget = mywindow.findChild("condValXTreeWidget");
+    var descriptionXLabel = mywindow.findChild("descriptionXLabel");
+    var descriptionXTextEdit = mywindow.findChild("descriptionXTextEdit");
+    var displayNameXLabel = mywindow.findChild("displayNameXLabel");
+    var displayNameXLineEdit = mywindow.findChild("displayNameXLineEdit");
+    var internalNameXLabel = mywindow.findChild("internalNameXLabel");
+    var internalNameXLineEdit = mywindow.findChild("internalNameXLineEdit");
+    var isSearchableXCheckBox = mywindow.findChild("isSearchableXCheckBox");
+    var isSearchableXLabel = mywindow.findChild("isSearchableXLabel");
+    var isSystemLockedXCheckBox = mywindow.findChild("isSystemLockedXCheckBox");
+    var isSystemLockedXLabel = mywindow.findChild("isSystemLockedXLabel");
+    var listOfValuesAddPushButton = mywindow.findChild("listOfValuesAddPushButton");
+    var listOfValuesButtonHBoxLayout = mywindow.findChild("listOfValuesButtonHBoxLayout");
+    var listOfValuesButtonsCenterSpacer = mywindow.findChild("listOfValuesButtonsCenterSpacer");
+    var listOfValuesButtonsLeftSpacer = mywindow.findChild("listOfValuesButtonsLeftSpacer");
+    var listOfValuesButtonsRightSpacer = mywindow.findChild("listOfValuesButtonsRightSpacer");
+    var listOfValuesDeletePushButton = mywindow.findChild("listOfValuesDeletePushButton");
+    var listOfValuesMoveDownPushButton = mywindow.findChild("listOfValuesMoveDownPushButton");
+    var listOfValuesMoveUpPushButton = mywindow.findChild("listOfValuesMoveUpPushButton");
+    var listOfValuesXTreeWidget = mywindow.findChild("listOfValuesXTreeWidget");
+    var listQueryXLabel = mywindow.findChild("listQueryXLabel");
+    var listQueryXTextEdit = mywindow.findChild("listQueryXTextEdit");
+    var mainHBoxLayout = mywindow.findChild("mainHBoxLayout");
+    var managingPackageValueXLabel = mywindow.findChild("managingPackageValueXLabel");
+    var managingPackageXLabel = mywindow.findChild("managingPackageXLabel");
+    var superCharAddPushButton = mywindow.findChild("superCharAddPushButton");
+    var superCharButtonsBottonSpacer = mywindow.findChild("superCharButtonsBottonSpacer");
+    var superCharButtonsTopSpacer = mywindow.findChild("superCharButtonsTopSpacer");
+    var superCharButtonsVBoxLayout = mywindow.findChild("superCharButtonsVBoxLayout");
+    var superCharDataTypeXComboBox = mywindow.findChild("superCharDataTypeXComboBox");
+    var superCharDataTypeXLabel = mywindow.findChild("superCharDataTypeXLabel");
+    var superCharDeletePushButton = mywindow.findChild("superCharDeletePushButton");
+    var superCharDetailsVBoxLayout = mywindow.findChild("superCharDetailsVBoxLayout");
+    var superCharEditPushButton = mywindow.findChild("superCharEditPushButton");
+    var superCharListAndGroupListVBoxLayout = mywindow.findChild("superCharListAndGroupListVBoxLayout");
+    var superCharListGroupBox = mywindow.findChild("superCharListGroupBox");
+    var superCharListXTreeWidget = mywindow.findChild("superCharListXTreeWidget");
+    var superCharSystemValuesGroupBox = mywindow.findChild("superCharSystemValuesGroupBox");
+    var superCharSystemValuesLeftFormLayout = mywindow.findChild("superCharSystemValuesLeftFormLayout");
+    var superCharSystemValuesRightFormLayout = mywindow.findChild("superCharSystemValuesRightFormLayout");
+    var superCharValuesGroupBox = mywindow.findChild("superCharValuesGroupBox");
+    var superCharValuesLeftFormLayout = mywindow.findChild("superCharValuesLeftFormLayout");
+    var superCharValuesRightGroupBox = mywindow.findChild("superCharValuesRightGroupBox");
     
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation

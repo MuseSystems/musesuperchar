@@ -41,7 +41,31 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
-    
+    var addAllPushButton = mywindow.findChild("addAllPushButton");
+    var addPushButton = mywindow.findChild("addPushButton");
+    var assignedEntitiesListXTreeWidget = mywindow.findChild("assignedEntitiesListXTreeWidget");
+    var assignedEntitiesVBoxLayout = mywindow.findChild("assignedEntitiesVBoxLayout");
+    var assignedEntitiesXLabel = mywindow.findChild("assignedEntitiesXLabel");
+    var availEntitiesListXTreeWidget = mywindow.findChild("availEntitiesListXTreeWidget");
+    var availEntitiesVBoxLayout = mywindow.findChild("availEntitiesVBoxLayout");
+    var availEntitiesXLabel = mywindow.findChild("availEntitiesXLabel");
+    var bottomSpacer = mywindow.findChild("bottomSpacer");
+    var cancelPushButton = mywindow.findChild("cancelPushButton");
+    var controlsVBoxLayout = mywindow.findChild("controlsVBoxLayout");
+    var editPushButton = mywindow.findChild("editPushButton");
+    var groupComboBox = mywindow.findChild("groupComboBox");
+    var groupInactiveSpacer = mywindow.findChild("groupInactiveSpacer");
+    var groupLabel = mywindow.findChild("groupLabel");
+    var groupSelectHBoxLayout = mywindow.findChild("groupSelectHBoxLayout");
+    var inactiveEditSpacer = mywindow.findChild("inactiveEditSpacer");
+    var isInactiveShownXCheckBox = mywindow.findChild("isInactiveShownXCheckBox");
+    var outerHBoxLayout = mywindow.findChild("outerHBoxLayout");
+    var outerVBoxLayout = mywindow.findChild("outerVBoxLayout");
+    var panesHBoxLayout = mywindow.findChild("panesHBoxLayout");
+    var removeAddSpacer = mywindow.findChild("removeAddSpacer");
+    var removeAllPushButton = mywindow.findChild("removeAllPushButton");
+    var removePushButton = mywindow.findChild("removePushButton");
+    var topSpacer = mywindow.findChild("topSpacer");
     
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
