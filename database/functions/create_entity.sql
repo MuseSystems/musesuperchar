@@ -54,7 +54,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
                     AND enityt_table = pTable;
 
                 -- No matter what we'll insert the entity record if it needs it.
-                IF vEntityId IS NULL
+                IF vEntityId IS NULL THEN
                     INSERT INTO musesuperchar.entity (
                              entity_schema          
                             ,entity_table           
