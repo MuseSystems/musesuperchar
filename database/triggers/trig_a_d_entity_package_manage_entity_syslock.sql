@@ -32,7 +32,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_d_entity_package_manage_entity_s
                                 WHERE   entity_package_entity_id = 
                                             OLD.entity_package_entity_id
                                     AND entity_package_id != 
-                                            OLD entity_package_id) THEN
+                                            OLD.entity_package_id) THEN
                     -- If we don't have any more managing packages, set the 
                     -- system lock to be not locked so the user can manage.
                     UPDATE musesuperchar.entity
