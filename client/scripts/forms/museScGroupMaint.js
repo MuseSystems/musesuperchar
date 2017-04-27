@@ -102,13 +102,140 @@ if(!this.MuseSuperChar.Data) {
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
-
+        entityAddPushButton.clicked.connect(pPublicApi.sAddEntity);
+        entityEditPushButton.clicked.connect(pPublicApi.sEditEntity);
+        entityDeletePushButton.clicked.connect(pPublicApi.sDeleteEntity);
+        groupAssignPushButton.clicked.connect(pPublicApi.sGroupAssignToEntity);
+        groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
+        groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
+        groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
+        groupLayoutAddPushButton.clicked.connect(pPublicApi.sAddSuperCharToLayout);
+        groupLayoutEditPushButton.clicked.connect(pPublicApi.sEditSuperCharInLayout);
+        groupLayoutDeletePushButton.clicked.connect(pPublicApi.sDeleteSuperCharFromLayout);
+        groupLayoutMoveUpPushButton.clicked.connect(pPublicApi.sMoveSuperCharUpInLayout);
+        groupLayoutMoveDownPushButton.clicked.connect(pPublicApi.sMoveSuperCharDownInLayout);
     };
     
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
-    
+
+    pPublicApi.sPopulate = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sAddEntity = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sEditEntity = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sDeleteEntity = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sGroupAssignToEntity = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sAddGroup = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sEditGroup = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sDeleteGroup = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sAddSuperCharToLayout = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sEditSuperCharInLayout = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sDeleteSuperCharFromLayout = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sMoveSuperCharUpInLayout = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
+    pPublicApi.sMoveSuperCharDownInLayout = function() {
+        try {
+
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
