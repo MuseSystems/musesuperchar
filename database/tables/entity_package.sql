@@ -63,7 +63,17 @@ DO
                                                                 ,'entity_package_row_version_number'
                                                                 ,'entity_package_is_active');
                 
-
+                -- Add the trigger to the target table(s).
+                DROP TRIGGER IF EXISTS 
+                    a10_trig_a_d_entity_package_manage_entity_syslock 
+                    ON musesuperchar.entity_package;
+                
+                CREATE TRIGGER a10_trig_a_d_entity_package_manage_entity_syslock 
+                    AFTER DELETE
+                    ON musesuperchar.entity_package FOR EACH ROW 
+                    EXECUTE PROCEDURE musesuperchar.trig_a_d_entity_package_manage_entity_syslock();
+                
+                
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 
