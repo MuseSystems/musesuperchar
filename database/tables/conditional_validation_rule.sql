@@ -57,8 +57,11 @@ DO
                 COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_id IS
                 $DOC$A surrogate key by which to uniquely identify each record. This is the primary key.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_validation_rule_id IS
-                $DOC$Conditional validation rules attach to a validation rule as child records.  This is a reference to the parent validation rule which identifies the subject and object characteristics being evaluated.  The "if" fields refer to the object characteristic and the "then" fields apply a validation to the subject if the "if" rule is true.$DOC$;
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_subject_sc_def_id IS
+                $DOC$Identifies the super characteristic to for whose benefit this rule will be evaluated.  Any action taken due to a validation rule will be applied to the subject characteristic.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_object_sc_def_id IS
+                $DOC$Identifies a characteristic which will be evaluated in order to know what must happen in regards to the subject characteristic.  The object is not the characteristic on which any action will be applied, but rather whose state will determine what must happen with the subject characteristic.  An object characteristic can also be the subject characteristic, such as requiring the characteristic to have a certain value.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_if_validator_type_id IS
                 $DOC$The type of validation to perform on the object characteristic to see if the "then" validation should be performed on the the subject characteristic.$DOC$;
