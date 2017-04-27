@@ -30,8 +30,8 @@ if(!this.MuseUtils) {
     include("museUtils");
 }
 
-if(!this.MuseSuperChar.Data) {
-    include("museScData");
+if(!this.MuseSuperChar.Entity) {
+    include("museScEntityData");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,12 +78,34 @@ if(!this.MuseSuperChar.Data) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-
+    
+    // Add columns to entityListXTreeWidget
+    entityListXTreeWidget.addColumn("Entity Id", 60, Qt.AlignRight, false, "entity_id");
+    entityListXTreeWidget.addColumn("Entity", 150, Qt.AlignCenter, true, "entity_display_name");
+    entityListXTreeWidget.addColumn("Schema", 100, Qt.AlignLeft, false, "entity_schema");
+    entityListXTreeWidget.addColumn("Table", 100, Qt.AlignLeft, false, "entity_table");
+    entityListXTreeWidget.addColumn("Primary Key Column", 150, Qt.AlignLeft, false, "entity_pk_column");
+    entityListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "entity_is_system_locked");
+    entityListXTreeWidget.addColumn("Packages", 150, Qt.AlignLeft, false, "entity_package_names");
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
+    var clear = function() {
+        entityListXTreeWidget.clear();
+        groupLayoutXTreeWidget.clear();
+        groupListXTreeWidget.clear();
+    };
 
+    var populate = function() {
+        // Clear out everything
+        clear();
+
+        // Populate the entity list.
+        entityListXTreeWidget.populate(
+            MuseSuperChar.Entity.getEntitiesSqlQuery());
+        
+    };
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
