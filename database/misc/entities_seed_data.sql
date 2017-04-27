@@ -17,17 +17,14 @@
  *************************************************************************
  ************************************************************************/
 
-INSERT INTO musesuperchar.entity (
-         entity_schema
-        ,entity_table
-        ,entity_pk_column
-        ,entity_display_name
-        ,entity_is_system_locked)
-    SELECT   entity_schema
-            ,entity_table
-            ,entity_pk_column
-            ,entity_display_name
-            ,entity_is_system_locked
+    SELECT  musesuperchar.create_entity(
+                 entity_schema
+                ,entity_table
+                ,entity_display_name
+                ,entity_pk_column
+                ,'musesuperchar'
+                ,entity_is_system_locked)   
+             
     FROM (VALUES 
              ('public','item','item_id','Item',false)
             ,('public','ls','ls_id','Lot/Serial',false)
