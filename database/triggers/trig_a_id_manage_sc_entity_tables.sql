@@ -39,7 +39,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                 -- on delete we drop the table.
                 IF TG_OP = 'INSERT' THEN
 
-                    vEntityTableName := 'sc_' || NEW.entity_table;
+                    vEntityTableName := 'sc_' || NEW.entity_schema || '_' || 
+                        NEW.entity_table;
                     vEntityPkColmnName := vEntityTableName || '_id';
                     vEntityFkColmnName := vEntityTableName || '_' || NEW.entity_table || '_id';
                     vEntityDataColmnName := vEntityTableName || '_data';
