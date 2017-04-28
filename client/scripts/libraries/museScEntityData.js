@@ -397,6 +397,8 @@ if(!this.MuseUtils) {
                             "ON entity_schema = table_schema_name " +
                                 "AND entity_table = table_name " +
                     'WHERE  table_schema_name = <? value("pSchema") ?> ' +
+                        "AND table_kind = 'TABLE' " +
+                        "AND table_persistence = 'PERMANENT' " +
                         "AND entity_id IS NULL " +
                     "ORDER BY table_name ",
                     {pSchema: pSchema});
@@ -414,6 +416,8 @@ if(!this.MuseUtils) {
                         ",table_name " +
                     "FROM   musextputils.v_basic_catalog " +
                     'WHERE  table_schema_name = <? value("pSchema") ?> ' +
+                        "AND table_kind = 'TABLE' " +
+                        "AND table_persistence = 'PERMANENT' " +
                     "ORDER BY table_name ",
                     {pSchema: pSchema});
             } catch(e) {
