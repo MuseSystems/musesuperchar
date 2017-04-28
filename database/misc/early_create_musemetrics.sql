@@ -45,3 +45,18 @@ SELECT musextputils.create_musemetric(  'musesuperchar'
                                        ,null::text[]) IS NULL;
 
 
+--
+--  If true, this setting allows users to add layout items or validation rules
+--  in addition to the system installed entries for otherwise system locked
+--  records.
+--
+
+SELECT musextputils.create_musemetric(  'musesuperchar'
+                                       ,'isSystemLockedObjectUserExtendable'
+                                       ,'If true, this setting allows users to add layout items or validation rules in addition to the system installed entries for otherwise system locked records.'
+                                       ,true
+                                    )
+    WHERE musextputils.get_musemetric(  'musesuperchar'
+                                       ,'isSystemLockedObjectUserExtendable'
+                                       ,null::boolean) IS NULL;
+
