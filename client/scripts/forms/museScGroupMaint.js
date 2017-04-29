@@ -104,38 +104,170 @@ if(!this.MuseSuperChar.Entity) {
         // Populate the entity list.
         entityListXTreeWidget.populate(
             MuseSuperChar.Entity.getEntitiesSqlQuery());
+
+        //groupListXTreeWidget.populate(
+        //    MuseSuperChar.Group.getGroupsSqlQuery());
+
+        if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+            groupLayoutXTreeWidget.populate(
+                MuseSuperChar.Group.getGroupLayoutsSqlQuery(
+                    groupListXTreeWidget.currentItem().id()));
+        }
+
+        setButtons();
         
     };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Functions
-    //--------------------------------------------------------------------
-    
-    /**
-     * Form startup initialization.  Standard part of the xTuple ERP 
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
-    pPublicApi.set = function(pParams) {
 
+    var setButtons = function() {
+        // Handle Entity Buttons
+        if(MuseUtils.realNull(entityListXTreeWidget.currentItem()) !== null) {
+            var currEntityItem = entityListXTreeWidget.currentItem();
+            entityAddPushButton.enabled = true && 
+                privileges.check("maintainSuperCharEntities");
+
+            var isEntityEditingPrivileged = 
+                (
+                    (
+                        privileges.check("maintainSuperCharEntities") && 
+                        !MuseSuperChar.Entity.isEntitySystemLocked(currEntityItem.id())
+                    ) ||            
+                    (
+                        privileges.check("maintainSuperCharEntities") &&
+                        privileges.check("maintainSuperCharSysLockRecsManually")
+                    )
+                );
+
+            entityEditPushButton.enabled = true && isEntityEditingPrivileged;
+            entityDeletePushButton.enabled = true && isEntityEditingPrivileged;
+        } else {
+            entityAddPushButton.enabled = true && 
+                privileges.check("maintainSuperCharEntities");
+            entityEditPushButton.enabled = false;
+            entityDeletePushButton.enabled = false;
+        }
+
+        // We'll use these vraiables in group and group layout so declare it
+        // here and make the linter happy. We'll set them in the group check
+        // since we can't edit layouts unless there is a group selected.
+        var isGroupSystemLocked = true;
+        var isGroupEditingPrivileged = false;
+
+        // Handle Group Buttons
+        if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+            var currGroupItem = groupListXTreeWidget.currentItem();
+            
+            groupAddPushButton.enabled = true && 
+                privileges.check("maintainSuperCharGroups");
+            isGroupSystemLocked = 
+                MuseSuperChar.Group.isGroupSystemLocked(currGroupItem.id());
+            isGroupEditingPrivileged = 
+                (
+                    (
+                        privileges.check("maintainSuperCharGroups") && 
+                        !isGroupSystemLocked
+                    ) ||            
+                    (
+                        privileges.check("maintainSuperCharGroups") &&
+                        privileges.check("maintainSuperCharSysLockRecsManually")
+                    )
+                );
+
+            groupAssignPushButton.enabled = true && isGroupEditingPrivileged;
+            groupEditPushButton.enabled = true && isGroupEditingPrivileged;
+            groupDeletePushButton.enabled = true && isGroupEditingPrivileged;
+
+        } else {
+            groupAddPushButton.enabled = true && 
+                privileges.check("maintainSuperCharGroups");
+            groupEditPushButton.enabled = false;
+            groupDeletePushButton.enabled = false;
+            groupAssignPushButton.enabled = false;
+        }
+
+
+        // Handle Layout Buttons
+        if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null && 
+            MuseUtils.realNull(groupLayoutXTreeWidget.currentItem()) !== null) {
+            
+            var currGroupLayoutItem = groupListXTreeWidget.currentItem();
+            groupLayoutAddPushButton.enabled = true &&
+                (
+                    (
+                        privileges.check("maintainSuperCharGroups") && 
+                        !isGroupSystemLocked
+                    ) ||
+                    (
+                        privileges.check("maintainSuperCharGroups") && 
+                        isGroupEditingPrivileged
+                    ) ||
+                    (
+                        privileges.check("maintainSuperCharGroups") &&
+                        MuseUtils.getFlagMetric("musesuperchar", 
+                            "isSystemLockedObjectUserExtendable")
+                    )
+                );
+
+            var isGroupLayoutEditingPrivileged = 
+                (
+                    (
+                        privileges.check("maintainSuperCharGroups") &&
+                        !MuseSuperChar.Group.isGroupLayoutItemSystemLocked(
+                            currGroupLayoutItem.id())
+                    ) ||            
+                    (
+                        privileges.check("maintainSuperCharGroups") &&
+                        privileges.check("maintainSuperCharSysLockRecsManually")
+                    )
+                );
+
+            groupLayoutEditPushButton.enabled = true && isGroupLayoutEditingPrivileged;
+            groupLayoutMoveUpPushButton.enabled = true && isGroupLayoutEditingPrivileged;
+            groupLayoutMoveDownPushButton.enabled = true && isGroupLayoutEditingPrivileged;
+            groupLayoutDeletePushButton.enabled = true && isGroupLayoutEditingPrivileged;
+
+        } else if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+            groupLayoutAddPushButton.enabled = true &&
+                (
+                    (
+                        privileges.check("maintainSuperCharGroups") && 
+                        !isGroupSystemLocked
+                    ) ||
+                    (
+                        privileges.check("maintainSuperCharGroups") && 
+                        isGroupEditingPrivileged
+                    ) ||
+                    (
+                        privileges.check("maintainSuperCharGroups") &&
+                        MuseUtils.getFlagMetric("musesuperchar", 
+                            "isSystemLockedObjectUserExtendable")
+                    )
+                );
+            groupLayoutEditPushButton.enabled = false;
+            groupLayoutMoveUpPushButton.enabled = false;
+            groupLayoutMoveDownPushButton.enabled = false;
+            groupLayoutDeletePushButton.enabled = false;
+        } else {
+            groupLayoutAddPushButton.enabled = false;
+            groupLayoutEditPushButton.enabled = false;
+            groupLayoutMoveUpPushButton.enabled = false;
+            groupLayoutMoveDownPushButton.enabled = false;
+            groupLayoutDeletePushButton.enabled = false;
+        }
         
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
-        entityAddPushButton.clicked.connect(pPublicApi.sAddEntity);
-        entityEditPushButton.clicked.connect(pPublicApi.sEditEntity);
-        entityDeletePushButton.clicked.connect(pPublicApi.sDeleteEntity);
-        groupAssignPushButton.clicked.connect(pPublicApi.sGroupAssignToEntity);
-        groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
-        groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
-        groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
-        groupLayoutAddPushButton.clicked.connect(pPublicApi.sAddSuperCharToLayout);
-        groupLayoutEditPushButton.clicked.connect(pPublicApi.sEditSuperCharInLayout);
-        groupLayoutDeletePushButton.clicked.connect(pPublicApi.sDeleteSuperCharFromLayout);
-        groupLayoutMoveUpPushButton.clicked.connect(pPublicApi.sMoveSuperCharUpInLayout);
-        groupLayoutMoveDownPushButton.clicked.connect(pPublicApi.sMoveSuperCharDownInLayout);
+    };
+
+    var addEntity = function() {
+        // Open a box with the requisite fields.
+        var museScCreateEntity = toolbox.openWindow("museScCreateEntity", 
+            mywindow, Qt.WindowModal);
+        toolbox.lastWindow().set({});
+        
+        // We may have new entities, so lets populate them.
+        entityListXTreeWidget.clear();
+        entityListXTreeWidget.populate(
+            MuseSuperChar.Entity.getEntitiesSqlQuery());
+        
     };
     
     //--------------------------------------------------------------------
@@ -153,7 +285,7 @@ if(!this.MuseSuperChar.Entity) {
 
     pPublicApi.sAddEntity = function() {
         try {
-
+            return addEntity();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
@@ -259,31 +391,35 @@ if(!this.MuseSuperChar.Entity) {
         }
     };
 
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
-
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
-
-    // Lower graded scripts should be loaded prior to our call and as such we 
-    // should be able to intercept their set functions.
-    if(pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
-    }
-
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch(e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
+    try {
+        //--------------------------------------------------------------------
+        //  Initialization Logic Setup 
+        //  Subforms are different from standard xTuple forms in that they do not 
+        //  call set and instead initialize on the constructor.  This should be OK 
+        //  since we should not need to depend on the outside world for anything.
+        //--------------------------------------------------------------------
+        populate();
         
-    };
+        //----------------------------------------------------------------
+        //  Connects/Disconnects
+        //----------------------------------------------------------------
+        entityAddPushButton.clicked.connect(pPublicApi.sAddEntity);
+        entityEditPushButton.clicked.connect(pPublicApi.sEditEntity);
+        entityDeletePushButton.clicked.connect(pPublicApi.sDeleteEntity);
+        groupAssignPushButton.clicked.connect(pPublicApi.sGroupAssignToEntity);
+        groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
+        groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
+        groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
+        groupLayoutAddPushButton.clicked.connect(pPublicApi.sAddSuperCharToLayout);
+        groupLayoutEditPushButton.clicked.connect(pPublicApi.sEditSuperCharInLayout);
+        groupLayoutDeletePushButton.clicked.connect(pPublicApi.sDeleteSuperCharFromLayout);
+        groupLayoutMoveUpPushButton.clicked.connect(pPublicApi.sMoveSuperCharUpInLayout);
+        groupLayoutMoveDownPushButton.clicked.connect(pPublicApi.sMoveSuperCharDownInLayout);
+        
+    } catch(e) {
+        MuseUtils.displayError(e, mywindow);
+        mywindow.close();
+    }
 
 })(this.MuseSuperChar.GroupMaint, this);
 
