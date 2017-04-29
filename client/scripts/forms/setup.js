@@ -48,7 +48,7 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     
     // Add the group/entity maintenance form to setup.
-    var scGroupName = qsTr("Super Characteristic Groups/Entities");
+    var scGroupName = qsTr("SuperChar Groups/Entities");
     var scGroupUiName = "museScGroupMaint";
     var scGroupModeVal = mywindow.mode("maintainSuperCharGroups");
     
@@ -57,7 +57,7 @@ if(!this.MuseUtils) {
         Xt.AccountingModule, scGroupModeVal, scGroupModeVal);
 
     // Add the characteristic maintenance form to setup.
-    var superCharName = qsTr("Super Characteristics");
+    var superCharName = qsTr("SuperChar");
     var superCharUiName = "museSuperCharMaint";
     var superCharModeVal = mywindow.mode("maintainSuperCharateristics");
     
