@@ -342,14 +342,14 @@ if(!this.MuseUtils) {
             pSchema: pSchema
         };
 
-        var testQry;
-
         if(MuseUtils.realNull(pSchema) === null) {
             try {
-                testQry = MuseUtils.executeQuery(
+                return MuseUtils.executeQuery(
                     "SELECT oid AS schema_id " +
                         ",nspname AS schema_name " +
                     "FROM pg_catalog.pg_namespace " +
+                    "WHERE nspname != 'pg_catalog' " +
+                        "AND NOT nspname ~ '^pg_' " +
                     "ORDER BY nspname ",
                     {pSchema: pSchema});
             } catch(e) {
@@ -361,7 +361,7 @@ if(!this.MuseUtils) {
             }
         } else {
             try {
-                testQry = MuseUtils.executeQuery(
+                return MuseUtils.executeQuery(
                     "SELECT oid AS schema_id " +
                         ",nspname AS schema_name " +
                     "FROM pg_catalog.pg_namespace " +
@@ -376,8 +376,6 @@ if(!this.MuseUtils) {
                     {params: funcParams, thrownError: e});
             }
         }
-
-        var testResult = testQry.firstJson();        
     };
 
     var getTablesBySchema = function(pSchema, pIsOnlyNonEntity) {
@@ -429,6 +427,52 @@ if(!this.MuseUtils) {
             }
         }
 
+    };
+
+    var getUniqueKeysByTable = function(pSchema, pTable) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSchema: pSchema,
+            pTable: pTable
+        };
+        
+        try {
+            return MuseUtils.executeQuery(
+                "WITH source AS (SELECT   tc.table_schema " +
+                "                        ,tc.table_name " +
+                "                        ,tc.constraint_type " +
+                "                        ,kcu.column_name " +
+                "                        ,c.data_type " +
+                "                        ,count(kcu.column_name) OVER (PARTITION BY tc.table_schema,tc.table_name,kcu.constraint_name) AS col_count " +
+                "                FROM    information_schema.table_constraints tc " +
+                "                    JOIN information_schema.key_column_usage kcu " +
+                "                        ON  kcu.table_name = tc.table_name  " +
+                "                            AND kcu.table_schema = tc.table_schema  " +
+                "                            AND kcu.constraint_name = tc.constraint_name " +
+                "                    JOIN information_schema.columns c " +
+                "                        ON  c.table_schema = kcu.table_schema " +
+                "                            AND c.table_name = kcu.table_name " +
+                "                            AND c.column_name = kcu.column_name " +
+                "                WHERE   (tc.constraint_type = 'PRIMARY KEY' OR tc.constraint_type = 'UNIQUE') " +
+                                    ' AND tc.table_schema = <? value("pSchema") ?> ' +
+                                    ' AND tc.table_name = <? value("pTable") ?> ' +
+                "                ORDER BY tc.table_schema " +
+                "                        ,tc.table_name " +
+                "                        ,tc.constraint_type " +
+                "                        ,kcu.column_name) " +
+                "SELECT   row_number() OVER () AS row_id " +
+                "        ,column_name " +
+                "FROM    source " +
+                "WHERE   col_count = 1  " +
+                "    AND (data_type = 'integer' OR data_type = 'bigint') ",
+                funcParams);
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem retrieving the available key columns for the requested database table.",
+                "MuseSuperChar.Entity.getUniqueKeysByTable",
+                {params: funcParams, thrownError: e});
+        }
     };
 
     var isEntitySystemLocked = function(pEntityId) {
@@ -746,6 +790,40 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }
         
+    };
+
+    pPublicApi.getUniqueKeysByTable = function(pSchema, pTable) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSchema: pSchema,
+            pTable: pTable
+        };
+
+        // Validate that we have both a schema and a table
+        if(MuseUtils.coalesce(pSchema, "") === "") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We require a schema name by which to filter table unique keys.",
+                "MuseSuperChar.Entity.pPublicApi.getUniqueKeysByTable",
+                {params: funcParams});
+        } else if(MuseUtils.coalesce(pTable, "") === "") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We require a table name by which to filter the available unique keys.",
+                "MuseSuperChar.Entity.pPublicApi.getUniqueKeysByTable",
+                {params: funcParams});
+        }
+        
+        // Try the function call.
+        try {
+            return getUniqueKeysByTable(pSchema, pTable);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to retrieve the requested list of unique keys.",
+                "MuseSuperChar.Entity.pPublicApi.getUniqueKeysByTable",
+                {params: funcParams, thrownError: e});
+        }
     };
 
     pPublicApi.getTablesBySchema = function(pSchema, pIsOnlyNonEntity) {
