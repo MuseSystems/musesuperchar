@@ -31,8 +31,8 @@ DO
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.entity_sc_group_ass (
                      entity_sc_group_ass_id    bigserial    NOT NULL    PRIMARY KEY
-                    ,entity_sc_group_ass_entity_id bigint NOT NULL REFERENCES musesuperchar.entity (entity_id)
-                    ,entity_sc_group_ass_sc_group_id bigint NOT NULL REFERENCES musesuperchar.sc_group (sc_group_id)
+                    ,entity_sc_group_ass_entity_id bigint NOT NULL REFERENCES musesuperchar.entity (entity_id) ON DELETE CASCADE
+                    ,entity_sc_group_ass_sc_group_id bigint NOT NULL REFERENCES musesuperchar.sc_group (sc_group_id) ON DELETE CASCADE
                     ,entity_sc_group_ass_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,entity_sc_group_ass_is_system_locked boolean NOT NULL DEFAULT false
                 );
