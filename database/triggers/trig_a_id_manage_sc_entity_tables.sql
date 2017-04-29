@@ -144,7 +144,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                               WHERE     table_schema_name = 'musesuperchar'
                                     AND table_name = vEntityTableName
                                     AND function_schema_name = 'musextputils'
-                                    AND function_name = 'trig_b_iu_audit_field_maintenance') THEN 
+                                    AND function_name = 'trig_a_iud_record_audit_logging') THEN 
 
                         EXECUTE format('DELETE FROM musesuperchar.%1$I',
                             vEntityTableName);
