@@ -269,6 +269,13 @@ if(!this.MuseSuperChar.Entity) {
             MuseSuperChar.Entity.getEntitiesSqlQuery());
         
     };
+
+    var deleteEntity = function(pEntityId) {
+        MuseSuperChar.Entity.deleteEntity(pEntityId);
+        // Populate the entity list.
+        entityListXTreeWidget.populate(
+            MuseSuperChar.Entity.getEntitiesSqlQuery());
+    };
     
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
@@ -303,7 +310,13 @@ if(!this.MuseSuperChar.Entity) {
 
     pPublicApi.sDeleteEntity = function() {
         try {
-
+            if(MuseUtils.isValidId(entityListXTreeWidget.id())) {
+                deleteEntity(entityListXTreeWidget.id());
+            } else {
+                QMessageBox.warning(mywindow, "No Entity Selected", 
+                    "We did not understand which entity you wanted to delete.\n" + 
+                    "Please select the entity in the list and try again.");
+            }
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
@@ -391,6 +404,15 @@ if(!this.MuseSuperChar.Entity) {
         }
     };
 
+    pPublicApi.sEntitySelected = function(pXtreeWidgetItem, pColumnIndex) {
+        try {
+            setButtons();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
     try {
         //--------------------------------------------------------------------
         //  Initialization Logic Setup 
@@ -402,19 +424,32 @@ if(!this.MuseSuperChar.Entity) {
         
         //----------------------------------------------------------------
         //  Connects/Disconnects
-        //----------------------------------------------------------------
+        //---------------------------------------------------------------- 
+
+        // Entity 
         entityAddPushButton.clicked.connect(pPublicApi.sAddEntity);
         entityEditPushButton.clicked.connect(pPublicApi.sEditEntity);
         entityDeletePushButton.clicked.connect(pPublicApi.sDeleteEntity);
+        entityListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
+            pPublicApi.sEntitySelected);
+        
+        // Group Buttons
         groupAssignPushButton.clicked.connect(pPublicApi.sGroupAssignToEntity);
         groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
         groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
         groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
-        groupLayoutAddPushButton.clicked.connect(pPublicApi.sAddSuperCharToLayout);
-        groupLayoutEditPushButton.clicked.connect(pPublicApi.sEditSuperCharInLayout);
-        groupLayoutDeletePushButton.clicked.connect(pPublicApi.sDeleteSuperCharFromLayout);
-        groupLayoutMoveUpPushButton.clicked.connect(pPublicApi.sMoveSuperCharUpInLayout);
-        groupLayoutMoveDownPushButton.clicked.connect(pPublicApi.sMoveSuperCharDownInLayout);
+        
+        // Group Layout Buttons
+        groupLayoutAddPushButton.clicked.connect(
+            pPublicApi.sAddSuperCharToLayout);
+        groupLayoutEditPushButton.clicked.connect(
+            pPublicApi.sEditSuperCharInLayout);
+        groupLayoutDeletePushButton.clicked.connect(
+            pPublicApi.sDeleteSuperCharFromLayout);
+        groupLayoutMoveUpPushButton.clicked.connect(
+            pPublicApi.sMoveSuperCharUpInLayout);
+        groupLayoutMoveDownPushButton.clicked.connect(
+            pPublicApi.sMoveSuperCharDownInLayout);
         
     } catch(e) {
         MuseUtils.displayError(e, mywindow);
