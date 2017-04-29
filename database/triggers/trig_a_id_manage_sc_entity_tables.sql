@@ -135,7 +135,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                 
                 ELSIF TG_OP = 'DELETE' THEN
 
-                    vEntityTableName := OLD.entity_schema || '_' || OLD.entity_table;;
+                    vEntityTableName := OLD.entity_schema || '_' || OLD.entity_table;
 
                     -- Check to see if we have audit triggers applied.  If so,
                     -- we'll delete all records prior to dropping the table.
