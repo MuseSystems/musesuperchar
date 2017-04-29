@@ -771,6 +771,16 @@ if(!this.MuseUtils) {
                 "Fully Qualified Function Name",
                 {params: funcParams, thrownError: e});
         }
+
+        try {
+            deleteEntity(pEntityId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to delete the requested entity.",
+                "MuseSuperChar.pPublicApi.deleteEntity",
+                {params: funcParams, thrownError: e});
+        }
         
     };
 
