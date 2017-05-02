@@ -42,7 +42,7 @@ if(!this.MuseUtils) {
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
-    var getEntitiesSqlQuery = function(pParams) {
+    var getEntities = function(pParams) {
         // Capture function parameters for later exception references.
         var funcParams = {
             pParams: pParams
@@ -126,7 +126,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
                 "We encountered an error querying for Super Characteristic known record types.",
-                "MuseSuperChar.Entity.getEntitiesSqlQuery",
+                "MuseSuperChar.Entity.getEntities",
                 {pParams: funcParams, thrownError: e});
         }
     };
@@ -138,7 +138,7 @@ if(!this.MuseUtils) {
         };
 
         try {
-            var entityQuery = getEntitiesSqlQuery(
+            var entityQuery = getEntities(
                 {
                     entity_id: pEntityId,
                     isInactiveIncluded: true
@@ -163,7 +163,7 @@ if(!this.MuseUtils) {
         };
 
         try {
-            var entityQuery = getEntitiesSqlQuery(
+            var entityQuery = getEntities(
                 {
                     entity_schema: pSchema,
                     entity_table: pTable, 
@@ -188,7 +188,7 @@ if(!this.MuseUtils) {
         };
 
         try {
-            return getEntitiesSqlQuery(
+            return getEntities(
                 {
                     entity_schema: pSchema,
                     isInactiveIncluded: pIsInactiveIncluded
@@ -537,19 +537,19 @@ if(!this.MuseUtils) {
         
     };
 
-    pPublicApi.getEntitiesSqlQuery = function(pParams) {
+    pPublicApi.getEntities = function(pParams) {
         // Capture function parameters for later exception references.
         var funcParams = {
             pParams: pParams
         };
         
         try {
-            return getEntitiesSqlQuery(pParams || {});
+            return getEntities(pParams || {});
         } catch(e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We could not retrieve a list of known Super Characteristic record types.",
-                "MuseSuperChar.Entity.pPublicApi.getEntitiesSqlQuery",
+                "MuseSuperChar.Entity.pPublicApi.getEntities",
                 {params: funcParams, thrownError: e});
         }
     };

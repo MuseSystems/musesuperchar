@@ -103,7 +103,7 @@ if(!this.MuseSuperChar.Entity) {
 
         // Populate the entity list.
         entityListXTreeWidget.populate(
-            MuseSuperChar.Entity.getEntitiesSqlQuery());
+            MuseSuperChar.Entity.getEntities());
 
         //groupListXTreeWidget.populate(
         //    MuseSuperChar.Group.getGroupsSqlQuery());
@@ -267,7 +267,7 @@ if(!this.MuseSuperChar.Entity) {
         // We may have new entities, so lets populate them.
         entityListXTreeWidget.clear();
         entityListXTreeWidget.populate(
-            MuseSuperChar.Entity.getEntitiesSqlQuery());
+            MuseSuperChar.Entity.getEntities());
         setButtons();
         
     };
@@ -285,7 +285,7 @@ if(!this.MuseSuperChar.Entity) {
         // We may have new entities, so lets populate them.
         entityListXTreeWidget.clear();
         entityListXTreeWidget.populate(
-            MuseSuperChar.Entity.getEntitiesSqlQuery());
+            MuseSuperChar.Entity.getEntities());
         setButtons();
     };
 
@@ -293,7 +293,7 @@ if(!this.MuseSuperChar.Entity) {
         MuseSuperChar.Entity.deleteEntity(pEntityId);
         // Populate the entity list.
         entityListXTreeWidget.populate(
-            MuseSuperChar.Entity.getEntitiesSqlQuery());
+            MuseSuperChar.Entity.getEntities());
         setButtons();
     };
     
