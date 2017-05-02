@@ -2,7 +2,7 @@
  *************************************************************************
  **
  ** File:         entity_package.sql
- ** Project:      Muse Systems xTuple Super Characteristic
+ ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
  ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
@@ -10,9 +10,7 @@
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
  ** 
- ** Licensing restrictions apply.  Please refer to your Master Services
- ** Agreement or governing Statement of Work for complete terms and 
- ** conditions.
+ ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/

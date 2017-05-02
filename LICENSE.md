@@ -1,4 +1,4 @@
-Muse Systems xTuple Super Characteristics
+Muse Systems Super Characteristics for xTuple ERP
 
 Contact: muse.information@musesystems.com; https://muse.systems
 

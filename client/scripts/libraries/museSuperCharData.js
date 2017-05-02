@@ -2,7 +2,7 @@
  *************************************************************************
  **
  ** File:        museSuperCharData.js
- ** Project:     Muse Systems xTuple Super Characteristics
+ ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
  ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
