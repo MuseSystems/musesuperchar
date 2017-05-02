@@ -534,7 +534,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Entity.pPublicApi.isEntitySystemLocked",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     pPublicApi.getEntities = function(pParams) {
@@ -781,7 +780,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.pPublicApi.deleteEntity",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     pPublicApi.getSchemata = function(pSchema) {
@@ -799,7 +797,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Entity.pPublicApi.getSchemata",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     pPublicApi.getUniqueKeysByTable = function(pSchema, pTable) {
@@ -862,5 +859,4 @@ if(!this.MuseUtils) {
         }
     };
 
-    
 })(this.MuseSuperChar.Entity);
