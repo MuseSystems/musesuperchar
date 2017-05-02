@@ -152,7 +152,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Entity.getEntityByEntityId",
                 {params: funcParams, thrownError: e});
         }
-
     };
 
     var getEntitiesBySchemaTable = function(pSchema, pTable) {
@@ -333,7 +332,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Entity.deleteEntity",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     var getSchemata = function(pSchema) {
@@ -426,7 +424,6 @@ if(!this.MuseUtils) {
                     {params: funcParams, thrownError: e});
             }
         }
-
     };
 
     var getUniqueKeysByTable = function(pSchema, pTable) {
@@ -505,7 +502,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Entity.isEntitySystemLocked",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     //--------------------------------------------------------------------
