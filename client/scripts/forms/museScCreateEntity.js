@@ -34,11 +34,17 @@ if(!this.MuseSuperChar.Entity) {
     include("museScEntityData");
 }
 
+if(!this.MuseSuperChar.SuperChar) {
+    include("museSuperCharData");
+}
+
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi, pGlobal) {
+
+    var mode = "UNDEFINED";
 
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
@@ -72,6 +78,27 @@ if(!this.MuseSuperChar.Entity) {
         schemaXLabel.clear();
         tableXComboBox.clear();
         keyXComboBox.clear();
+    };
+
+    var setNewMode = function() {
+        mode = "new";
+        schemaXComboBox.enabled = true;
+        tableXComboBox.enabled = true;
+        keyXComboBox.enabled = true;
+        displayNameXLineEdit.enabled = true;
+    };
+
+    var setEditMode = function(pEntityId) {
+        mode = "edit";
+        schemaXComboBox.enabled = false;
+        tableXComboBox.enabled = false;
+        displayNameXLineEdit.enabled = true;
+
+        if(!MuseSuperChar.SuperChar.isSuperCharTablePopulated(pEntityId)) {
+            keyXComboBox.enabled = true;
+        } else {
+            keyXComboBox.enabled = false;
+        }
     };
 
     var populateSchemata = function() {
@@ -109,20 +136,74 @@ if(!this.MuseSuperChar.Entity) {
         }
     };
 
+    var populateEntity = function(pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pEntityId: pEntityId
+        };
+        
+        var entityData = MuseSuperChar.Entity.getEntityByEntityId(pEntityId);
+
+        schemaXComboBox.clear();
+        schemaXComboBox.append(1,entityData.entity_schema);
+        schemaXComboBox.setId(1);
+
+        tableXComboBox.clear();
+        tableXComboBox.append(1,entityData.entity_table);
+        tableXComboBox.setId(1);
+
+        populateKeys();
+        keyXComboBox.setText(entityData.entity_pk_column);
+        
+        if(keyXComboBox.text != entityData.entity_pk_column) {
+            throw new MuseUtils.OutOfBoundsException(
+                "musesuperchar",
+                "We could not properly set the unique key field as requested,",
+                "MuseSuperChar.CreateEntity.populateEntity",
+                {params: funcParams});
+        }
+
+        displayNameXLineEdit.text = entityData.entity_display_name;
+    };
+
     var saveEntity = function() {
         var entityData = {
                 entity_schema: schemaXComboBox.text,
                 entity_table: tableXComboBox.text,
                 entity_display_name: displayNameXLineEdit.text,
                 entity_pk_column: keyXComboBox.text
+
             };
 
-        if(!MuseUtils.isValidId(MuseSuperChar.Entity.createEntity(entityData))) {
+        var savedEntityId;
+
+        if(mode == "new") {
+            if(!MuseUtils.isValidId(MuseSuperChar.Entity.createEntity(
+                entityData))) {
+                throw new MuseUtils.NotFoundException(
+                "musesuperchar",
+                "We could not confirm that we successfully saved a new entity record as requested.",
+                "MuseSuperChar.CreateEntity.saveEntity",
+                {entityData: entityData});
+            }
+        } else if(mode == "edit") {
+            var updateTarget = MuseSuperChar.Entity.getEntitiesBySchemaTable(
+                entityData.entity_schema, entityData.entity_table);
+
+            entityData.entity_id = updateTarget.entity_id;
+            if(!MuseUtils.isValidId(MuseSuperChar.Entity.updateEntity(entityData))) {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We could not confirm that we successfully updated an entity record as requested.",
+                    "MuseSuperChar.CreateEntity.saveEntity",
+                    {entityData: entityData});
+            }
+        } else {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
-                "We could not confirm that we successfully created the new entity record as requested.",
+                "We could not successfully save the entity record as requested.",
                 "MuseSuperChar.CreateEntity.saveEntity",
-                {});
+                {entityData: entityData});
         }
     };
 
@@ -191,9 +272,35 @@ if(!this.MuseSuperChar.Entity) {
      *                         setting information.
      */
     pPublicApi.set = function(pParams) {
-        populateSchemata();
-        populateTables();
-        populateKeys();
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pParams: pParams
+        };
+        
+        if(pParams.mode == "new") {
+            populateSchemata();
+            populateTables();
+            populateKeys();
+            setNewMode();
+        } else if(pParams.mode == "edit") {
+            if(!MuseUtils.isValidId(pParams.entity_id)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We did not understand which entity you wished to edit.",
+                    "MuseSuperChar.CreateEntity.pPublicApi.set",
+                    {params: funcParams});
+            }
+
+            populateEntity(pParams.entity_id);
+            setEditMode(pParams.entity_id);
+        } else {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand what mode to use for the form.",
+                "Fully Qualified Function Name",    
+                {params: funcParams});
+        }
+
         setButtons();
         
         //----------------------------------------------------------------

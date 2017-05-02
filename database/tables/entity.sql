@@ -35,6 +35,7 @@ DO
                     ,entity_table   text         NOT NULL
                     ,entity_pk_column text       NOT NULL
                     ,entity_display_name   text         NOT NULL
+                    ,entity_data_table text NOT NULL
                     ,entity_is_system_locked boolean      NOT NULL   DEFAULT false
                     ,UNIQUE(entity_schema, entity_table)
                 );

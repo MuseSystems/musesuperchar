@@ -26,7 +26,6 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
     RETURNS trigger AS
         $BODY$
             DECLARE
-                vEntityTableName text;
                 vEntityPkColmnName text;
                 vEntityFkColmnName text;
                 vEntityDataColmnName text;
@@ -39,56 +38,55 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                 -- on delete we drop the table.
                 IF TG_OP = 'INSERT' THEN
 
-                    vEntityTableName := NEW.entity_schema || '_' || NEW.entity_table;
-                    vEntityPkColmnName := vEntityTableName || '_id';
-                    vEntityFkColmnName := vEntityTableName || '_' || NEW.entity_table || '_id';
-                    vEntityDataColmnName := vEntityTableName || '_data';
+                    vEntityPkColmnName := NEW.entity_data_table || '_id';
+                    vEntityFkColmnName := NEW.entity_data_table || '_' || NEW.entity_table || '_id';
+                    vEntityDataColmnName := NEW.entity_data_table || '_data';
 
                     EXECUTE format('CREATE TABLE musesuperchar.%1$I ( ' ||
                         ' %2$I bigserial PRIMARY KEY ' ||
                         ',%3$I bigint NOT NULL REFERENCES %4$I.%5$I (%6$I) ' ||
                         $q$,%7$I jsonb NOT NULL DEFAULT '{}'::jsonb) $q$,
-                        vEntityTableName,vEntityPkColmnName,vEntityFkColmnName,
+                        NEW.entity_data_table,vEntityPkColmnName,vEntityFkColmnName,
                         NEW.entity_schema, NEW.entity_table, NEW.entity_pk_column,
                         vEntityDataColmnName);
                     EXECUTE format('ALTER TABLE musesuperchar.%1$I OWNER TO admin',
-                        vEntityTableName);
+                        NEW.entity_data_table);
                     EXECUTE format('REVOKE ALL ON TABLE musesuperchar.%1$I FROM public',
-                        vEntityTableName);
+                        NEW.entity_data_table);
                     EXECUTE format('GRANT ALL ON TABLE musesuperchar.%1$I TO admin',
-                        vEntityTableName);
+                        NEW.entity_data_table);
                     EXECUTE format('GRANT ALL ON TABLE musesuperchar.%1$I TO xtrole',
-                        vEntityTableName);
+                        NEW.entity_data_table);
 
                     EXECUTE format('COMMENT ON TABLE musesuperchar.%1$I IS ' ||
                         '$DOC$A table holding super characteristic data for %2$s (%3$s) records.$DOC$',
-                        vEntityTableName, NEW.entity_display_name, 
+                        NEW.entity_data_table, NEW.entity_display_name, 
                         NEW.entity_schema || '.' || NEW.entity_table);
 
                     EXECUTE format('COMMENT ON COLUMN musesuperchar.%1$I.%2$I IS ' ||
                         '$DOC$A surrogate key by which to uniquely identify each record. This is the primary key.$DOC$',
-                        vEntityTableName, vEntityPkColmnName);
+                        NEW.entity_data_table, vEntityPkColmnName);
 
                     EXECUTE format('COMMENT ON COLUMN musesuperchar.%1$I.%2$I IS ' ||
                         '$DOC$A reference to the owning table/record to which these super characteristic values belong.$DOC$',
-                        vEntityTableName, vEntityFkColmnName);
+                        NEW.entity_data_table, vEntityFkColmnName);
 
                     EXECUTE format('COMMENT ON COLUMN musesuperchar.%1$I.%2$I IS ' ||
                         '$DOC$The super characteristic data.$DOC$',
-                        vEntityTableName, vEntityDataColmnName);
+                        NEW.entity_data_table, vEntityDataColmnName);
 
                     PERFORM musextputils.add_common_table_columns(   
                          'musesuperchar'
-                        ,vEntityTableName
-                        ,vEntityTableName || '_date_created'
-                        ,vEntityTableName || '_role_created'
-                        ,vEntityTableName || '_date_deactivated'
-                        ,vEntityTableName || '_role_deactivated' 
-                        ,vEntityTableName || '_date_modified'
-                        ,vEntityTableName || '_wallclock_modified'
-                        ,vEntityTableName || '_role_modified'
-                        ,vEntityTableName || '_row_version_number'
-                        ,vEntityTableName || '_is_active');
+                        ,NEW.entity_data_table
+                        ,NEW.entity_data_table || '_date_created'
+                        ,NEW.entity_data_table || '_role_created'
+                        ,NEW.entity_data_table || '_date_deactivated'
+                        ,NEW.entity_data_table || '_role_deactivated' 
+                        ,NEW.entity_data_table || '_date_modified'
+                        ,NEW.entity_data_table || '_wallclock_modified'
+                        ,NEW.entity_data_table || '_role_modified'
+                        ,NEW.entity_data_table || '_row_version_number'
+                        ,NEW.entity_data_table || '_is_active');
 
                     -- Now we check if we set up auditing on our newly created table.
                     IF musextputils.get_musemetric(  'musesuperchar'
@@ -97,7 +95,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                         PERFORM musextputils.add_table_auditing(
                             'musesuperchar', 
-                            vEntityTableName, 
+                            NEW.entity_data_table, 
                             vEntityPkColmnName,
                             musextputils.get_musemetric('musesuperchar'
                                 ,'defaultEntityMuseUtilsAuditingEvents'
@@ -114,7 +112,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                             ,sc_group_description
                             ,sc_group_is_system_locked)
                         VALUES
-                            (vEntityTableName ||'_mssc_dflt_grp'
+                            (NEW.entity_data_table ||'_mssc_dflt_grp'
                             ,NEW.entity_display_name ||' General'
                             ,'A general purpose group for characteristics assigned to the ' ||
                                 NEW.entity_display_name ||' record type.'
@@ -134,26 +132,23 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                     RETURN NEW;
                 
                 ELSIF TG_OP = 'DELETE' THEN
-
-                    vEntityTableName := OLD.entity_schema || '_' || OLD.entity_table;
-
                     -- Check to see if we have audit triggers applied.  If so,
                     -- we'll delete all records prior to dropping the table.
                     IF EXISTS(SELECT true 
                               FROM musextputils.v_catalog_triggers
                               WHERE     table_schema_name = 'musesuperchar'
-                                    AND table_name = vEntityTableName
+                                    AND table_name = OLD.entity_data_table
                                     AND function_schema_name = 'musextputils'
                                     AND function_name = 'trig_a_iud_record_audit_logging') THEN 
 
                         EXECUTE format('DELETE FROM musesuperchar.%1$I',
-                            vEntityTableName);
+                            OLD.entity_data_table);
 
                     END IF;
 
                     -- The table drop.
                     EXECUTE format('DROP TABLE musesuperchar.%1$I',
-                            vEntityTableName);
+                            OLD.entity_data_table);
 
                     -- Finally delete the default group and related entity/group
                     -- assignments.
@@ -162,7 +157,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                     DELETE FROM musesuperchar.sc_group 
                         WHERE sc_group_internal_name = 
-                                vEntityTableName || '_mssc_dflt_grp';
+                                OLD.entity_data_table || '_mssc_dflt_grp';
 
                     -- Now we return.
                     RETURN OLD;

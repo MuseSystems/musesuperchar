@@ -60,12 +60,14 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
                             ,entity_table           
                             ,entity_pk_column       
                             ,entity_display_name
+                            ,entity_data_table
                             ,entity_is_system_locked)
                         VALUES (
                              pSchema
                             ,pTable
                             ,pPkColumnName
                             ,coalesce(pDisplayName, pSchema || '.' || pTable)
+                            ,musesuperchar.get_sc_table_name(pSchema,pTable)
                             ,pIsSystemLocked AND pPackageName IS NOT NULL)
                         RETURNING entity_id INTO vEntityId; 
                 END IF;

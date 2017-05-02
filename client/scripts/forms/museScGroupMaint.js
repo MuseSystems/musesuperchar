@@ -261,13 +261,32 @@ if(!this.MuseSuperChar.Entity) {
         // Open a box with the requisite fields.
         var museScCreateEntity = toolbox.openWindow("museScCreateEntity", 
             mywindow, Qt.WindowModal);
-        toolbox.lastWindow().set({});
+        toolbox.lastWindow().set({mode: "new"});
+        museScCreateEntity.exec();
         
         // We may have new entities, so lets populate them.
         entityListXTreeWidget.clear();
         entityListXTreeWidget.populate(
             MuseSuperChar.Entity.getEntitiesSqlQuery());
+        setButtons();
         
+    };
+
+    var editEntity = function() {
+        // Open a box with the requisite fields.
+        var museScCreateEntity = toolbox.openWindow("museScCreateEntity", 
+            mywindow, Qt.WindowModal);
+        toolbox.lastWindow().set({
+            mode: "edit",
+            entity_id: entityListXTreeWidget.id()
+        });
+        museScCreateEntity.exec();
+        
+        // We may have new entities, so lets populate them.
+        entityListXTreeWidget.clear();
+        entityListXTreeWidget.populate(
+            MuseSuperChar.Entity.getEntitiesSqlQuery());
+        setButtons();
     };
 
     var deleteEntity = function(pEntityId) {
@@ -275,6 +294,7 @@ if(!this.MuseSuperChar.Entity) {
         // Populate the entity list.
         entityListXTreeWidget.populate(
             MuseSuperChar.Entity.getEntitiesSqlQuery());
+        setButtons();
     };
     
     //--------------------------------------------------------------------
@@ -301,7 +321,7 @@ if(!this.MuseSuperChar.Entity) {
 
     pPublicApi.sEditEntity = function() {
         try {
-
+            return editEntity();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
