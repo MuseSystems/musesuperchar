@@ -79,6 +79,11 @@ if(!this.MuseUtils) {
                 'AND entity_pkghead_id = <? value("entity_pkghead_id") ?> ';
         }
 
+        if(pParams.hasOwnProperty("entity_display_name")) {
+            whereClause = whereClause + 
+                'AND entity_display_name = <? value("entity_display_name") ?> ';
+        }
+
         try {
             return MuseUtils.executeQuery(
                 "SELECT      e.entity_id " +
