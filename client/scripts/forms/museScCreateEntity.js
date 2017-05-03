@@ -142,7 +142,7 @@ if(!this.MuseSuperChar.SuperChar) {
             pEntityId: pEntityId
         };
         
-        var entityData = MuseSuperChar.Entity.getEntityByEntityId(pEntityId);
+        var entityData = MuseSuperChar.Entity.getEntityById(pEntityId);
 
         schemaXComboBox.clear();
         schemaXComboBox.append(1,entityData.entity_schema);

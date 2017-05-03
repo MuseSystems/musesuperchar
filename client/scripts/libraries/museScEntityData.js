@@ -141,7 +141,7 @@ if(!this.MuseUtils) {
         }
     };
 
-    var getEntityByEntityId = function(pEntityId) {
+    var getEntityById = function(pEntityId) {
         // Capture function parameters for later exception references.
         var funcParams = {
             pEntityId: pEntityId
@@ -159,7 +159,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
                 "We could not find the requested super characteristic entity record.",
-                "MuseSuperChar.Entity.getEntityByEntityId",
+                "MuseSuperChar.Entity.getEntityById",
                 {params: funcParams, thrownError: e});
         }
     };
@@ -559,7 +559,7 @@ if(!this.MuseUtils) {
         }
     };
 
-    pPublicApi.getEntityByEntityId = function(pEntityId) {
+    pPublicApi.getEntityById = function(pEntityId) {
         // Capture function parameters for later exception references.
         var funcParams = {
             pEntityId: pEntityId
@@ -570,17 +570,17 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We could not understand for which entity we were asked to retrieve data.",
-                "MuseSuperChar.Entity.pPublicApi.getEntityByEntityId",
+                "MuseSuperChar.Entity.pPublicApi.getEntityById",
                 {params: funcParams});      
         }
             
         try {
-            return getEntityByEntityId(pEntityId);
+            return getEntityById(pEntityId);
         } catch(e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We could not retrieve the requested super characteristic entity record.",
-                "MuseSuperChar.Entity.pPublicApi.getEntityByEntityId",
+                "MuseSuperChar.Entity.pPublicApi.getEntityById",
                 {thrownError: e, params: funcParams});
         }
     };
