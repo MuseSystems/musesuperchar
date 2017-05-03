@@ -514,6 +514,32 @@ if(!this.MuseUtils) {
         }
     };
 
+    var getEntityGroups = function(pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pEntityId: pEntityId
+        };
+        
+        try {
+            return MuseUtils.executeQuery(
+                "SELECT       sc_group_id " +
+                            ",sc_group_display_name " +
+                            ",sc_group_internal_name " +
+                "FROM   musesuperchar.sc_group " +
+                    "JOIN musesuperchar.entity_sc_group_ass " +
+                        "ON sc_group_id = entity_sc_group_ass_sc_group_id " +
+                "WHERE  sc_group_is_active AND entity_sc_group_ass_is_active " +
+                    'AND entity_sc_group_ass_entity_id = <? value("pEntityId") ?>',
+                {pEntityId: pEntityId});
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered problems trying to retrieve the group list associated with the requested entity.",
+                "MuseSuperChar.Entity.getEntityGroups",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -865,4 +891,28 @@ if(!this.MuseUtils) {
         }
     };
 
+    pPublicApi.getEntityGroups = function(pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pEntityId: pEntityId
+        };
+        
+        if(!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which entity you wished to retrieve groups.",
+                "MuseSuperChar.Entity.pPublicApi.getEntityGroups",
+                {params: funcParams});
+        }
+
+        try {
+            return getEntityGroups(pEntityId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to retrieve the group list associated with the requested entity.",
+                "MuseSuperChar.Entity.pPublicApi.getEntityGroups",
+                {params: funcParams, thrownError: e});
+        }
+    };
 })(this.MuseSuperChar.Entity);
