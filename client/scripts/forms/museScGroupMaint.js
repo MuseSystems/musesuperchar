@@ -34,6 +34,10 @@ if(!this.MuseSuperChar.Entity) {
     include("museScEntityData");
 }
 
+if(!this.MuseSuperChar.Group) {
+    include("museScGroupData");
+}
+
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
@@ -88,6 +92,14 @@ if(!this.MuseSuperChar.Entity) {
     entityListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "entity_is_system_locked");
     entityListXTreeWidget.addColumn("Packages", 150, Qt.AlignLeft, false, "entity_package_names");
 
+    // Add columns to groupListXTreeWidget
+    groupListXTreeWidget.addColumn("Group Id", 60, Qt.AlignRight, false, "sc_group_id");
+    groupListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "sc_group_display_name");
+    groupListXTreeWidget.addColumn("Internal Name", 150, Qt.AlignCenter, false, "sc_group_internal_name");
+    groupListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "sc_group_is_system_locked");
+    groupListXTreeWidget.addColumn("Description", -1, Qt.AlignLeft, true, "sc_group_description");
+    groupListXTreeWidget.addColumn("Package", 150, Qt.AlignLeft, false, "sc_group_package_name");
+    
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
@@ -105,14 +117,8 @@ if(!this.MuseSuperChar.Entity) {
         entityListXTreeWidget.populate(
             MuseSuperChar.Entity.getEntities());
 
-        //groupListXTreeWidget.populate(
-        //    MuseSuperChar.Group.getGroupsSqlQuery());
-
-        if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
-            groupLayoutXTreeWidget.populate(
-                MuseSuperChar.Group.getGroupLayoutsSqlQuery(
-                    groupListXTreeWidget.currentItem().id()));
-        }
+        groupListXTreeWidget.populate(
+            MuseSuperChar.Group.getGroups());
 
         setButtons();
         
@@ -297,6 +303,16 @@ if(!this.MuseSuperChar.Entity) {
         setButtons();
     };
     
+    var groupSelected = function() {
+        //if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+        //    groupLayoutXTreeWidget.populate(
+        //        MuseSuperChar.Group.getGroupLayoutsSqlQuery(
+        //            groupListXTreeWidget.currentItem().id()));
+        //}
+
+        setButtons();
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
@@ -433,6 +449,15 @@ if(!this.MuseSuperChar.Entity) {
         }
     };
 
+    pPublicApi.sGroupSelected = function(pXtreeWidgetItem, pColumnIndex) {
+        try {
+            groupSelected();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
     try {
         //--------------------------------------------------------------------
         //  Initialization Logic Setup 
@@ -458,6 +483,8 @@ if(!this.MuseSuperChar.Entity) {
         groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
         groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
         groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
+        groupListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
+            pPublicApi.sGroupSelected);
         
         // Group Layout Buttons
         groupLayoutAddPushButton.clicked.connect(
