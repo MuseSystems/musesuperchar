@@ -704,4 +704,3 @@ if(!this.MuseUtils) {
     };
 
 })(this.MuseSuperChar.Group);
-
