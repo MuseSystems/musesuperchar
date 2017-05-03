@@ -79,6 +79,11 @@ if(!this.MuseUtils) {
                 'AND pkghead_id = <? value("pkghead_id") ?> ';
         }
 
+        if(pParams.hasOwnProperty("entity_pkghead_name")) {
+            whereClause = whereClause + 
+                'AND pkghead_name = <? value("pkghead_name") ?> ';
+        }
+
         if(pParams.hasOwnProperty("entity_display_name")) {
             whereClause = whereClause + 
                 'AND entity_display_name = <? value("entity_display_name") ?> ';
