@@ -419,7 +419,7 @@ if(!this.MuseUtils) {
         };
         
         try {
-            return getGroups(pParams);
+            return getGroups(pParams || {});
         } catch(e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
