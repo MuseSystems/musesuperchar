@@ -136,6 +136,12 @@ if(!this.MuseUtils) {
                             ",sc_group_role_deactivated " +
                             ",sc_group_row_version_number " +
                             ",pkghead_name AS sc_group_package_name " +
+                            ",CASE " +
+                                "WHEN sc_group_is_system_locked THEN " +
+                                    "'bisque' " +
+                                "ELSE " +
+                                    "'palegreen' " +
+                            " END AS sc_group_display_name_qtbackgroundrole " +
                 "FROM   musesuperchar.sc_group " + 
                     "LEFT OUTER JOIN public.pkghead " + 
                         "ON sc_group_pkghead_id = pkghead_id " + whereClause,
@@ -182,6 +188,13 @@ if(!this.MuseUtils) {
             return MuseUtils.executeQuery(
                 "SELECT       entity_id " +
                             ",entity_display_name " +
+                            ",entity_schema || '.' || entity_table AS entity_code" +
+                            ",CASE " +
+                                "WHEN entity_is_system_locked THEN " +
+                                    "'bisque' " +
+                                "ELSE " +
+                                    "'palegreen' " +
+                           " END AS entity_display_name_qtbackgroundrole " +
                 "FROM   musesuperchar.entity " +
                     "JOIN musesuperchar.entity_sc_group_ass " +
                         "ON entity_id = entity_sc_group_ass_entity_id " + 
@@ -207,6 +220,13 @@ if(!this.MuseUtils) {
             return MuseUtils.executeQuery(
                 "SELECT       entity_id " +
                             ",entity_display_name " +
+                            ",entity_schema || '.' || entity_table AS entity_code" +
+                            ",CASE " +
+                                "WHEN entity_is_system_locked THEN " +
+                                    "'bisque' " +
+                                "ELSE " +
+                                    "'palegreen' " +
+                           " END AS entity_display_name_qtbackgroundrole " +
                 "FROM   musesuperchar.entity " +
                     "LEFT OUTER JOIN musesuperchar.entity_sc_group_ass " +
                         "ON entity_id = entity_sc_group_ass_entity_id " + 

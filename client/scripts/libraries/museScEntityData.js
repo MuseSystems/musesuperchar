@@ -110,6 +110,12 @@ if(!this.MuseUtils) {
                                 "AS entity_package_names " +
                            ",array_agg(pkghead_id) " +
                                 "AS entity_package_ids " +
+                           ",CASE " +
+                                "WHEN e.entity_is_system_locked THEN " +
+                                    "'bisque' " +
+                                "ELSE " +
+                                    "'palegreen' " +
+                           " END AS entity_display_name_qtbackgroundrole " +
                 "FROM        musesuperchar.entity e " +
                     "LEFT OUTER JOIN musesuperchar.entity_package ep " +
                         "ON e.entity_id = ep.entity_package_entity_id " +
