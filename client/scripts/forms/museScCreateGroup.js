@@ -222,7 +222,7 @@ if(!this.MuseSuperChar.Group) {
             };
             setEditMode(MuseSuperChar.Group.createGroup(groupData));            
         } else if(mode == "edit") {
-            groupData.sc_group_id = currGroupId;
+            groupData = {sc_group_id: currGroupId};
 
             if(displayNameXLineEdit.text != lastGroupDisplayName) {
                 groupData.sc_group_display_name = displayNameXLineEdit.text;
