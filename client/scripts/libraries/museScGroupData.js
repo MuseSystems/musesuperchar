@@ -145,7 +145,7 @@ if(!this.MuseUtils) {
                 "FROM   musesuperchar.sc_group " + 
                     "LEFT OUTER JOIN public.pkghead " + 
                         "ON sc_group_pkghead_id = pkghead_id " + whereClause,
-                {pParams: pParams});
+                pParams);
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
@@ -168,7 +168,15 @@ if(!this.MuseUtils) {
                     isInactiveIncluded: true
                 });
 
-            return groupQuery.firstJson();
+            if(groupQuery.first()) {
+                return groupQuery.firstJson();
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not find the requested group in the database.",
+                    "MuseSuperChar.Group.getGroupById",
+                    {params: funcParams});
+            }
         } catch(e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
