@@ -30,11 +30,7 @@ if(!this.MuseUtils) {
     include("museUtils");
 }
 
-if(!this.MuseUtils.SuperChar.Entity) {
-    include("museScEntityData");
-}
-
-if(!this.MuseUtils.SuperChar.Group) {
+if(!this.MuseSuperChar.Group) {
     include("museScGroupData");
 }
 
