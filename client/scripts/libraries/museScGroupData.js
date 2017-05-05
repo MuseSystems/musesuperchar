@@ -190,7 +190,7 @@ if(!this.MuseUtils) {
                             ",entity_display_name " +
                             ",entity_schema || '.' || entity_table AS entity_code" +
                             ",CASE " +
-                                "WHEN entity_is_system_locked THEN " +
+                                "WHEN entity_sc_group_ass_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
@@ -222,7 +222,7 @@ if(!this.MuseUtils) {
                             ",entity_display_name " +
                             ",entity_schema || '.' || entity_table AS entity_code" +
                             ",CASE " +
-                                "WHEN entity_is_system_locked THEN " +
+                                "WHEN entity_sc_group_ass_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
