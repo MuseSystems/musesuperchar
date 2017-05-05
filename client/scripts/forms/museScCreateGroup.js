@@ -104,9 +104,9 @@ if(!this.MuseSuperChar.Group) {
         lastGroupInternalName = internalNameXLineEdit.text;
 
         descXTextArea.setPlainText(groupData.sc_group_description);
-        lastGroupDescription = descXTextArea.toPlainText();
+        lastGroupDescription = descXTextArea.document.toPlainText();
 
-        availEntityXLabel.populate(MuseSuperChar.Group.getNonGroupEntities(
+        availEntityXTreeWidget.populate(MuseSuperChar.Group.getNonGroupEntities(
             pGroupId));
         assignEntityXTreeWidget.populate(MuseSuperChar.Group.getGroupEntities(
             pGroupId));
@@ -125,10 +125,10 @@ if(!this.MuseSuperChar.Group) {
         // Set group save button
         if((displayNameXLineEdit.text != lastGroupDisplayName ||
             internalNameXLineEdit.text != lastGroupInternalName ||
-            descXTextArea.toPlainText() != lastGroupDescription) &&
+            descXTextArea.document.toPlainText() != lastGroupDescription) &&
            MuseUtils.coalesce(displayNameXLineEdit.text,"") !== "" &&
            MuseUtils.coalesce(internalNameXLineEdit.text,"") !== "" &&
-           MuseUtils.coalesce(descXTextArea.toPlainText(),"") !== "") {
+           MuseUtils.coalesce(descXTextArea.document.toPlainText(),"") !== "") {
             
             closePushButton.enabled = true;
             closePushButton.text = "Cancel";
@@ -160,6 +160,7 @@ if(!this.MuseSuperChar.Group) {
         displayNameXLineEdit.enabled = true;
         internalNameXLineEdit.enabled = true;
         descXTextArea.enabled = true;
+        descXTextArea.setPlainText("");
 
         // Entity Assign Area
         groupEntityGroupBox.enabled = false;
@@ -176,7 +177,7 @@ if(!this.MuseSuperChar.Group) {
         // Group Edit Area
         displayNameXLineEdit.enabled = true;
         internalNameXLineEdit.enabled = 
-            privilege.check("maintainSuperCharInternalNames");
+            privileges.check("maintainSuperCharInternalNames");
         descXTextArea.enabled = true;
 
         // Entity Assign Area
@@ -201,15 +202,77 @@ if(!this.MuseSuperChar.Group) {
         setButtons();
     };
 
+    var updateInternalName = function() {
+        if(mode == "new" && internalNameXLineEdit.enabled &&
+            MuseUtils.coalesce(displayNameXLineEdit.text,"") !== "") {
+            internalNameXLineEdit.text =
+                MuseSuperChar.Group.getDefaultGroupInternalName(
+                    displayNameXLineEdit.text);
+        }
+    };
+
+    var save = function() {
+        var groupData;
+
+        if(mode == "new") {
+            groupData = {
+                sc_group_display_name: displayNameXLineEdit.text,
+                sc_group_internal_name: internalNameXLineEdit.text,
+                sc_group_description: descXTextArea.document.toPlainText()
+            };
+            setEditMode(MuseSuperChar.Group.createGroup(groupData));            
+        } else if(mode == "edit") {
+            groupData.sc_group_id = currGroupId;
+
+            if(displayNameXLineEdit.text != lastGroupDisplayName) {
+                groupData.sc_group_display_name = displayNameXLineEdit.text;
+            }
+
+            if(internalNameXLineEdit.text != lastGroupInternalName &&
+                privileges.check("maintainSuperCharInternalNames")) {
+                groupData.sc_group_internal_name = internalNameXLineEdit.text;
+            }
+
+            if(descXTextArea.document.toPlainText() != lastGroupDescription) {
+                groupData.sc_group_description = 
+                    descXTextArea.document.toPlainText();
+            }
+
+            setEditMode(MuseSuperChar.Group.updateGroup(groupData));
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
     pPublicApi.sFieldsUpdated = function() {
         try {
+            updateInternalName();
             setButtons();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
+        }
+    };
+
+    //--------------------------------------------------------------------
+    //  Public Interface -- Slots
+    //--------------------------------------------------------------------
+    pPublicApi.sClose = function() {
+        try {
+            mydialog.accept();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mydialog.reject();
+        }
+    };
+
+    pPublicApi.sSave = function() {
+        try {
+            save();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mydialog.reject();
         }
     };
 
@@ -227,7 +290,7 @@ if(!this.MuseSuperChar.Group) {
         };
 
         if(pParams.mode == "new") {
-            if(privilege.check("maintainSuperCharGroups")) {
+            if(privileges.check("maintainSuperCharGroups")) {
                 setNewMode();
             } else {
                 QMessageBox.critical(mywindow,
@@ -237,7 +300,7 @@ if(!this.MuseSuperChar.Group) {
                 mywindow.close();
             }
         } else if(pParams.mode == "edit" && 
-                    privilege.check("maintainSuperCharGroups")) {
+                    privileges.check("maintainSuperCharGroups")) {
             if(!MuseUtils.isValidId(pParams.sc_group_id)) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
@@ -248,7 +311,7 @@ if(!this.MuseSuperChar.Group) {
 
             setEditMode(pParams.sc_group_id);
         } else if(pParams.mode == "view" && 
-                    privilege.check("maintainSuperCharGroups")) {
+                    privileges.check("maintainSuperCharGroups")) {
             if(!MuseUtils.isValidId(pParams.sc_group_id)) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
@@ -264,8 +327,8 @@ if(!this.MuseSuperChar.Group) {
         //  Connects/Disconnects
         //----------------------------------------------------------------
         //assignPushButton.clicked.connect();
-        //closePushButton.clicked.connect();
-        //savePushButton.clicked.connect();
+        closePushButton.clicked.connect(pPublicApi.sClose);
+        savePushButton.clicked.connect(pPublicApi.sSave);
         //unsassignPushButton.clicked.connect();
 
         descXTextArea["textChanged()"].connect(pPublicApi.sFieldsUpdated);
@@ -279,11 +342,6 @@ if(!this.MuseSuperChar.Group) {
             pPublicApi.sFieldsUpdated);
     };
     
-    //--------------------------------------------------------------------
-    //  Public Interface -- Slots
-    //--------------------------------------------------------------------
-    
-
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
     //--------------------------------------------------------------------
