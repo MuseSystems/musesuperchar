@@ -355,8 +355,8 @@ if(!this.MuseUtils) {
         }
 
         try {
-            queryText = queryText + updateColumns.join(',') + 
-                'WHERE sc_group_id = <? value("sc_group_id") >? ' +
+            queryText = queryText + updateColumns.join(', ') + 
+                'WHERE sc_group_id = <? value("sc_group_id") ?> ' +
                 'RETURNING sc_group_id';
 
             var groupQuery = MuseUtils.executeQuery(queryText, pGroupData);
