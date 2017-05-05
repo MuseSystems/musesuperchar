@@ -313,6 +313,20 @@ if(!this.MuseSuperChar.Group) {
         setButtons();
     };
 
+    var addGroup = function() {
+        // Open a box with the requisite fields.
+        var museScCreateGroup = toolbox.openWindow("museScCreateGroup", 
+            mywindow, Qt.WindowModal);
+        toolbox.lastWindow().set({mode: "new"});
+        museScCreateGroup.exec();
+        
+        // We may have new entities, so lets populate them.
+        groupListXTreeWidget.clear();
+        groupListXTreeWidget.populate(
+            MuseSuperChar.Group.getGroups());
+        setButtons();
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
@@ -370,7 +384,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sAddGroup = function() {
         try {
-
+            addGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
