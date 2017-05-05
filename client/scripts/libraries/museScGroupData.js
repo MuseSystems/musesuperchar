@@ -280,7 +280,7 @@ if(!this.MuseUtils) {
                         "VALUES " +
                     '( <? value("sc_group_internal_name") ?> ' +
                     ',<? value("sc_group_display_name") ?> ' +
-                    ',<? value("sc_group_description") ?>)' +
+                    ',<? value("sc_group_description") ?>) ' +
                     "RETURNING sc_group_id",
                 pGroupData);
 
