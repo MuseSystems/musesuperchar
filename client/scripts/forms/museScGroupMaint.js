@@ -324,7 +324,44 @@ if(!this.MuseSuperChar.Group) {
         groupListXTreeWidget.clear();
         groupListXTreeWidget.populate(
             MuseSuperChar.Group.getGroups());
+        groupLayoutXTreeWidget.clear();
         setButtons();
+    };
+
+    var editGroup = function() {
+        // Only try to do anything if we have a discernible ID.
+        if(MuseUtils.isValidId(groupListXTreeWidget.id())) {
+            // Open a box with the requisite fields.
+            var museScCreateGroup = toolbox.openWindow("museScCreateGroup", 
+                mywindow, Qt.WindowModal);
+            toolbox.lastWindow().set(
+                {
+                    mode: "edit", 
+                    sc_group_id: groupListXTreeWidget.id()
+                });
+            museScCreateGroup.exec();
+            
+            // We may have updated entities, so lets populate them.
+            groupListXTreeWidget.clear();
+            groupListXTreeWidget.populate(
+                MuseSuperChar.Group.getGroups());
+            groupLayoutXTreeWidget.clear();
+            setButtons();
+        }
+    };
+
+    var deleteGroup = function() {
+        // Only try to delete if we have a discernible group id.
+        if(MuseUtils.isValidId(groupListXTreeWidget.id())) {
+            MuseSuperChar.Group.deleteGroup(groupListXTreeWidget.id());
+
+            // We should now have a different group list.
+            groupListXTreeWidget.clear();
+            groupListXTreeWidget.populate(
+                MuseSuperChar.Group.getGroups());
+            groupLayoutXTreeWidget.clear();
+            setButtons();
+        }
     };
 
     //--------------------------------------------------------------------
@@ -393,7 +430,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sEditGroup = function() {
         try {
-
+            editGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
@@ -402,7 +439,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sDeleteGroup = function() {
         try {
-
+            deleteGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
