@@ -373,7 +373,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -382,7 +381,6 @@ if(!this.MuseSuperChar.Group) {
             return addEntity();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -391,7 +389,6 @@ if(!this.MuseSuperChar.Group) {
             return editEntity();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -406,7 +403,6 @@ if(!this.MuseSuperChar.Group) {
             }
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -415,7 +411,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -424,7 +419,6 @@ if(!this.MuseSuperChar.Group) {
             addGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -433,7 +427,6 @@ if(!this.MuseSuperChar.Group) {
             editGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -442,7 +435,6 @@ if(!this.MuseSuperChar.Group) {
             deleteGroup();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -451,7 +443,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -460,7 +451,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -469,7 +459,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -478,7 +467,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -487,7 +475,6 @@ if(!this.MuseSuperChar.Group) {
 
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -496,7 +483,6 @@ if(!this.MuseSuperChar.Group) {
             setButtons();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
@@ -505,7 +491,6 @@ if(!this.MuseSuperChar.Group) {
             groupSelected();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
-            mywindow.close();
         }
     };
 
