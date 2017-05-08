@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="0.0.2"
+         version="0.0.3"
          updater="2.2.5">
 
     <pkgnotes>
@@ -107,6 +107,7 @@
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
+    
     
     <finalscript file="database/misc/data_types_seed_data.sql" />
     <finalscript file="database/misc/validator_types_seed_data.sql" />

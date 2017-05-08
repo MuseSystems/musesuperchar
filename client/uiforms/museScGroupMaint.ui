@@ -85,26 +85,6 @@
            </widget>
           </item>
           <item>
-           <spacer name="groupsButtonsCenterSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="groupAssignPushButton">
-            <property name="text">
-             <string>Assign to Entities</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <spacer name="groupsButtonsRightSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
