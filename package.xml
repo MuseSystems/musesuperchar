@@ -80,7 +80,9 @@
     <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
     <createfunction file="database/triggers/trig_a_d_entity_package_manage_entity_syslock.sql" name="trig_a_d_entity_package_manage_entity_syslock" />
     <createfunction file="database/functions/create_entity.sql" name="create_entity" />
-
+    <createfunction file="database/functions/add_group_entity_association.sql" name="add_group_entity_association" />
+    <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
+    
     <createtable file="database/tables/data_type.sql" name="data_type" />
     <createtable file="database/tables/validator_type.sql" name="validator_type" />
     <createtable file="database/tables/entity.sql" name="entity" />

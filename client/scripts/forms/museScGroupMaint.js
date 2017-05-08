@@ -56,7 +56,6 @@ if(!this.MuseSuperChar.Group) {
     var entityEditPushButton = mywindow.findChild("entityEditPushButton");
     var entityListXTreeWidget = mywindow.findChild("entityListXTreeWidget");
     var groupAddPushButton = mywindow.findChild("groupAddPushButton");
-    var groupAssignPushButton = mywindow.findChild("groupAssignPushButton");
     var groupDeletePushButton = mywindow.findChild("groupDeletePushButton");
     var groupEditPushButton = mywindow.findChild("groupEditPushButton");
     var groupLayoutAddPushButton = mywindow.findChild("groupLayoutAddPushButton");
@@ -106,6 +105,9 @@ if(!this.MuseSuperChar.Group) {
     var clear = function() {
         entityListXTreeWidget.clear();
         groupLayoutXTreeWidget.clear();
+        groupLayoutGroupBox.enabled = false;
+        groupLayoutGroupBox.title =
+            "Super Characteristic Layout / No Group Selected";
         groupListXTreeWidget.clear();
     };
 
@@ -179,7 +181,6 @@ if(!this.MuseSuperChar.Group) {
                     )
                 );
 
-            groupAssignPushButton.enabled = true && isGroupEditingPrivileged;
             groupEditPushButton.enabled = true && isGroupEditingPrivileged;
             groupDeletePushButton.enabled = true && isGroupEditingPrivileged;
 
@@ -188,7 +189,6 @@ if(!this.MuseSuperChar.Group) {
                 privileges.check("maintainSuperCharGroups");
             groupEditPushButton.enabled = false;
             groupDeletePushButton.enabled = false;
-            groupAssignPushButton.enabled = false;
         }
 
 
@@ -304,11 +304,18 @@ if(!this.MuseSuperChar.Group) {
     };
     
     var groupSelected = function() {
-        //if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+        if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
+            var currentItem = groupListXTreeWidget.currentItem();
+
+            groupLayoutGroupBox.enabled = true;
         //    groupLayoutXTreeWidget.populate(
         //        MuseSuperChar.Group.getGroupLayoutsSqlQuery(
-        //            groupListXTreeWidget.currentItem().id()));
-        //}
+        //            currentItem.id()));
+        
+            groupLayoutGroupBox.title = 
+                currentItem.rawValue("sc_group_display_name") + 
+                " Super Characteristic Layout";
+        }
 
         setButtons();
     };
@@ -325,6 +332,9 @@ if(!this.MuseSuperChar.Group) {
         groupListXTreeWidget.populate(
             MuseSuperChar.Group.getGroups());
         groupLayoutXTreeWidget.clear();
+        groupLayoutGroupBox.enabled = false;
+        groupLayoutGroupBox.title =
+                "Super Characteristic Layout / No Group Selected";
         setButtons();
     };
 
@@ -346,6 +356,9 @@ if(!this.MuseSuperChar.Group) {
             groupListXTreeWidget.populate(
                 MuseSuperChar.Group.getGroups());
             groupLayoutXTreeWidget.clear();
+            groupLayoutGroupBox.enabled = false;
+            groupLayoutGroupBox.title =
+                "Super Characteristic Layout / No Group Selected";
             setButtons();
         }
     };
@@ -360,6 +373,9 @@ if(!this.MuseSuperChar.Group) {
             groupListXTreeWidget.populate(
                 MuseSuperChar.Group.getGroups());
             groupLayoutXTreeWidget.clear();
+            groupLayoutGroupBox.enabled = false;
+            groupLayoutGroupBox.title =
+                "Super Characteristic Layout / No Group Selected";
             setButtons();
         }
     };
@@ -401,14 +417,6 @@ if(!this.MuseSuperChar.Group) {
                     "We did not understand which entity you wanted to delete.\n" + 
                     "Please select the entity in the list and try again.");
             }
-        } catch(e) {
-            MuseUtils.displayError(e, mywindow);
-        }
-    };
-
-    pPublicApi.sGroupAssignToEntity = function() {
-        try {
-
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -515,7 +523,6 @@ if(!this.MuseSuperChar.Group) {
             pPublicApi.sEntitySelected);
         
         // Group Buttons
-        groupAssignPushButton.clicked.connect(pPublicApi.sGroupAssignToEntity);
         groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
         groupEditPushButton.clicked.connect(pPublicApi.sEditGroup);
         groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);

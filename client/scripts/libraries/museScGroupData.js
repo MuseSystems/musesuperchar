@@ -412,6 +412,106 @@ if(!this.MuseUtils) {
         }
     };
 
+    var addGroupEntityAssc = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        try {
+            var groupQuery = MuseUtils.executeQuery(
+                "SELECT musesuperchar.add_group_entity_association( " +
+                    '<? value("pGroupId") ?>, <? value("pEntityId") ?> ) ' +
+                    "AS result",
+                    {pGroupId: pGroupId, pEntityId: pEntityId});
+
+            if(!groupQuery.first() || 
+                !MuseUtils.isValidId(groupQuery.value("result"))) {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not verify that we have successfully created the new group/entity association.",
+                    "MuseSuperChar.Group.addGroupEntityAssc",
+                    {params: funcParams});
+            }
+
+            return groupQuery.value("result");
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem while adding a group/entity association.",
+                "MuseSuperChar.Group.addGroupEntityAssc",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var deleteGroupEntityAssc = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+        
+        try {
+            var groupQuery = MuseUtils.executeQuery(
+                "SELECT musesuperchar.delete_group_entity_association( " +
+                    '<? value("pGroupId") ?>, <? value("pEntityId") ?> ) ' +
+                    "AS result",
+                    {pGroupId: pGroupId, pEntityId: pEntityId});
+            
+            if(!groupQuery.first() ||
+                    !MuseUtils.isValidId(groupQuery.value("result"))) {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to verify that we deleted the group/entity association as requested.",
+                    "MuseSuperChar.Group.deleteGroupEntityAssc",
+                    {params: funcParams});
+            }
+
+            return groupQuery.value("result");
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem while deleting a group/entity association.",
+                "MuseSuperChar.Group.deleteGroupEntityAssc",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var isGroupEntityAsscSystemLocked = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        try {
+            var groupQuery = MuseUtils.executeQuery(
+                "SELECT entity_sc_group_ass_is_system_locked " +
+                "FROM musesuperchar.entity_sc_group_ass " +
+                'WHERE entity_sc_group_ass_sc_group_id = <? value("pGroupId") ?> ' +
+                    'AND entity_sc_group_ass_entity_id = <? value("pEntityId") ?> ',
+                    {pGroupId: pGroupId, pEntityId: pEntityId});
+            if(groupQuery.first()) {
+                return MuseUtils.isTrue(
+                    groupQuery.value("entity_sc_group_ass_is_system_locked"));
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not find the requested Group/Entity Association.",
+                    "MuseSuperChar.Group.isGroupEntityAsscSystemLocked",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to find out if a Group/Entity Association is system locked.",
+                "MuseSuperChar.Group.isGroupEntityAsscSystemLocked",
+                {params: funcParams, thrownError: e});
+        }
+        
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -528,6 +628,108 @@ if(!this.MuseUtils) {
                 "musesuperchar",
                 "We failed to retrieve the non-associated entities list for the requested group.",
                 "MuseSuperChar.Group.pPublicApi.getNonGroupEntities",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    pPublicApi.addGroupEntityAssc = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which group you wanted to associate with the requested entity.",
+                "MuseSuperChar.Group.pPublicApi.addGroupEntityAssc",
+                {params: funcParams});
+        }
+
+        if(!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which entity you wanted to associate with the requested group.",
+                "MuseSuperChar.Group.pPublicApi.addGroupEntityAssc",
+                {params: funcParams});
+        }
+
+        try {
+            return addGroupEntityAssc(pGroupId, pEntityId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to associate the group/entity combination.",
+                "MuseSuperChar.Group.pPublicApi.addGroupEntityAssc",
+                {params: funcParams, thrownError: e});  
+        }
+    };
+
+    pPublicApi.deleteGroupEntityAssc = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which group you wanted to disassociate with the requested entity.",
+                "MuseSuperChar.Group.pPublicApi.deleteGroupEntityAssc",
+                {params: funcParams});
+        }
+
+        if(!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which entity you wanted to disassociate with the requested group.",
+                "MuseSuperChar.Group.pPublicApi.deleteGroupEntityAssc",
+                {params: funcParams});
+        }
+
+        try {
+            return deleteGroupEntityAssc(pGroupId, pEntityId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to associate the group/entity combination.",
+                "MuseSuperChar.Group.pPublicApi.deleteGroupEntityAssc",
+                {params: funcParams, thrownError: e});  
+        }
+    };
+
+    pPublicApi.isGroupEntityAsscSystemLocked = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which group you wanted to check a group/entity association for being system locked.",
+                "MuseSuperChar.Group.pPublicApi.isGroupEntityAsscSystemLocked",
+                {params: funcParams});
+        }
+        
+        if(!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which entity you wanted to check a group/entity association for being system locked.",
+                "MuseSuperChar.Group.pPublicApi.isGroupEntityAsscSystemLocked",
+                {params: funcParams});
+        }
+
+        try {
+            isGroupEntityAsscSystemLocked(pGroupId, pEntityId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to retrieve whether or not a Group/Entity Association was system locked.",
+                "MuseSuperChar.Group.pPublicApi.isGroupEntityAsscSystemLocked",
                 {params: funcParams, thrownError: e});
         }
     };

@@ -242,6 +242,54 @@ if(!this.MuseSuperChar.Group) {
         }
     };
 
+    var assignSelectedEntities = function() {
+        var selectedItems = availEntityXTreeWidget.selectedItems();
+
+        if(selectedItems.length < 1 || currGroupId < 1) {
+            setButtons();
+            return;
+        }
+
+        for(var i = 0; i < selectedItems.length; i++) {
+            if(MuseUtils.isValidId(selectedItems[i].id())) {
+                MuseSuperChar.Group.addGroupEntityAssc(currGroupId, 
+                    selectedItems[i].id());
+            }
+        }
+
+        availEntityXTreeWidget.populate(MuseSuperChar.Group.getNonGroupEntities(
+            currGroupId));
+        assignEntityXTreeWidget.populate(MuseSuperChar.Group.getGroupEntities(
+            currGroupId));
+
+        setButtons();
+    };
+
+    var unassignSelectedEntities = function() {
+        var selectedItems = assignEntityXTreeWidget.selectedItems();
+
+        if(selectedItems.length < 1 || currGroupId < 1) {
+            setButtons();
+            return;
+        }
+
+        for(var i = 0; i < selectedItems.length; i++) {
+            if(MuseUtils.isValidId(selectedItems[i].id()) &&
+                (!MuseSuperChar.Group.isGroupEntityAsscSystemLocked(
+                    currGroupId, selectedItems[i].id()) ||
+                 privileges.check("maintainSuperCharSysLockRecsManually"))) {
+                MuseSuperChar.Group.deleteGroupEntityAssc(currGroupId, 
+                    selectedItems[i].id());
+            }
+        }
+
+        availEntityXTreeWidget.populate(MuseSuperChar.Group.getNonGroupEntities(
+            currGroupId));
+        assignEntityXTreeWidget.populate(MuseSuperChar.Group.getGroupEntities(
+            currGroupId));
+
+        setButtons();
+    };
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -270,6 +318,24 @@ if(!this.MuseSuperChar.Group) {
     pPublicApi.sSave = function() {
         try {
             save();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mydialog.reject();
+        }
+    };
+
+    pPublicApi.sAssignEntities = function() {
+        try {
+            assignSelectedEntities();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+            mydialog.reject();
+        }
+    };
+
+    pPublicApi.sUnassignEntities = function() {
+        try {
+            unassignSelectedEntities();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
             mydialog.reject();
@@ -326,10 +392,10 @@ if(!this.MuseSuperChar.Group) {
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
-        //assignPushButton.clicked.connect();
+        assignPushButton.clicked.connect(pPublicApi.sAssignEntities);
         closePushButton.clicked.connect(pPublicApi.sClose);
         savePushButton.clicked.connect(pPublicApi.sSave);
-        //unsassignPushButton.clicked.connect();
+        unsassignPushButton.clicked.connect(pPublicApi.sUnassignEntities);
 
         descXTextArea["textChanged()"].connect(pPublicApi.sFieldsUpdated);
         displayNameXLineEdit["editingFinished()"].connect(
