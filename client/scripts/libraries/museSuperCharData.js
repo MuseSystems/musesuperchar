@@ -98,6 +98,75 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }
     };
+
+    pPublicApi.getSuperChars = function(pParams) {
+
+    };
+
+    pPublicApi.getSuperCharById = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.isSuperCharSystemLocked = function(pPublicApi) {
+
+    };
+
+    pPublicApi.getSuperCharsByGroupId = function(pGroupId) {
+
+    };
+
+    pPublicApi.getSuperCharsByEntityId = function(pEntityId) {
+
+    };
+    
+    pPublicApi.createSuperChar = function(pSuperCharData) {
+
+    };
+
+    pPublicApi.updateSuperChar = function(pSuperCharData) {
+
+    };
+
+    pPublicApi.deleteSuperChar = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.getSuperCharGroups = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.getSuperCharValidators = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.getSuperCharLov = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.saveSuperCharLov = function(pSuperCharId, pLovValues) {
+
+    };
+
+    pPublicApi.validateLovQuery = function(pSuperCharId) {
+
+    };
+
+    pPublicApi.getValidatorById = function(pValidatorId) {
+
+    };
+
+    pPublicApi.createValidator = function(pValidatorData) {
+
+    };
+
+    pPublicApi.updateValidator = function(pValidatorData) {
+
+    };
+
+    pPublicApi.deleteValidator = function(pValidatorId) {
+
+    };
+
     
 })(this.MuseSuperChar.SuperChar);
 
