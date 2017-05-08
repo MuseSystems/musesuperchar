@@ -34,10 +34,6 @@ if(!this.MuseSuperChar.Entity) {
     include("museScEntityData");
 }
 
-if(!this.MuseSuperChar.SuperChar) {
-    include("museSuperCharData");
-}
-
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
@@ -94,7 +90,7 @@ if(!this.MuseSuperChar.SuperChar) {
         tableXComboBox.enabled = false;
         displayNameXLineEdit.enabled = true;
 
-        if(!MuseSuperChar.SuperChar.isSuperCharTablePopulated(pEntityId)) {
+        if(!MuseSuperChar.Entity.isSuperCharTablePopulated(pEntityId)) {
             keyXComboBox.enabled = true;
         } else {
             keyXComboBox.enabled = false;
