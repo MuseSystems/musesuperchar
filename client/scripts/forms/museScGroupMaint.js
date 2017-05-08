@@ -70,7 +70,6 @@ if(!this.MuseSuperChar.Group) {
     var groupLayoutMoveUpPushButton = mywindow.findChild("groupLayoutMoveUpPushButton");
     var groupLayoutXTreeWidget = mywindow.findChild("groupLayoutXTreeWidget");
     var groupListXTreeWidget = mywindow.findChild("groupListXTreeWidget");
-    var groupsButtonsCenterSpacer = mywindow.findChild("groupsButtonsCenterSpacer");
     var groupsButtonsHBoxLayout = mywindow.findChild("groupsButtonsHBoxLayout");
     var groupsButtonsLeftSpacer = mywindow.findChild("groupsButtonsLeftSpacer");
     var groupsButtonsRightSpacer = mywindow.findChild("groupsButtonsRightSpacer");
