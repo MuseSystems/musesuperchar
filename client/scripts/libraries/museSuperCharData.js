@@ -103,6 +103,10 @@ if(!this.MuseUtils) {
 
     };
 
+    pPublicApi.isValidatorSystemLocked = function(pValidatorId) {
+
+    };
+
     pPublicApi.createValidator = function(pValidatorData) {
 
     };
