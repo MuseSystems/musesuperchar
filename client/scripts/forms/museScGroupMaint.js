@@ -84,6 +84,7 @@ if(!this.MuseSuperChar.Group) {
     // Add columns to entityListXTreeWidget
     entityListXTreeWidget.addColumn("Entity Id", 60, Qt.AlignRight, false, "entity_id");
     entityListXTreeWidget.addColumn("Entity", 150, Qt.AlignCenter, true, "entity_display_name");
+    entityListXTreeWidget.addColumn("Data Table", 150, Qt.AlignCenter, false, "entity_data_table");
     entityListXTreeWidget.addColumn("Schema", 100, Qt.AlignLeft, false, "entity_schema");
     entityListXTreeWidget.addColumn("Table", 100, Qt.AlignLeft, false, "entity_table");
     entityListXTreeWidget.addColumn("Primary Key Column", 150, Qt.AlignLeft, false, "entity_pk_column");

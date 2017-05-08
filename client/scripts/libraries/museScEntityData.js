@@ -96,6 +96,7 @@ if(!this.MuseUtils) {
                            ",e.entity_table " +
                            ",e.entity_pk_column " +
                            ",e.entity_display_name " +
+                           ",e.entity_data_table " +
                            ",e.entity_is_system_locked " +
                            ",e.entity_is_active " +
                            ",e.entity_date_created " +
