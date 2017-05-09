@@ -40,6 +40,8 @@ DO
                     ,conditional_validation_rule_then_validator_numrange numrange
                     ,conditional_validation_rule_then_validator_daterange daterange
                     ,conditional_validation_rule_fails_message_text text NOT NULL
+                    ,conditional_validation_rule_is_system_locked boolean NOT NULL false 
+                    ,conditional_validation_rule_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                 );
                 
                 ALTER TABLE  musesuperchar.conditional_validation_rule OWNER TO admin;
@@ -87,6 +89,12 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_fails_message_text IS
                 $DOC$If the validation is applied to the subject characteristic and fails, this value is the message displayed to the end user.  This message should typically appear on an aborted save.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_is_system_locked IS 
+                $DOC$If true, the validation rule is managed by the system (most likely an extension package).  If false, the validation is consider user manageable.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.conditional_validation_rule.conditional_validation_rule_pkghead_id IS 
+                $DOC$If the validation rule is system managed it is most likely managed via an extension package and this is a reference to the managing package.$DOC$;
 
 
                 -- Let's now add the audit columns and triggers
