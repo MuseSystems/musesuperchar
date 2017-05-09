@@ -509,7 +509,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Group.isGroupEntityAsscSystemLocked",
                 {params: funcParams, thrownError: e});
         }
-        
     };
 
     //--------------------------------------------------------------------
