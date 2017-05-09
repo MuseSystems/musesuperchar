@@ -593,32 +593,11 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return isEntitySystemLocked(pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to find out if an entity was system locked or not.",
-                "MuseSuperChar.Entity.pPublicApi.isEntitySystemLocked",
-                {params: funcParams, thrownError: e});
-        }
+        return isEntitySystemLocked(pEntityId);
     };
 
     pPublicApi.getEntities = function(pParams) {
-        // Capture function parameters for later exception references.
-        var funcParams = {
-            pParams: pParams
-        };
-        
-        try {
-            return getEntities(pParams || {});
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We could not retrieve a list of known Super Characteristic record types.",
-                "MuseSuperChar.Entity.pPublicApi.getEntities",
-                {params: funcParams, thrownError: e});
-        }
+        return getEntities(pParams || {});
     };
 
     pPublicApi.getEntityById = function(pEntityId) {
@@ -636,15 +615,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});      
         }
             
-        try {
-            return getEntityById(pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We could not retrieve the requested super characteristic entity record.",
-                "MuseSuperChar.Entity.pPublicApi.getEntityById",
-                {thrownError: e, params: funcParams});
-        }
+        return getEntityById(pEntityId);
     };
 
     pPublicApi.getEntitiesBySchemaTable = function(pSchema, pTable) {
@@ -669,15 +640,7 @@ if(!this.MuseUtils) {
                 {params: funcParams}); 
         }
             
-        try {
-            return getEntitiesBySchemaTable(pSchema, pTable);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We could not retrieve the requested super characteristic entity record.",
-                "MuseSuperChar.Entity.pPublicApi.getEntitiesBySchemaTable",
-                {thrownError: e, params: funcParams});
-        }
+        return getEntitiesBySchemaTable(pSchema, pTable);
     };
 
     pPublicApi.getEntitiesBySchema = function(pSchema, pIsInactiveIncluded) {
@@ -696,15 +659,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
         
-        try {
-            return getEntitiesBySchema(pSchema, (pIsInactiveIncluded || false));
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We could not retrieve entity records for the requested schema.",
-                "MuseSuperChar.Entity.pPublicApi.getEntitiesBySchema",
-                {thrownError: e});
-        }
+        return getEntitiesBySchema(pSchema, (pIsInactiveIncluded || false));
     };
 
     pPublicApi.isSuperCharTablePopulated = function(pEntityId) {
@@ -721,15 +676,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
         
-        try {
-            return isSuperCharTablePopulated(pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to look up whether a super characteristic table had records or not.",
-                "MuseSuperChar.Entity.pPublicApi.isSuperCharTablePopulated",
-                {params: funcParams, thrownError: e});
-        }
+        return isSuperCharTablePopulated(pEntityId);
     };
 
     pPublicApi.createEntity = function(pEntityData) {
@@ -777,15 +724,7 @@ if(!this.MuseUtils) {
                 {params: funcParams}); 
         }
         
-        try {
-            return createEntity(pEntityData);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "",
-                "MuseSuperChar.Entity.pPublicApi.createEntity",
-                {thrownError: e});
-        }
+        return createEntity(pEntityData);
     };
 
     pPublicApi.updateEntity = function(pEntityData) {
@@ -822,15 +761,7 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }   
 
-        try {
-            return updateEntity(pEntityData);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to update the requested super characteristic entity record.",
-                "MuseSuperChar.Entity.pPublicApi.updateEntity",
-                {params: funcParams, thrownError: e});
-        }
+        return updateEntity(pEntityData);
     };
 
     pPublicApi.deleteEntity = function(pEntityId) {
@@ -864,32 +795,11 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }
 
-        try {
-            deleteEntity(pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to delete the requested entity.",
-                "MuseSuperChar.pPublicApi.deleteEntity",
-                {params: funcParams, thrownError: e});
-        }
+        return deleteEntity(pEntityId);
     };
 
     pPublicApi.getSchemata = function(pSchema) {
-        // Capture function parameters for later exception references.
-        var funcParams = {
-            pSchema: pSchema
-        };
-
-        try {
-            return getSchemata(pSchema);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve schema data as requested.",
-                "MuseSuperChar.Entity.pPublicApi.getSchemata",
-                {params: funcParams, thrownError: e});
-        }
+        return getSchemata(pSchema);
     };
 
     pPublicApi.getUniqueKeysByTable = function(pSchema, pTable) {
@@ -915,15 +825,7 @@ if(!this.MuseUtils) {
         }
         
         // Try the function call.
-        try {
-            return getUniqueKeysByTable(pSchema, pTable);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the requested list of unique keys.",
-                "MuseSuperChar.Entity.pPublicApi.getUniqueKeysByTable",
-                {params: funcParams, thrownError: e});
-        }
+        return getUniqueKeysByTable(pSchema, pTable);
     };
 
     pPublicApi.getTablesBySchema = function(pSchema, pIsOnlyNonEntity) {
@@ -941,15 +843,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getTablesBySchema(pSchema, pIsOnlyNonEntity);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the desired table records.",
-                "MuseSuperChar.Entity.pPublicApi.getTablesBySchema",
-                {params: funcParams, thrownError: e});
-        }
+        return getTablesBySchema(pSchema, pIsOnlyNonEntity);
     };
 
     pPublicApi.getEntityGroups = function(pEntityId) {
@@ -966,14 +860,6 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getEntityGroups(pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the group list associated with the requested entity.",
-                "MuseSuperChar.Entity.pPublicApi.getEntityGroups",
-                {params: funcParams, thrownError: e});
-        }
+        return getEntityGroups(pEntityId);
     };
 })(this.MuseSuperChar.Entity);

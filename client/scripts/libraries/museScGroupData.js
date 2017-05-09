@@ -529,32 +529,11 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return isGroupSystemLocked(pGroupId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to find out whether a group was system locked.",
-                "MuseSuperChar.Group.pPublicApi.isGroupSystemLocked",
-                {params: funcParams, thrownError: e});
-        }
+        return isGroupSystemLocked(pGroupId);
     };
 
     pPublicApi.getGroups = function(pParams) {
-        // Capture function parameters for later exception references.
-        var funcParams = {
-            pParams: pParams
-        };
-        
-        try {
-            return getGroups(pParams || {});
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the list of groups as requested.",
-                "MuseSuperChar.Group.pPublicApi.getGroups",
-                {params: funcParams, thrownError: e});
-        }
+        return getGroups(pParams || {});
     };
 
     pPublicApi.getGroupById = function(pGroupId) {
@@ -571,15 +550,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getGroupById(pGroupId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the requested group record.",
-                "MuseSuperChar.Group.pPublicApi.getGroupById",
-                {params: funcParams, thrownError: e});
-        }
+        return getGroupById(pGroupId);
     };
 
     pPublicApi.getGroupEntities = function(pGroupId) {
@@ -596,15 +567,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getGroupEntities(pGroupId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the list of entities associated with the requested group.",
-                "MuseSuperChar.Group.pPublicApi.getGroupEntities",
-                {params: funcParams, thrownError: e});
-        }
+        return getGroupEntities(pGroupId);
     };
 
     pPublicApi.getNonGroupEntities = function(pGroupId) {
@@ -621,15 +584,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getNonGroupEntities(pGroupId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve the non-associated entities list for the requested group.",
-                "MuseSuperChar.Group.pPublicApi.getNonGroupEntities",
-                {params: funcParams, thrownError: e});
-        }
+        return getNonGroupEntities(pGroupId);
     };
 
     pPublicApi.addGroupEntityAssc = function(pGroupId, pEntityId) {
@@ -655,15 +610,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return addGroupEntityAssc(pGroupId, pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to associate the group/entity combination.",
-                "MuseSuperChar.Group.pPublicApi.addGroupEntityAssc",
-                {params: funcParams, thrownError: e});  
-        }
+        return addGroupEntityAssc(pGroupId, pEntityId);
     };
 
     pPublicApi.deleteGroupEntityAssc = function(pGroupId, pEntityId) {
@@ -689,15 +636,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return deleteGroupEntityAssc(pGroupId, pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to associate the group/entity combination.",
-                "MuseSuperChar.Group.pPublicApi.deleteGroupEntityAssc",
-                {params: funcParams, thrownError: e});  
-        }
+        return deleteGroupEntityAssc(pGroupId, pEntityId);
     };
 
     pPublicApi.isGroupEntityAsscSystemLocked = function(pGroupId, pEntityId) {
@@ -723,15 +662,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            isGroupEntityAsscSystemLocked(pGroupId, pEntityId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to retrieve whether or not a Group/Entity Association was system locked.",
-                "MuseSuperChar.Group.pPublicApi.isGroupEntityAsscSystemLocked",
-                {params: funcParams, thrownError: e});
-        }
+        return isGroupEntityAsscSystemLocked(pGroupId, pEntityId);
     };
 
     pPublicApi.getGroupLayoutItems = function() {
@@ -760,15 +691,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return getDefaultGroupInternalName(pDisplayName);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to derive an appropriate and valid default group internal name.",
-                "MuseSuperChar.Group.pPublicApi.getDefaultGroupInternalName",
-                {params: funcParams, thrownError: e});
-        }
+        return getDefaultGroupInternalName(pDisplayName);
     };
 
     pPublicApi.createGroup = function(pGroupData) {
@@ -812,15 +735,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return createGroup(pGroupData);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to verify that we created your new group as requested.",
-                "MuseSuperChar.Group.pPublicApi.createGroup",
-                {params: funcParams, thrownError: e});
-        }
+        return createGroup(pGroupData);
     };
 
     pPublicApi.updateGroup = function(pGroupData) {
@@ -862,15 +777,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return updateGroup(pGroupData);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to verify that we updated the requested super characteristic group as directed.",
-                "MuseSuperChar.Group.pPublicApi.updateGroup",
-                {params: funcParams, thrownError: e});
-        }
+        return updateGroup(pGroupData);
     };
 
     pPublicApi.deleteGroup = function(pGroupId) {
@@ -902,15 +809,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        try {
-            return deleteGroup(pGroupId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to delete the requested super characteristic group.",
-                "MuseSuperChar.Group.pPublicApi.deleteGroup",
-                {params: funcParams, thrownError: e});
-        }
+        return deleteGroup(pGroupId);
     };
 
     pPublicApi.createGroupLayoutItem = function() {
