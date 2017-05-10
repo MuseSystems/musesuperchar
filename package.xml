@@ -92,7 +92,9 @@
     <createtable file="database/tables/sc_def_sc_group_ass.sql" name="sc_def_sc_group_ass" />
     <createtable file="database/tables/entity_sc_group_ass.sql" name="entity_sc_group_ass" />
     <createtable file="database/tables/conditional_validation_rule.sql" name="conditional_validation_rule" />
-        
+    
+    <createview file="database/views/v_superchar_entities.sql" name="v_superchar_entities" />
+
     <loadappui file="client/uiforms/museScGroupMaint.ui" order="20">Muse Systems Super Characteristic Group/Entity Maintenance (setup subform).</loadappui>
     <loadappui file="client/uiforms/museSuperCharMaint.ui" order="20">Muse Systems Super Characteristic Maintenance (setup subform).</loadappui>
     <loadappui file="client/uiforms/museScCreateEntity.ui" order="20">Muse Systems Super Characteristic Create Entities Form</loadappui>
@@ -107,8 +109,7 @@
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
-    
-    
+        
     <finalscript file="database/misc/data_types_seed_data.sql" />
     <finalscript file="database/misc/validator_types_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
