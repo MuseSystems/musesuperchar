@@ -22,7 +22,7 @@
 -- be enforcable across all of the entities in which a subject will need to be
 -- evaluated.  This function returns a JSON object (jsonb type) in the form: 
 -- {
---     "non_overlap_count": 1, 
+--     "non_overlapping_count": 1, 
 --     "non_overlapping_entities": [
 --         {
 --             "entity_id": 12, 
@@ -38,7 +38,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_non_overlapping_entities(
         $BODY$
             SELECT row_to_json(q)::jsonb
             FROM
-                (SELECT   count(sub.entity_id) AS non_overlap_count
+                (SELECT   count(sub.entity_id) AS non_overlapping_count
                         ,to_json(
                             array_agg(
                                 json_build_object(
@@ -67,7 +67,7 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_non_overlapping_entities(p
 COMMENT ON FUNCTION musesuperchar.get_superchar_non_overlapping_entities(pSbjSuperCharId bigint, pObjSuperCharId bigint) 
     IS $DOC$For a given subject characteristic, we return any entities which are not contained by the entities associated with the object super characteristic.  This is useful in evaluating, for example, if a proposed validation rule will be enforcable across all of the entities in which a subject will need to be evaluated.  This function returns a JSON object (jsonb type) in the form: 
 {
-    "non_overlap_count": 1, 
+    "non_overlapping_count": 1, 
     "non_overlapping_entities": [
         {
             "entity_id": 12, 
