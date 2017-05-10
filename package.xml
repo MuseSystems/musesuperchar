@@ -82,6 +82,7 @@
     <createfunction file="database/functions/create_entity.sql" name="create_entity" />
     <createfunction file="database/functions/add_group_entity_association.sql" name="add_group_entity_association" />
     <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
+    <createfunction file="database/functions/get_superchar_non_overlapping_entities.sql" name="get_superchar_non_overlapping_entities" />
     
     <createtable file="database/tables/data_type.sql" name="data_type" />
     <createtable file="database/tables/validator_type.sql" name="validator_type" />
@@ -109,7 +110,7 @@
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
-        
+
     <finalscript file="database/misc/data_types_seed_data.sql" />
     <finalscript file="database/misc/validator_types_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
