@@ -40,7 +40,7 @@ DO
                     ,conditional_validation_rule_then_validator_numrange numrange
                     ,conditional_validation_rule_then_validator_daterange daterange
                     ,conditional_validation_rule_fails_message_text text NOT NULL
-                    ,conditional_validation_rule_is_system_locked boolean NOT NULL false 
+                    ,conditional_validation_rule_is_system_locked boolean NOT NULL DEFAULT false 
                     ,conditional_validation_rule_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                 );
                 
