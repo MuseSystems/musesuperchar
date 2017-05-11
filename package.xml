@@ -84,6 +84,7 @@
     <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
     <createfunction file="database/functions/get_superchar_non_overlapping_entities.sql" name="get_superchar_non_overlapping_entities" />
     <createfunction file="database/functions/get_superchar_group_add_violations.sql" name="get_superchar_group_add_violations" />
+    <createfunction file="database/functions/get_superchar_group_remove_violations.sql" name="get_superchar_group_remove_violations" />
     
     <createtable file="database/tables/data_type.sql" name="data_type" />
     <createtable file="database/tables/validator_type.sql" name="validator_type" />
