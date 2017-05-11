@@ -26,8 +26,8 @@
 -- missing characteristics which cause the validator exceptions.  The returns
 -- JSON object has the following format:
 -- {
---   "non_overlapping_count": 1,
---   "non_overlapping_entities": [
+--   "violation_count": 1,
+--   "violations": [
 --     {
 --       "entity_id": 8,
 --       "entity_data_table": "public_emp",
@@ -48,9 +48,9 @@
 CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint) 
     RETURNS jsonb AS
         $BODY$
-            SELECT jsonb_build_object(   'non_overlapping_count'
+            SELECT jsonb_build_object(   'violation_count'
                                         ,count(entity_id)
-                                        ,'non_overlapping_entities'
+                                        ,'violations'
                                         ,array_agg(json_build_object(
                                                  'entity_id', entity_id
                                                 ,'entity_data_table', entity_data_table
@@ -107,8 +107,8 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubS
 COMMENT ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint) 
     IS $DOC$Returns potential validation violations when adding a Super Characteristic to a group.  Since a Super Characteristic defines its own validation rules, and group defines with what entities its member characteristics are associated with, it is possible to inadvertantly add characteristic to a group (and thereby entity) for which passing validation is not possible.  For a given Super Characteristic and group, this function will return a JSON (jsonb) object which counts the number of violations and enumerates the entity & missing characteristics which cause the validator exceptions.  The returns JSON object has the following format:
 {
-  "non_overlapping_count": 1,
-  "non_overlapping_entities": [
+  "violation_count": 1,
+  "violations": [
     {
       "entity_id": 8,
       "entity_data_table": "public_emp",
