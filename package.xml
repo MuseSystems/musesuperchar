@@ -87,6 +87,9 @@
     <createfunction file="database/functions/get_superchar_group_remove_violations.sql" name="get_superchar_group_remove_violations" />
     <createfunction file="database/functions/get_group_entity_add_violations.sql" name="get_group_entity_add_violations" />
     <createfunction file="database/functions/get_group_entity_remove_violations.sql" name="get_group_entity_remove_violations" />
+    <createfunction file="database/triggers/trig_b_iu_conditional_validation_rule_violation_check.sql" name="trig_b_iu_conditional_validation_rule_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_sc_def_sc_group_ass_violation_check.sql" name="trig_b_iud_sc_def_sc_group_ass_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_enity_sc_group_ass_violation_check.sql" name="trig_b_iud_enity_sc_group_ass_violation_check" />
     
     <createtable file="database/tables/data_type.sql" name="data_type" />
     <createtable file="database/tables/validator_type.sql" name="validator_type" />

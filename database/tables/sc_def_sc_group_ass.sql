@@ -74,7 +74,14 @@ DO
                                                                 ,'sc_def_sc_group_ass_row_version_number'
                                                                 ,'sc_def_sc_group_ass_is_active');
                 
-
+                -- Add the trigger to the target table(s).
+                DROP TRIGGER IF EXISTS a01_trig_b_iud_sc_def_sc_group_ass_violation_check ON musesuperchar.sc_def_sc_group_ass;
+                
+                CREATE TRIGGER a01_trig_b_iud_sc_def_sc_group_ass_violation_check BEFORE INSERT OR UPDATE OR DELETE
+                    ON musesuperchar.sc_def_sc_group_ass FOR EACH ROW 
+                    EXECUTE PROCEDURE musesuperchar.trig_iud_sc_def_sc_group_ass_violation_check();
+                
+                
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 

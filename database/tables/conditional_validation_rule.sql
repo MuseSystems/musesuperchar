@@ -110,7 +110,14 @@ DO
                                                                 ,'conditional_validation_rule_row_version_number'
                                                                 ,'conditional_validation_rule_is_active');
                 
-
+                -- Add the trigger to the target table(s).
+                DROP TRIGGER IF EXISTS a01_trig_b_iu_conditional_validation_rule_violation_check ON musesuperchar.conditional_validation_rule;
+                
+                CREATE TRIGGER a01_trig_b_iu_conditional_validation_rule_violation_check BEFORE INSERT OR UPDATE
+                    ON musesuperchar.conditional_validation_rule FOR EACH ROW 
+                    EXECUTE PROCEDURE musesuperchar.trig_b_iu_conditional_validation_rule_violation_check();
+                
+                
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 
