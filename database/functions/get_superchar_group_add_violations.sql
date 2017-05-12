@@ -94,7 +94,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSub
                 WHERE   obj.sc_def_id IS NULL 
                     AND sub.sc_def_id = pSubSuperCharId) q;
         $BODY$
-    LANGUAGE plpgsql STABLE;
+    LANGUAGE sql STABLE;
 
 ALTER FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint)
     OWNER TO admin;
