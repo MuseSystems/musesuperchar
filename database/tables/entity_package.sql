@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:         entity_package.sql
+ ** File:         
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
@@ -21,61 +21,13 @@ DO
             
         BEGIN
 
-            -- Create the table if it does not exist.  Apply deltas if it does and it's needed.
-            IF NOT EXISTS(SELECT     true 
-                          FROM         musextputils.v_basic_catalog 
-                          WHERE     table_schema_name = 'musesuperchar' 
-                                  AND table_name = 'entity_package') THEN
-                -- The table doesn't exist, so let's create it.
-                CREATE TABLE musesuperchar.entity_package (
-                     entity_package_id    bigserial    NOT NULL    PRIMARY KEY
-                    ,entity_package_pkghead_id integer NOT NULL     REFERENCES public.pkghead (pkghead_id)
-                    ,entity_package_entity_id bigint NOT NULL   REFERENCES musesuperchar.entity (entity_id)
-                );
-                
-                ALTER TABLE  musesuperchar.entity_package OWNER TO admin;
-
-                REVOKE ALL ON TABLE musesuperchar.entity_package FROM public;
-                GRANT ALL ON TABLE musesuperchar.entity_package TO admin;
-                GRANT ALL ON TABLE musesuperchar.entity_package TO xtrole;
-                
-                COMMENT ON TABLE musesuperchar.entity_package 
-                    IS $DOC$Since an entity can be required by multiple packages, this table ensures that that each package can be properly represented as requiring the entity entry.$DOC$;
-
-                -- Column Comments
-                COMMENT ON COLUMN musesuperchar.entity_package.entity_package_id IS
-                $DOC$A surrogate key by which to uniquely identify each record. This is the primary key.$DOC$;
-
-                
-
-                -- Let's now add the audit columns and triggers
-                PERFORM musextputils.add_common_table_columns(   'musesuperchar'
-                                                                ,'entity_package'
-                                                                ,'entity_package_date_created'
-                                                                ,'entity_package_role_created'
-                                                                ,'entity_package_date_deactivated'
-                                                                ,'entity_package_role_deactivated' 
-                                                                ,'entity_package_date_modified'
-                                                                ,'entity_package_wallclock_modified'
-                                                                ,'entity_package_role_modified'
-                                                                ,'entity_package_row_version_number'
-                                                                ,'entity_package_is_active');
-                
-                -- Add the trigger to the target table(s).
-                DROP TRIGGER IF EXISTS 
-                    a10_trig_a_d_entity_package_manage_entity_syslock 
-                    ON musesuperchar.entity_package;
-                
-                CREATE TRIGGER a10_trig_a_d_entity_package_manage_entity_syslock 
-                    AFTER DELETE
-                    ON musesuperchar.entity_package FOR EACH ROW 
-                    EXECUTE PROCEDURE musesuperchar.trig_a_d_entity_package_manage_entity_syslock();
-                
-                
-            ELSE
-                -- Deltas go here.  Be sure to check if each is really needed.
-
-            END IF;
+            -- We have to create our tables in init scripts since the xTuple
+            -- Updater cannot properly express certain kind of database
+            -- dependencies (such as functions depending on views.)  This script
+            -- serves as 1) a place holder so that we can properly validate that
+            -- the related table init script passes the Updater's validations;
+            -- 2) a convenient place to put "ALTER" statements for deltas after
+            -- initial release.
             
 
         END;

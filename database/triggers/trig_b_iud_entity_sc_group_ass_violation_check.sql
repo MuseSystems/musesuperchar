@@ -89,3 +89,10 @@ GRANT EXECUTE ON FUNCTION musesuperchar.trig_b_iud_entity_sc_group_ass_violation
 
 COMMENT ON FUNCTION musesuperchar.trig_b_iud_entity_sc_group_ass_violation_check() 
     IS $DOC$Checks proprosed changes in associations between entities and groups.  Also disallows new associations from being made via update statements (not supported).$DOC$;
+
+-- Add the trigger to the target table(s).
+DROP TRIGGER IF EXISTS a01_trig_b_iud_entity_sc_group_ass_violation_check ON musesuperchar.entity_sc_group_ass;
+
+CREATE TRIGGER a01_trig_b_iud_entity_sc_group_ass_violation_check BEFORE INSERT OR UPDATE OR DELETE
+    ON musesuperchar.entity_sc_group_ass FOR EACH ROW 
+    EXECUTE PROCEDURE musesuperchar.trig_b_iud_entity_sc_group_ass_violation_check(params);
