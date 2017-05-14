@@ -68,3 +68,10 @@ GRANT EXECUTE ON FUNCTION musesuperchar.trig_b_iu_conditional_validation_rule_vi
 
 COMMENT ON FUNCTION musesuperchar.trig_b_iu_conditional_validation_rule_violation_check() 
     IS $DOC$Performs checks to proposed conditional validation rule to see if they would create validator violations.  A validator violation is a case where the rule can never evaluate to true due to a subject characteristic being unable to access its object characteristic.$DOC$;
+
+-- Add the trigger to the target table(s).
+DROP TRIGGER IF EXISTS a01_trig_b_iu_conditional_validation_rule_violation_check ON musesuperchar.conditional_validation_rule;
+
+CREATE TRIGGER a01_trig_b_iu_conditional_validation_rule_violation_check BEFORE INSERT OR UPDATE
+    ON musesuperchar.conditional_validation_rule FOR EACH ROW 
+    EXECUTE PROCEDURE musesuperchar.trig_b_iu_conditional_validation_rule_violation_check();

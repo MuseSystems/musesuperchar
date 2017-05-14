@@ -55,3 +55,13 @@ GRANT EXECUTE ON FUNCTION musesuperchar.trig_a_d_entity_package_manage_entity_sy
 
 COMMENT ON FUNCTION musesuperchar.trig_a_d_entity_package_manage_entity_syslock() 
     IS $DOC$When the last managing package is deleted, set the related entity record to being not system locked.$DOC$;
+
+-- Add the trigger to the target table(s).
+DROP TRIGGER IF EXISTS 
+    a10_trig_a_d_entity_package_manage_entity_syslock 
+    ON musesuperchar.entity_package;
+
+CREATE TRIGGER a10_trig_a_d_entity_package_manage_entity_syslock 
+    AFTER DELETE
+    ON musesuperchar.entity_package FOR EACH ROW 
+    EXECUTE PROCEDURE musesuperchar.trig_a_d_entity_package_manage_entity_syslock();

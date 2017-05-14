@@ -180,3 +180,11 @@ GRANT EXECUTE ON FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables() TO x
 
 COMMENT ON FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables() 
     IS $DOC$Manages the creation and dropping of entities which are valid for super characteristics.$DOC$;
+
+-- Add the trigger to the target table(s).
+DROP TRIGGER IF EXISTS a10_trig_a_id_manage_sc_entity_tables ON musesuperchar.entity;
+
+CREATE TRIGGER a10_trig_a_id_manage_sc_entity_tables AFTER INSERT OR DELETE
+    ON musesuperchar.entity FOR EACH ROW 
+    EXECUTE PROCEDURE musesuperchar.trig_a_id_manage_sc_entity_tables();
+                
