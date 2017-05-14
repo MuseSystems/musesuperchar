@@ -122,7 +122,6 @@
     <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
     <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
     <loadappscript file="client/scripts/forms/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/museScGroupEntityAssign.js" name="museScGroupEntityAssign" order="10">Muse Systems Super Characteristic; load group/entity assignment form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
