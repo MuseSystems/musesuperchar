@@ -34,6 +34,10 @@ if(!this.MuseSuperChar.Group) {
     include("museScGroupData");
 }
 
+if(!this.MuseSuperChar.Widget) {
+    include("museScWidget");
+}
+
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
@@ -252,8 +256,20 @@ if(!this.MuseSuperChar.Group) {
 
         for(var i = 0; i < selectedItems.length; i++) {
             if(MuseUtils.isValidId(selectedItems[i].id())) {
-                MuseSuperChar.Group.addGroupEntityAssc(currGroupId, 
-                    selectedItems[i].id());
+                var violations = 
+                    MuseSuperChar.Group.getGroupEntityAsscAddViolations(
+                        currGroupId, 
+                        selectedItems[i].id());
+                if(violations.violation_count === 0) {
+                    MuseSuperChar.Group.addGroupEntityAssc(currGroupId, 
+                        selectedItems[i].id());
+                } else {
+                    var violationDialog = 
+                        MuseSuperChar.Widget.MSSCViolationsDialog(violations,
+                            mywindow);
+                    violationDialog.exec();
+                }
+
             }
         }
 

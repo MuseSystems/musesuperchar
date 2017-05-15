@@ -511,6 +511,37 @@ if(!this.MuseUtils) {
         }
     };
 
+    var getGroupEntityAsscAddViolations = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+        
+        try {
+            var violationQuery = MuseUtils.executeQuery(
+                "SELECT musesuperchar.get_group_entity_add_violations( " +
+                    '<? value("pGroupId") ?>, <? value("pEntityId") ?>) ' +
+                    "AS result ",
+                    {pGroupId: pGroupId, pEntityId: pEntityId});
+            if(violationQuery.first()) {
+                return JSON.parse(violationQuery.firstJson().result);
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not receive the expected response from the database while checking for proprosed Group/Entity validation violations.",
+                    "MuseSuperChar.Group.getGroupEntityAsscAddViolations",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to find whether a proposed group/entity association would cause validator violations.",
+                "MuseSuperChar.Group.getGroupEntityAsscAddViolations",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -691,6 +722,32 @@ if(!this.MuseUtils) {
         }
 
         return getDefaultGroupInternalName(pDisplayName);
+    };
+
+    pPublicApi.getGroupEntityAsscAddViolations = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which group you wanted to test for entity association validity.",
+                "MuseSuperChar.Group.pPublicApi.getGroupEntityAsscAddViolations",
+                {params: funcParams});
+        }
+
+        if (!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which entity you wanted to see if you could add a group without validator violations.",
+                "MuseSuperChar.Group.pPublicApi.getGroupEntityAsscAddViolations",
+                {params: funcParams});
+        }
+
+        return getGroupEntityAsscAddViolations(pGroupId, pEntityId);
     };
 
     pPublicApi.createGroup = function(pGroupData) {
