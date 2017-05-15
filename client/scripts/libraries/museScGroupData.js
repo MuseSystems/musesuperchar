@@ -542,6 +542,37 @@ if(!this.MuseUtils) {
         }
     };
 
+    var getGroupEntityAsscDeleteViolations = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+        
+        try {
+            var violationQuery = MuseUtils.executeQuery(
+                "SELECT musesuperchar.get_group_entity_remove_violations( " +
+                    '<? value("pGroupId") ?>, <? value("pEntityId") ?>) ' +
+                    "AS result ",
+                    {pGroupId: pGroupId, pEntityId: pEntityId});
+            if(violationQuery.first()) {
+                return JSON.parse(violationQuery.firstJson().result);
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not receive the expected response from the database while checking for proprosed Group/Entity remove validation violations.",
+                    "MuseSuperChar.Group.getGroupEntityAsscDeleteViolations",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to find whether a proposed group/entity disassociation would cause validator violations.",
+                "MuseSuperChar.Group.getGroupEntityAsscDeleteViolations",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -748,6 +779,32 @@ if(!this.MuseUtils) {
         }
 
         return getGroupEntityAsscAddViolations(pGroupId, pEntityId);
+    };
+
+    pPublicApi.getGroupEntityAsscDeleteViolations = function(pGroupId, pEntityId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId,
+            pEntityId: pEntityId
+        };
+
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which group you wanted to test for entity disassociation validity.",
+                "MuseSuperChar.Group.pPublicApi.getGroupEntityAsscDeleteViolations",
+                {params: funcParams});
+        }
+
+        if (!MuseUtils.isValidId(pEntityId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which entity you wanted to see if you could delete a group from without validator violations.",
+                "MuseSuperChar.Group.pPublicApi.getGroupEntityAsscDeleteViolations",
+                {params: funcParams});
+        }
+
+        return getGroupEntityAsscDeleteViolations(pGroupId, pEntityId);
     };
 
     pPublicApi.createGroup = function(pGroupData) {

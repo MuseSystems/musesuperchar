@@ -294,8 +294,19 @@ if(!this.MuseSuperChar.Widget) {
                 (!MuseSuperChar.Group.isGroupEntityAsscSystemLocked(
                     currGroupId, selectedItems[i].id()) ||
                  privileges.check("maintainSuperCharSysLockRecsManually"))) {
-                MuseSuperChar.Group.deleteGroupEntityAssc(currGroupId, 
-                    selectedItems[i].id());
+                var violations =
+                    MuseSuperChar.Group.getGroupEntityAsscDeleteViolations(
+                        currGroupId,
+                        selectedItems[i].id());
+                if(violations.violation_count === 0) {
+                    MuseSuperChar.Group.deleteGroupEntityAssc(currGroupId, 
+                        selectedItems[i].id());
+                } else {
+                    var violationDialog = 
+                        MuseSuperChar.Widget.MSSCViolationsDialog(violations,
+                            mywindow);
+                    violationDialog.exec();
+                }
             }
         }
 
