@@ -88,6 +88,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_entity_add_violations(pGroupI
                             AND targ.entity_id = pEntityId
                 WHERE   pGroupId = any(sub.sc_group_ids)
                     AND NOT pGroupId = any(obj.sc_group_ids)
+                    AND targ.sc_def_id IS NULL
                     AND cvr.conditional_validation_rule_subject_sc_def_id != 
                         cvr.conditional_validation_rule_object_sc_def_id) q;
         $BODY$
