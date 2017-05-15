@@ -79,11 +79,11 @@ if(!this.MuseUtils) {
 
         // Update the data
         messageTextXLabel.text = "The proposed actions would cause " + 
-            pViolationsData.violation_count + " violations.\n\n" +
+            pViolationData.violation_count + " violations.\n\n" +
             "The violations that would occur are listed below.";
 
         for(var i = 0; i < pViolationData.violations.length; i++) {
-            var currXTreeWidgetItem = new XTreeWidgetItem(dialogBox, i);
+            var currXTreeWidgetItem = new XTreeWidgetItem(violationsXTreeWidget, i);
             currXTreeWidgetItem.setText(
                 violationsXTreeWidget.column("conditional_validation_rule_id"), 
                 pViolationData.violations[i].conditional_validation_rule_id);
@@ -134,13 +134,14 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
-    pPublicApi.MSSCViolationsDialog = function(pViolationsData, pParent) {
+    pPublicApi.MSSCViolationsDialog = function(pViolationData, pParent) {
         // Capture function parameters for later exception references.
         var funcParams = {
-            pViolationsData: pViolationsData
+            pViolationData: pViolationData
         };
-
-        if(!pViolationData.hasOwnProperty(violation_count)) {
+        QMessageBox.warning(mywindow, "DEBUG", JSON.stringify(pViolationData));
+        
+        if(!pViolationData.hasOwnProperty("violation_count")) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "The violations data passed to us in not in a format we understand.",
