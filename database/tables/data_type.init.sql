@@ -36,6 +36,8 @@ DO
                     ,data_type_is_numeric boolean NOT NULL DEFAULT false
                     ,data_type_is_date boolean NOT NULL DEFAULT false
                     ,data_type_is_flag boolean NOT NULL DEFAULT false
+                    ,data_type_is_array boolean NOT NULL DEFAULT false
+                    ,data_type_is_lov_based boolean NOT NULL DEFAULT false
                     ,data_type_is_user_visible boolean NOT NULL DEFAULT false
                     ,data_type_display_order integer NOT NULL DEFAULT 99999
                 );
@@ -73,6 +75,12 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_is_flag IS
                 $DOC$If true, the data type can be meaningfully generalized as a boolean type which can accept boolean validators.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.data_type.data_type_is_array IS
+                $DOC$If true, the data type can be meaningfully generalized as an array type; usually text values as from a multiple selection list of values.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.data_type.data_type_is_lov_based IS
+                $DOC$If true, there is an expectation that there is a list of values association with the characteristic.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.data_type.data_type_is_user_visible IS
                 $DOC$If true, the data type can be assigned to normal user created fields via the UI.$DOC$;
