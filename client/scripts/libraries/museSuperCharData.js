@@ -107,12 +107,28 @@ if(!this.MuseUtils) {
                         ",sc_def_description " +
                         ",sc_def_pkghead_id " +
                         ",sc_def_is_system_locked " +
-                        ",sc_def_data_type_id " +
-                        ",sc_def_values_list " +
+                        ",data_type_id AS sc_def_data_type_id " +
+                        ",data_type_display_name AS sc_def_data_type_display_name " +
+                        ",data_type_internal_name AS sc_def_data_type_internal_name " +
+                        ",data_type_is_text AS sc_defdata_type_is_text" +
+                        ",data_type_is_numeric AS sc_defdata_type_is_numeric" +
+                        ",data_type_is_date AS sc_defdata_type_is_date" +
+                        ",data_type_is_flag AS sc_defdata_type_is_flag" +
+                        ",data_type_is_array AS sc_defdata_type_is_array" +
+                        ",data_type_is_lov_based AS sc_defdata_type_is_lov_based" +
+                        ",array_to_string(sc_def_values_list, ', ') AS sc_def_values_list " +
                         ",sc_def_list_query " +
                         ",sc_def_is_searchable " +
                         ",pkghead_name AS sc_def_package_name " +
+                        ",CASE " +
+                                "WHEN sc_def_is_system_locked THEN " +
+                                    "'bisque' " +
+                                "ELSE " +
+                                    "'palegreen' " +
+                            " END AS sc_def_display_name_qtbackgroundrole " +
                 "FROM    musesuperchar.sc_def " +
+                    "JOIN musesuperchar.data_type " +
+                        "ON sc_def_data_type_id = data_type_id " +
                     "LEFT OUTER JOIN public.pkghead " +
                         "ON sc_def_pkghead_id = pkghead_id  " +
                     "LEFT OUTER JOIN musesuperchar.sc_def_sc_group_ass " +
