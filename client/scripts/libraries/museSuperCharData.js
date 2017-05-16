@@ -101,7 +101,7 @@ if(!this.MuseUtils) {
 
         try {
             return MuseUtils.executeQuery(
-                "SELECT   sc_def_id " +
+                "SELECT   DISTINCT sc_def_id " +
                         ",sc_def_internal_name " +
                         ",sc_def_display_name " +
                         ",sc_def_description " +
@@ -449,6 +449,45 @@ if(!this.MuseUtils) {
         }
     };
 
+    var getSuperCharGroups = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+        
+        try {
+            return MuseUtils.executeQuery(
+                "SELECT   sg.sc_group_id " +
+                        ",sg.sc_group_internal_name " +
+                        ",sg.sc_group_display_name " +
+                        ",array_agg(e.entity_id) AS sc_group_entity_ids " +
+                        ",string_agg(e.entity_display_name,', ') AS sc_group_entity_display_names " +
+                "FROM    musesuperchar.sc_def_sc_group_ass sdsga  " +
+                    "JOIN musesuperchar.sc_group sg  " +
+                        "ON sdsga.sc_def_sc_group_ass_sc_group_id = sg.sc_group_id  " +
+                            "AND sg.sc_group_is_active " +
+                    "LEFT OUTER JOIN musesuperchar.entity_sc_group_ass esga  " +
+                        "ON sg.sc_group_id = esga.entity_sc_group_ass_sc_group_id " +
+                            "AND esga.entity_sc_group_ass_is_active " +
+                    "LEFT OUTER JOIN musesuperchar.entity e  " +
+                        "ON esga.entity_sc_group_ass_entity_id = e.entity_id " +
+                            "AND e.entity_is_active " +
+                "WHERE   sdsga.sc_def_sc_group_ass_is_active " +
+                    'AND sdsga.sc_def_sc_group_ass_sc_def_id = ' +
+                                '<? value("pSuperCharId") ?> ' +
+                "GROUP BY  sg.sc_group_id " +
+                         ",sg.sc_group_internal_name " +
+                         ",sg.sc_group_display_name ",
+                {pSuperCharId: pSuperCharId});
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to retrieve the groups associated with a Super Characteristic.",
+                "MuseSuperChar.SuperChar.getSuperCharGroups",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -645,7 +684,20 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.getSuperCharGroups = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+        
+        if(!MuseUtils.isValidId(pSuperCharId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Super Characteristic for which you wanted to retrieve associated groups.",
+                "MuseSuperChar.SuperChar.pPublicApi.getSuperCharGroups",
+                {params: funcParams});
+        }
 
+        return getSuperCharGroups(pSuperCharId);
     };
 
     pPublicApi.getSuperCharValidators = function(pSuperCharId) {
