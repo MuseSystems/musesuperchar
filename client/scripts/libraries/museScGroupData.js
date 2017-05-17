@@ -270,7 +270,7 @@ if(!this.MuseUtils) {
                 "musesuperchar",
                 "The provided text is not a JavaScript string.",
                 "MuseSuperChar.Group.getDefaultGroupInternalName",
-                {params: funcParams});
+                {params: funcParams, thrownError: e});
         }
     };
 
