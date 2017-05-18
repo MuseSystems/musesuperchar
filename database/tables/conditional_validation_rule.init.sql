@@ -29,8 +29,8 @@ DO
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.conditional_validation_rule (
                      conditional_validation_rule_id    bigserial    NOT NULL    PRIMARY KEY
-                    ,conditional_validation_rule_subject_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id)
-                    ,conditional_validation_rule_object_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id)
+                    ,conditional_validation_rule_subject_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id) ON DELETE CASCADE
+                    ,conditional_validation_rule_object_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id) ON DELETE CASCADE
                     ,conditional_validation_rule_if_validator_type_id bigint NOT NULL REFERENCES musesuperchar.validator_type (validator_type_id)
                     ,conditional_validation_rule_if_validator_regexp text 
                     ,conditional_validation_rule_if_validator_numrange numrange
