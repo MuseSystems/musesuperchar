@@ -13,8 +13,8 @@ to be bound by its terms.</comment>
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1467</width>
-    <height>880</height>
+    <width>1441</width>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -353,6 +353,29 @@ to be bound by its terms.</comment>
         </widget>
        </item>
        <item>
+        <spacer name="superCharButtonsCenterSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="closePushButton">
+         <property name="text">
+          <string>Close</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="superCharButtonsBottonSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -450,32 +473,32 @@ to be bound by its terms.</comment>
  <customwidgets>
   <customwidget>
    <class>XCheckBox</class>
-   <extends></extends>
+   <extends>QCheckBox</extends>
    <header>xcheckbox.h</header>
   </customwidget>
   <customwidget>
    <class>XComboBox</class>
-   <extends></extends>
+   <extends>QComboBox</extends>
    <header>xcombobox.h</header>
   </customwidget>
   <customwidget>
    <class>XLabel</class>
-   <extends></extends>
+   <extends>QLabel</extends>
    <header>xlabel.h</header>
   </customwidget>
   <customwidget>
    <class>XLineEdit</class>
-   <extends></extends>
+   <extends>QLineEdit</extends>
    <header>xlineedit.h</header>
   </customwidget>
   <customwidget>
    <class>XTreeWidget</class>
-   <extends></extends>
+   <extends>QTreeWidget</extends>
    <header>xtreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>XTextEdit</class>
-   <extends></extends>
+   <extends>QTextEdit</extends>
    <header>xtextedit.h</header>
   </customwidget>
  </customwidgets>
