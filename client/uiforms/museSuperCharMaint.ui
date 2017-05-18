@@ -369,14 +369,14 @@ to be bound by its terms.</comment>
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="closePushButton">
+        <widget class="QPushButton" name="superCharClosePushButton">
          <property name="text">
           <string>Close</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="superCharButtonsBottonSpacer">
+        <spacer name="superCharButtonsBottomSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
