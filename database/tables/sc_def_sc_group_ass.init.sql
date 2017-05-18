@@ -29,8 +29,8 @@ DO
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.sc_def_sc_group_ass (
                      sc_def_sc_group_ass_id    bigserial    NOT NULL    PRIMARY KEY
-                    ,sc_def_sc_group_ass_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id)
-                    ,sc_def_sc_group_ass_sc_group_id bigint NOT NULL REFERENCES musesuperchar.sc_group (sc_group_id)
+                    ,sc_def_sc_group_ass_sc_def_id bigint NOT NULL REFERENCES musesuperchar.sc_def (sc_def_id) ON DELETE CASCADE
+                    ,sc_def_sc_group_ass_sc_group_id bigint NOT NULL REFERENCES musesuperchar.sc_group (sc_group_id) ON DELETE CASCADE
                     ,sc_def_sc_group_ass_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,sc_def_sc_group_ass_is_system_locked boolean NOT NULL DEFAULT false
                 );
