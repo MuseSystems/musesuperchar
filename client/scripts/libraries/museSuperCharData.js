@@ -294,11 +294,14 @@ if(!this.MuseUtils) {
             var scQuery = MuseUtils.executeQuery(
                 "INSERT INTO musesuperchar.sc_def " +
                     "(sc_def_internal_name, sc_def_display_name, " +
-                        "sc_def_description) " +
+                        "sc_def_description, sc_def_data_type_id, " +
+                        "sc_def_is_searchable) " +
                         "VALUES " +
                     '( <? value("sc_def_internal_name") ?> ' +
                      ',<? value("sc_def_display_name") ?> '  +
                      ',<? value("sc_def_description") ?> ' +
+                     ',<? value("sc_def_data_type_id") ?> ' +
+                     ',<? value("sc_def_is_searchable") ?>) ' +
                      "RETURNING sc_def_id ",
                      pSuperCharData);
 
@@ -315,8 +318,8 @@ if(!this.MuseUtils) {
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
-                "We encountered a problem ",
-                "Fully Qualified Function Name",
+                "We encountered a problem while saving the Super Characteristic.",
+                "MuseSuperChar.SuperChar.createSuperChar",
                 {params: funcParams, thrownError: e});
         }
     };
@@ -369,7 +372,8 @@ if(!this.MuseUtils) {
         if (pSuperCharData.hasOwnProperty("sc_def_values_list")) {
             updateColumns.push(
                 'sc_def_values_list = ' +
-                    '<? value("sc_def_values_list") ?> ');
+                    'translate(<? value("sc_def_values_list") ?>, ' +
+                        "'[]', '{}')::text[] ");
         }
 
         if (pSuperCharData.hasOwnProperty("sc_def_list_query")) {
@@ -391,8 +395,8 @@ if(!this.MuseUtils) {
         }
 
         try {
-            queryText =+ updateColumns.join(', ') +
-                'WHERE sc_def_id = <? value("sc_def_id") ?> ' +
+            queryText = queryText + updateColumns.join(', ') +
+                ' WHERE sc_def_id = <? value("sc_def_id") ?> ' +
                 'RETURNING sc_def_id';
 
             var scQuery = MuseUtils.executeQuery(queryText, pSuperCharData);
@@ -432,7 +436,7 @@ if(!this.MuseUtils) {
 
             if(scQuery.first() && 
                 MuseUtils.isValidId(scQuery.value("sc_def_id"))) {
-                return scQuery.value(sc_def_id);
+                return scQuery.value("sc_def_id");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -484,6 +488,91 @@ if(!this.MuseUtils) {
                 "musesuperchar",
                 "We encountered a problem trying to retrieve the groups associated with a Super Characteristic.",
                 "MuseSuperChar.SuperChar.getSuperCharGroups",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var isValidatorSystemLocked = function(pValidatorId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pValidatorId: pValidatorId
+        };
+
+        try {
+            var condValQuery = MuseUtils.executeQuery(
+                "SELECT conditional_validation_rule_is_system_locked " +
+                "FROM  musesuperchar.conditional_validation_rule cvr " +
+                "WHERE conditional_validation_rule_id = " +
+                    '<? value("pValidatorId") ?> ',
+                    {pValidatorId: pValidatorId});
+
+            if(condValQuery.first()) {
+                return MuseUtils.isTrue(condValQuery.value(
+                    "conditional_validation_rule_is_system_locked"));
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not find the requested conditional validation rule while trying to check if it was system locked.",
+                    "MuseSuperChar.SuperChar.isValidatorSystemLocked",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to find if a conditional validator was system locked or not.",
+                "MuseSuperChar.SuperChar.isValidatorSystemLocked",
+                {params: funcParams, thrownError: e});
+        }
+        
+    };
+
+    var getDefaultScInternalName = function(pDisplayName) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pDisplayName: pDisplayName
+        };
+        
+        try {
+            
+            return pDisplayName.replace(/'/g,'')
+                        .replace(/[^\w]+/g,'_')
+                        .replace(/^_|_$/,'')
+                        .toLowerCase();
+        } catch(e) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "The provided text is not a JavaScript string.",
+                "MuseSuperChar.SuperChar.getDefaultScInternalName",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getSuperCharDeleteViolations = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+        
+        try {
+            var violationQuery = MuseUtils.executeQuery(
+                "SELECT musesuperchar.get_superchar_delete_violations( " +
+                '<? value("pSuperCharId") ?>) AS result',
+                {pSuperCharId: pSuperCharId});
+
+            if(violationQuery.first()) {
+                return JSON.parse(violationQuery.firstJson().result);
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not receive the expected response from the database while checking for proprosed Super Character deletion validation violations.",
+                    "MuseSuperChar.SuperChar.getSuperCharDeleteViolations",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to retrieve Super Characteristic delete validator violations.",
+                "MuseSuperChar.SuperChar.getSuperCharDeleteViolations",
                 {params: funcParams, thrownError: e});
         }
     };
@@ -604,8 +693,19 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        return createSuperChar(pSuperCharData);
+        if(!pSuperCharData.hasOwnProperty("sc_def_data_type_id") ||
+            !MuseUtils.isValidId(pSuperCharData.sc_def_data_type_id)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "New Super Characteristics must identify a valid data type and we did not understand which to use in from your request.",
+                "MuseSuperChar.SuperChar.pPublicApi.createSuperChar",
+                {params: funcParams});
+        }
 
+        pSuperCharData.sc_def_is_searchable = MuseUtils.isTrue(
+            MuseUtils.coalesce(pSuperCharData.sc_def_is_searchable, false));
+
+        return createSuperChar(pSuperCharData);
     };
 
     pPublicApi.updateSuperChar = function(pSuperCharData) {
@@ -680,7 +780,6 @@ if(!this.MuseUtils) {
         }
 
         return deleteSuperChar(pSuperCharId);
-
     };
 
     pPublicApi.getSuperCharGroups = function(pSuperCharId) {
@@ -708,7 +807,7 @@ if(!this.MuseUtils) {
 
     };
 
-    pPublicApi.saveSuperCharLov = function(pSuperCharId, pLovValues) {
+    pPublicApi.addSuperCharLovValue = function(pSuperCharId, pLovValue) {
 
     };
 
@@ -721,7 +820,20 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.isValidatorSystemLocked = function(pValidatorId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pValidatorId: pValidatorId
+        };
+        
+        if(!MuseUtils.isValidId(pValidatorId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which validator need checking for being systems locked.",
+                "MuseSuperChar.SuperChar.pPublicApi.isValidatorSystemLocked",
+                {params: funcParams});
+        }
 
+        return isValidatorSystemLocked(pValidatorId);
     };
 
     pPublicApi.getSubjectObjectNonOverlappingEntities = function(pSubjectScId, 
@@ -751,6 +863,23 @@ if(!this.MuseUtils) {
         return getSubjectObjectNonOverlappingEntities(pSubjectScId, pObjectScId);
     };
 
+    pPublicApi.getSuperCharDeleteViolations = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+
+        if(!MuseUtils.isValidId(pSuperCharId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Super Characteristics you wanted to check for delete validator violations.",
+                "MuseSuperChar.SuperChar.pPublicApi.getSuperCharDeleteViolations",
+                {params: funcParams});
+        }
+        
+        return getSuperCharDeleteViolations(pSuperCharId);
+    };
+
     pPublicApi.createValidator = function(pValidatorData) {
 
     };
@@ -763,6 +892,22 @@ if(!this.MuseUtils) {
 
     };
 
+    pPublicApi.getDefaultScInternalName = function(pDisplayName) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pDisplayName: pDisplayName
+        };
+
+        if(MuseUtils.coalesce(pDisplayName,"") === "") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We require some text value from which to construct a default Super Characteristic internal name.",
+                "MuseSuperChar.SuperChar.pPublicApi.getDefaultScInternalName",
+                {params: funcParams});
+        }
+
+        return getDefaultScInternalName(pDisplayName);
+    };
 
 })(this.MuseSuperChar.SuperChar);
 

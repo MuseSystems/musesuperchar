@@ -119,6 +119,7 @@
     <loadappui file="client/uiforms/museScCreateEntity.ui" order="20">Muse Systems Super Characteristic Create Entities Form</loadappui>
     <loadappui file="client/uiforms/museScCreateGroup.ui" order="20">Muse Systems Super Characteristic Create Groups Form</loadappui>
     <loadappui file="client/uiforms/museScViolationsDialog.ui" order="20">Muse Systems Super Characteristic Validator Violations Dialog</loadappui>
+    <loadappui file="client/uiforms/museScNewListValue.ui" order="20">Muse Systems Super Characteristic New List of Value Value form.</loadappui>
     
     <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
