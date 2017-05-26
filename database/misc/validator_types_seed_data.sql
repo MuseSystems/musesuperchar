@@ -38,7 +38,7 @@ INSERT INTO musesuperchar.validator_type (
              ('regexp', 'Text Regular Expression', 'Allows a user to identify a text regular expression.', true, false, false, 10, false, true)
             ,('numericequal', 'Equals', 'Evaluates to true if the characteristic value matches the validation value.', false, true, false, 20, false, true)
             ,('numericgreaterthan', 'Greater Than', 'Evaluates to true if the characteristic value is greater than the validation value.', false, true, false, 30, false, true)
-            ,('numericgreaterthanorequalto', 'Greater Then or Equal To', 'Evaluates to true if the characteristic value is greater than or equal to the validation value.', false, true, false, 40, false, true)
+            ,('numericgreaterthanorequalto', 'Greater Than or Equal To', 'Evaluates to true if the characteristic value is greater than or equal to the validation value.', false, true, false, 40, false, true)
             ,('numericlessthan', 'Less Than', 'Evaluates to true if the characteristic value is less than the validation value.', false, true, false, 50, false, true)
             ,('numericlessthanorequalto', 'Less Than or Equal To', 'Evaluates to true if the characteristic value is less than or equal to the validation value.', false, true, false, 60, false, true)
             ,('numericbetweeninclusive', 'Between (Inclusive)', 'Evaluates to true if the characteristic value is between or equal the validation range values.', false, true, false, 70, false, true)
