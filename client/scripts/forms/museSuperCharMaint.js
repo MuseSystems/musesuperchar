@@ -38,6 +38,11 @@ if(!this.MuseSuperChar.Widget) {
     include("museScWidget");
 }
 
+if(!this.MuseSuperChar.CondValRule) {
+    include("museScCondValRuleData");
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +56,7 @@ if(!this.MuseSuperChar.Widget) {
 
     // Set up a variable to hold the selected superchar and use that the 
     // check whether or not the user has made an update over previous values.
-    // In "new" state, we presume that the the values (particularly sc_def_id) 
+    // In "new" state, we presume that the the values (particularly scdef_id) 
     // are null and as such use that to infer the new vs update state. 
      
     var currSc;
@@ -127,35 +132,45 @@ if(!this.MuseSuperChar.Widget) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    superCharListXTreeWidget.addColumn("SuperChar ID", 45, Qt.AlignCenter, false, "sc_def_id");
-    superCharListXTreeWidget.addColumn("SuperChar Internal Name", 150, Qt.AlignCenter, false, "sc_def_internal_name");
-    superCharListXTreeWidget.addColumn("SuperChar", 150, Qt.AlignCenter, true, "sc_def_display_name");
-    superCharListXTreeWidget.addColumn("Type ID", 45, Qt.AlignCenter, false, "sc_def_data_type_id");
-    superCharListXTreeWidget.addColumn("Type Interal Name", 150, Qt.AlignCenter, false, "sc_def_data_type_internal_name");
-    superCharListXTreeWidget.addColumn("Type", 150, Qt.AlignCenter, true, "sc_def_data_type_display_name");
-    superCharListXTreeWidget.addColumn("Description", 300, Qt.AlignLeft, true, "sc_def_description");
-    superCharListXTreeWidget.addColumn("Sys. Locked?", 25, Qt.AlignCenter, false, "sc_def_is_system_locked");
-    superCharListXTreeWidget.addColumn("LOV", 150, Qt.AlignLeft, false, "sc_def_values_list");
-    superCharListXTreeWidget.addColumn("Package Name", 150, Qt.AlignCenter, false, "sc_def_package_name");
+    superCharListXTreeWidget.addColumn("SuperChar ID", 45, Qt.AlignCenter, false, "scdef_id");
+    superCharListXTreeWidget.addColumn("SuperChar Internal Name", 150, Qt.AlignCenter, false, "scdef_internal_name");
+    superCharListXTreeWidget.addColumn("SuperChar", 150, Qt.AlignCenter, true, "scdef_display_name");
+    superCharListXTreeWidget.addColumn("Type ID", 45, Qt.AlignCenter, false, "scdef_datatype_id");
+    superCharListXTreeWidget.addColumn("Type Interal Name", 150, Qt.AlignCenter, false, "scdef_datatype_internal_name");
+    superCharListXTreeWidget.addColumn("Type", 150, Qt.AlignCenter, true, "scdef_datatype_display_name");
+    superCharListXTreeWidget.addColumn("Description", 300, Qt.AlignLeft, true, "scdef_description");
+    superCharListXTreeWidget.addColumn("Sys. Locked?", 25, Qt.AlignCenter, false, "scdef_is_system_locked");
+    superCharListXTreeWidget.addColumn("LOV", 150, Qt.AlignLeft, false, "scdef_values_list");
+    superCharListXTreeWidget.addColumn("Package Name", 150, Qt.AlignCenter, false, "scdef_package_name");
 
-    assignedGroupsListXTreeWidget.addColumn("Group ID", 45, Qt.AlignCenter, false, "sc_group_id");
-    assignedGroupsListXTreeWidget.addColumn("Group Internal Name", 150, Qt.AlignCenter, false, "sc_group_internal_name");
-    assignedGroupsListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "sc_group_display_name");
-    assignedGroupsListXTreeWidget.addColumn("Group Entities", 300, Qt.AlignCenter, true, "sc_group_entity_display_names");
+    assignedGroupsListXTreeWidget.addColumn("Group ID", 45, Qt.AlignCenter, false, "scgrp_id");
+    assignedGroupsListXTreeWidget.addColumn("Group Internal Name", 150, Qt.AlignCenter, false, "scgrp_internal_name");
+    assignedGroupsListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "scgrp_display_name");
+    assignedGroupsListXTreeWidget.addColumn("Group Entities", 300, Qt.AlignCenter, true, "scgrp_entity_display_names");
 
     listOfValuesXTreeWidget.addColumn("Sort Order",45, Qt.AlignRight, false, "sort_order");
     listOfValuesXTreeWidget.addColumn("Value Text", 150, Qt.AlignCenter, true, "value_text");
 
+    condValXTreeWidget.addColumn("Rule ID", 45, Qt.AlignCenter, false, "condvalrule_id");
+    condValXTreeWidget.addColumn("If SC ID", 45, Qt.AlignCenter, false, "condvalrule_object_scdef_id");
+    condValXTreeWidget.addColumn("If SuperChar", 150, Qt.AlignCenter, false, "condvalrule_object_scdef_display_name");
+    condValXTreeWidget.addColumn("Then SC ID", 45, Qt.AlignCenter, false, "condvalrule_subject_scdef_id");
+    condValXTreeWidget.addColumn("Then SuperChar", 150, Qt.AlignCenter, false, "condvalrule_subject_scdef_display_name");
+    condValXTreeWidget.addColumn("If Val Type", 100, Qt.AlignCenter, false, "condvalrule_if_valtype_display_name");
+    condValXTreeWidget.addColumn("Then Val Type", 100, Qt.AlignCenter, false, "condvalrule_then_valtype_display_name");
+    condValXTreeWidget.addColumn("Validator Description", 500, Qt.AlignLeft, true, "validator_description");
+    condValXTreeWidget.addColumn("User Failure Message", 500, Qt.AlignLeft, true, "condvalrule_fails_message_text");
+
     superCharDataTypeXComboBox.allowNull = true;
     superCharDataTypeXComboBox.nullStr = "-- Select Type --";
     superCharDataTypeXComboBox.populate(
-        "SELECT   data_type_id " +
-                ",data_type_display_name " +
-                ",data_type_internal_name " +
-        "FROM musesuperchar.data_type " +
-        "WHERE data_type_is_active " +
-            "AND data_type_is_user_visible " +
-        "ORDER BY data_type_display_order");
+        "SELECT   datatype_id " +
+                ",datatype_display_name " +
+                ",datatype_internal_name " +
+        "FROM musesuperchar.datatype " +
+        "WHERE datatype_is_active " +
+            "AND datatype_is_user_visible " +
+        "ORDER BY datatype_display_order");
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
@@ -176,36 +191,36 @@ if(!this.MuseSuperChar.Widget) {
         superCharDataTypeXComboBox.setId(-1);
 
         currSc = {
-            sc_def_id: null, 
-            sc_def_internal_name: null, 
-            sc_def_display_name: null, 
-            sc_def_description: null, 
-            sc_def_pkghead_id: null, 
-            sc_def_is_system_locked: null, 
-            sc_def_data_type_id: null, 
-            sc_def_data_type_display_name: null, 
-            sc_def_data_type_internal_name: null, 
-            sc_defdata_type_is_text: null,
-            sc_defdata_type_is_numeric: null,
-            sc_defdata_type_is_date: null,
-            sc_defdata_type_is_flag: null,
-            sc_defdata_type_is_array: null,
-            sc_defdata_type_is_lov_based: null,
-            sc_def_values_list: null, 
-            sc_def_list_query: null, 
-            sc_def_is_searchable: null, 
-            sc_def_package_name: null, 
+            scdef_id: null, 
+            scdef_internal_name: null, 
+            scdef_display_name: null, 
+            scdef_description: null, 
+            scdef_pkghead_id: null, 
+            scdef_is_system_locked: null, 
+            scdef_datatype_id: null, 
+            scdef_datatype_display_name: null, 
+            scdef_datatype_internal_name: null, 
+            scdefdatatype_is_text: null,
+            scdefdatatype_is_numeric: null,
+            scdefdatatype_is_date: null,
+            scdefdatatype_is_flag: null,
+            scdefdatatype_is_array: null,
+            scdefdatatype_is_lov_based: null,
+            scdef_values_list: null, 
+            scdef_list_query: null, 
+            scdef_is_searchable: null, 
+            scdef_package_name: null, 
         };
     };
 
     var isScDataEdited = function() {
-        return descriptionXTextEdit.document.toPlainText() != currSc.sc_def_description ||
-            displayNameXLineEdit.text != currSc.sc_def_display_name ||
-            internalNameXLineEdit.text != currSc.sc_def_internal_name ||
-            isSearchableXCheckBox.checked != currSc.sc_def_is_searchable ||
-            isSystemLockedXCheckBox.checked != currSc.sc_def_is_system_locked ||
-            listQueryXTextEdit.document.toPlainText() != currSc.sc_def_list_query ||
-            superCharDataTypeXComboBox.id() != currSc.sc_def_data_type_id;
+        return descriptionXTextEdit.document.toPlainText() != currSc.scdef_description ||
+            displayNameXLineEdit.text != currSc.scdef_display_name ||
+            internalNameXLineEdit.text != currSc.scdef_internal_name ||
+            isSearchableXCheckBox.checked != currSc.scdef_is_searchable ||
+            isSystemLockedXCheckBox.checked != currSc.scdef_is_system_locked ||
+            listQueryXTextEdit.document.toPlainText() != currSc.scdef_list_query ||
+            superCharDataTypeXComboBox.id() != currSc.scdef_datatype_id;
     };
 
     var isScDataValid = function() {
@@ -218,34 +233,34 @@ if(!this.MuseSuperChar.Widget) {
     var setCurrSc = function(pSuperCharId) {
         currSc = MuseSuperChar.SuperChar.getSuperCharById(pSuperCharId);
 
-        currSc.sc_def_values_list = currSc.sc_def_values_list.split(", ");
+        currSc.scdef_values_list = currSc.scdef_values_list.split(", ");
     };
 
     var setListOfValuesButtons = function() {
-        if(!MuseUtils.isValidId(currSc.sc_def_id)) {
+        if(!MuseUtils.isValidId(currSc.scdef_id)) {
             listOfValuesAddPushButton.enabled = false;
             listOfValuesDeletePushButton.enabled = false;
             listOfValuesMoveDownPushButton.enabled = false;
             listOfValuesMoveUpPushButton.enabled = false;
         } else if(!MuseUtils.isValidId(listOfValuesXTreeWidget.id())) {
             listOfValuesAddPushButton.enabled = true && 
-                (!currSc.sc_def_is_system_locked || 
+                (!currSc.scdef_is_system_locked || 
                     privileges.check("maintainSuperCharSysLockRecsManually"));
             listOfValuesDeletePushButton.enabled = false;
             listOfValuesMoveDownPushButton.enabled = false;
             listOfValuesMoveUpPushButton.enabled = false;
         } else {
             listOfValuesAddPushButton.enabled = true && 
-                (!currSc.sc_def_is_system_locked || 
+                (!currSc.scdef_is_system_locked || 
                     privileges.check("maintainSuperCharSysLockRecsManually"));
             listOfValuesDeletePushButton.enabled = true && 
-                (!currSc.sc_def_is_system_locked || 
+                (!currSc.scdef_is_system_locked || 
                     privileges.check("maintainSuperCharSysLockRecsManually"));
             
             if(listOfValuesXTreeWidget.id() == 1) {
                 listOfValuesMoveDownPushButton.enabled = true;
                 listOfValuesMoveUpPushButton.enabled = false;
-            } else if(listOfValuesXTreeWidget.id() == currSc.sc_def_values_list.length) {
+            } else if(listOfValuesXTreeWidget.id() == currSc.scdef_values_list.length) {
                 listOfValuesMoveDownPushButton.enabled = false;
                 listOfValuesMoveUpPushButton.enabled = true;
             } else
@@ -255,7 +270,7 @@ if(!this.MuseSuperChar.Widget) {
     };
 
     var setCondValButtons = function() {
-        if(!MuseUtils.isValidId(currSc.sc_def_id)) {
+        if(!MuseUtils.isValidId(currSc.scdef_id)) {
             condValAddPushButton.enabled = false;
             condValEditPushButton.enabled = false;
             condValDeletePushButton.enabled = false;
@@ -265,18 +280,25 @@ if(!this.MuseSuperChar.Widget) {
             condValDeletePushButton.enabled = false;
         } else {
             var isCondValEditQualified = 
-                !MuseSuperChar.SuperChar.isValidatorSystemLocked(
+                !MuseSuperChar.CondValRule.isValidatorSystemLocked(
                     condValXTreeWidget.id()) ||
                 privileges.check("maintainSuperCharSysLockRecsManually");
 
             condValAddPushButton.enabled = true;
-            condValEditPushButton.enabled = true && 
-                (!isCondValEditQualified || 
-                    privileges.check("maintainSuperCharSysLockRecsManually"));
-            condValDeletePushButton.enabled = true && 
-                (!isCondValEditQualified || 
-                    privileges.check("maintainSuperCharSysLockRecsManually"));
+            condValEditPushButton.enabled = true && isCondValEditQualified;
+            condValDeletePushButton.enabled = true && isCondValEditQualified;
         }
+    };
+
+    var populateCondValRules = function() {
+        if(!MuseUtils.isValidId(currSc.scdef_id)) {
+            return;
+        }
+
+        condValXTreeWidget.populate(
+            MuseSuperChar.CondValRule.getValidators(
+                {condvalrule_subject_scdef_id: currSc.scdef_id}));
+        setCondValButtons();
     };
 
     var setSelectState = function() {
@@ -317,10 +339,10 @@ if(!this.MuseSuperChar.Widget) {
 
         superCharListXTreeWidget.populate(
             MuseSuperChar.SuperChar.getSuperChars());
-        superCharListXTreeWidget.setId(currSc.sc_def_id);
+        superCharListXTreeWidget.setId(currSc.scdef_id);
 
         var isEditQualified = 
-            !MuseUtils.isTrue(currSc.sc_def_is_system_locked) ||
+            !MuseUtils.isTrue(currSc.scdef_is_system_locked) ||
             privileges.check("maintainSuperCharSysLockRecsManually");
 
         // Enable the GroupBoxes as appropriate
@@ -337,25 +359,25 @@ if(!this.MuseSuperChar.Widget) {
             privileges.check("maintainSuperCharSysLockRecsManually");
         internalNameXLineEdit.enabled = true && 
             privileges.check("maintainSuperCharInternalNames");
-        internalNameXLineEdit.text = currSc.sc_def_internal_name;
+        internalNameXLineEdit.text = currSc.scdef_internal_name;
 
         assignedGroupsListGroupBox.title =  
-            currSc.sc_def_display_name + " Assigned Groups";
+            currSc.scdef_display_name + " Assigned Groups";
         condValGroupBox.title =  
-            currSc.sc_def_display_name + " Conditional Validation";
+            currSc.scdef_display_name + " Conditional Validation";
         superCharSystemValuesGroupBox.title =  
-            currSc.sc_def_display_name + " System Values";
+            currSc.scdef_display_name + " System Values";
         superCharValuesGroupBox.title =  
-            currSc.sc_def_display_name + " Definition";
+            currSc.scdef_display_name + " Definition";
 
         listOfValuesXTreeWidget.clear();
-        if(MuseUtils.isTrue(currSc.sc_defdata_type_is_lov_based)) {
+        if(MuseUtils.isTrue(currSc.scdefdatatype_is_lov_based)) {
             superCharValuesRightGroupBox.enabled = true;
             listQueryXTextEdit.enabled = true && 
                 privileges.check("maintainSuperCharListQuery");
-            for(var i = 0; i < currSc.sc_def_values_list.length; i++) {
+            for(var i = 0; i < currSc.scdef_values_list.length; i++) {
                 new XTreeWidgetItem(listOfValuesXTreeWidget,i+1, -1, i+1,
-                    currSc.sc_def_values_list[i]);
+                    currSc.scdef_values_list[i]);
             }
         } else {
             superCharValuesRightGroupBox.enabled = false;
@@ -364,15 +386,15 @@ if(!this.MuseSuperChar.Widget) {
 
 
         superCharDataTypeXComboBox.enabled = false;
-        superCharDataTypeXComboBox.setId(currSc.sc_def_data_type_id);
+        superCharDataTypeXComboBox.setId(currSc.scdef_datatype_id);
 
         displayNameXLineEdit.enabled = true;
-        displayNameXLineEdit.text = currSc.sc_def_display_name;
+        displayNameXLineEdit.text = currSc.scdef_display_name;
 
-        managingPackageValueXLabel.text = currSc.sc_def_package_name;
+        managingPackageValueXLabel.text = currSc.scdef_package_name;
 
         descriptionXTextEdit.enabled = true;
-        descriptionXTextEdit.setPlainText(currSc.sc_def_description);
+        descriptionXTextEdit.setPlainText(currSc.scdef_description);
 
         assignedGroupsListXTreeWidget.populate(
             MuseSuperChar.SuperChar.getSuperCharGroups(pSuperCharId));
@@ -382,6 +404,7 @@ if(!this.MuseSuperChar.Widget) {
         superCharDeletePushButton.text = "Delete";
         superCharSavePushButton.enabled = false;
         
+        populateCondValRules();
         setListOfValuesButtons();
         setCondValButtons();
     };
@@ -392,9 +415,9 @@ if(!this.MuseSuperChar.Widget) {
         // SuperChar as the currSc will contain all null values.
         if(internalNameXLineEdit.enabled &&
             MuseUtils.coalesce(displayNameXLineEdit.text, "") !== "" &&
-            !MuseUtils.isValidId(currSc.sc_def_id) &&            
+            !MuseUtils.isValidId(currSc.scdef_id) &&            
             displayNameXLineEdit.text != 
-                MuseUtils.coalesce(currSc.sc_def_display_name, "")) {
+                MuseUtils.coalesce(currSc.scdef_display_name, "")) {
 
             internalNameXLineEdit.text = 
                 MuseSuperChar.SuperChar.getDefaultScInternalName(
@@ -404,7 +427,7 @@ if(!this.MuseSuperChar.Widget) {
 
         superCharSavePushButton.enabled =  isScDataEdited() && isScDataValid();
 
-        if(!isScDataEdited() && !MuseUtils.isValidId(currSc.sc_def_id)) {
+        if(!isScDataEdited() && !MuseUtils.isValidId(currSc.scdef_id)) {
             superCharDeletePushButton.text = "Cancel";
         } else if(isScDataEdited()) {
             superCharDeletePushButton.text = "Cancel";
@@ -493,37 +516,37 @@ if(!this.MuseSuperChar.Widget) {
 
         var scData;
 
-        if(!MuseUtils.isValidId(currSc.sc_def_id)) {
+        if(!MuseUtils.isValidId(currSc.scdef_id)) {
             scData = {
-                sc_def_internal_name: internalNameXLineEdit.text,
-                sc_def_display_name: displayNameXLineEdit.text,
-                sc_def_description: descriptionXTextEdit.document.toPlainText(),
-                sc_def_data_type_id: superCharDataTypeXComboBox.id(),
-                sc_def_is_searchable: isSearchableXCheckBox.checked
+                scdef_internal_name: internalNameXLineEdit.text,
+                scdef_display_name: displayNameXLineEdit.text,
+                scdef_description: descriptionXTextEdit.document.toPlainText(),
+                scdef_datatype_id: superCharDataTypeXComboBox.id(),
+                scdef_is_searchable: isSearchableXCheckBox.checked
             };
 
             var newScId = MuseSuperChar.SuperChar.createSuperChar(scData);
 
             setPopulatedState(newScId);
         } else {
-            scData = {sc_def_id: currSc.sc_def_id};
+            scData = {scdef_id: currSc.scdef_id};
 
-            if(internalNameXLineEdit.text != currSc.sc_def_internal_name) {
-                scData.sc_def_internal_name = internalNameXLineEdit.text;    
+            if(internalNameXLineEdit.text != currSc.scdef_internal_name) {
+                scData.scdef_internal_name = internalNameXLineEdit.text;    
             }
 
-            if(displayNameXLineEdit.text != currSc.sc_def_display_name) {
-                scData.sc_def_display_name = displayNameXLineEdit.text;
+            if(displayNameXLineEdit.text != currSc.scdef_display_name) {
+                scData.scdef_display_name = displayNameXLineEdit.text;
             }
 
             if(descriptionXTextEdit.document.toPlainText() != 
-                currSc.sc_def_description) {
-                scData.sc_def_description = 
+                currSc.scdef_description) {
+                scData.scdef_description = 
                     descriptionXTextEdit.document.toPlainText();
             }
 
-            if(isSearchableXCheckBox.checked != currSc.sc_def_is_searchable) {
-                scData.sc_def_is_searchable = isSearchableXCheckBox.checked;
+            if(isSearchableXCheckBox.checked != currSc.scdef_is_searchable) {
+                scData.scdef_is_searchable = isSearchableXCheckBox.checked;
             }
 
             var updatedScId = MuseSuperChar.SuperChar.updateSuperChar(scData);
@@ -542,7 +565,7 @@ if(!this.MuseSuperChar.Widget) {
         var cancelPushButton = dialogButtonBox.button(QDialogButtonBox.Cancel);
 
         okPushButton.clicked.connect(function() {
-            var newLovList = currSc.sc_def_values_list.slice();
+            var newLovList = currSc.scdef_values_list.slice();
             
             if(MuseUtils.coalesce(valueXLineEdit.text,"") === "") {
                 dialogBox.reject();
@@ -553,8 +576,8 @@ if(!this.MuseSuperChar.Widget) {
 
             var scId = MuseSuperChar.SuperChar.updateSuperChar(
                 {
-                    sc_def_id: currSc.sc_def_id, 
-                    sc_def_values_list: JSON.stringify(newLovList)
+                    scdef_id: currSc.scdef_id, 
+                    scdef_values_list: JSON.stringify(newLovList)
                 });
             setPopulatedState(scId);
             dialogBox.accept();
@@ -571,13 +594,13 @@ if(!this.MuseSuperChar.Widget) {
     var deleteLov = function() {
         if(MuseUtils.isValidId(listOfValuesXTreeWidget.id())) {
             var delLovIndex = listOfValuesXTreeWidget.id() - 1;
-            var newLovList = currSc.sc_def_values_list.slice();
+            var newLovList = currSc.scdef_values_list.slice();
             newLovList.splice(delLovIndex, 1);
 
             var scId = MuseSuperChar.SuperChar.updateSuperChar(
                 {
-                    sc_def_id: currSc.sc_def_id, 
-                    sc_def_values_list: JSON.stringify(newLovList)
+                    scdef_id: currSc.scdef_id, 
+                    scdef_values_list: JSON.stringify(newLovList)
                 });
 
             setPopulatedState(scId);
@@ -589,21 +612,119 @@ if(!this.MuseSuperChar.Widget) {
     var moveLovValue = function(pMoveDirection) {
         if(MuseUtils.isValidId(listOfValuesXTreeWidget.id())) {
             var moveLovIndex = listOfValuesXTreeWidget.id() - 1;
-            var movingValue = currSc.sc_def_values_list[moveLovIndex];
-            var newLovList = currSc.sc_def_values_list.slice();
+            var movingValue = currSc.scdef_values_list[moveLovIndex];
+            var newLovList = currSc.scdef_values_list.slice();
             newLovList.splice(moveLovIndex, 1);
             newLovList.splice(moveLovIndex + pMoveDirection, 0, movingValue);
 
             var scId = MuseSuperChar.SuperChar.updateSuperChar(
                 {
-                    sc_def_id: currSc.sc_def_id, 
-                    sc_def_values_list: JSON.stringify(newLovList)
+                    scdef_id: currSc.scdef_id, 
+                    scdef_values_list: JSON.stringify(newLovList)
                 });
 
             setPopulatedState(scId);
         }
 
         return;
+    };
+
+    var valRuleDialog = function(pMode) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pMode: pMode
+        };
+        
+        var dialogBox;
+
+        try {
+            dialogBox = toolbox.openWindow("museScCreateCondValRule", mywindow,
+                Qt.WindowModal);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to display and process the new conditional validation rule form.",
+                "MuseSuperChar.SuperCharMaint.addValRule",
+                {params: funcParams, thrownError: e});
+        }
+
+        if(pMode == "new") {
+            if(MuseUtils.isValidId(currSc.scdef_id)) {
+                toolbox.lastWindow().set(
+                {
+                    subject_scdef_id: currSc.scdef_id,
+                    mode: "new"
+                });
+            } else {
+                toolbox.lastWindow().set({mode: "new"});
+            }
+        } else if(pMode == "edit") {
+            var editValRuleId = condValXTreeWidget.id();
+            if(MuseUtils.isValidId(editValRuleId)) {
+                toolbox.lastWindow().set(
+                {
+                    condvalrule_id: editValRuleId,
+                    mode: "edit"
+                });
+            } else {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We could not tell which Conditional Validation Rule you wished to edit.",
+                    "MuseSuperChar.SuperCharMaint.valRuleDialog",
+                    {params: funcParams});
+            }
+        } else if(pMode == "view") {
+            var viewValRuleId = condValXTreeWidget.id();
+            if(MuseUtils.isValidId(viewValRuleId)) {
+                toolbox.lastWindow().set(
+                {
+                    convalrule_id: viewValRuleId,
+                    mode: "view"
+                });
+            } else {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We could not tell which Conditional Validation Rule you wished to view.",
+                    "MuseSuperChar.SuperCharMaint.valRuleDialog",
+                    {params: funcParams});
+            }
+        } else {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We did not understand in which mode we should open the Conditional Validation Rule dialog box.",
+                "MuseSuperChar.SuperCharMaint.valRuleDialog",
+                {params: funcParams});
+        }
+
+        dialogBox.exec();
+    };
+
+    var addValRule = function() {
+        valRuleDialog("new");
+        populateCondValRules();
+    };
+
+    var editValRule = function() {
+        valRuleDialog("edit");
+        populateCondValRules();
+    };
+
+    var deleteValRule = function() {
+        var condValRuleId = condValXTreeWidget.id();
+        if(!MuseUtils.isValidId(condValRuleId)) {
+            return;
+        }
+
+        try {
+            MuseSuperChar.CondValRule.deleteValidator(condValRuleId);
+            populateCondValRules();
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We received an error response trying to delete Conditional Validation Rule.",
+                "MuseSuperChar.SuperCharMaint.deleteValRule",
+                {params: funcParams, thrownError: e});
+        }
     };
  
     //--------------------------------------------------------------------
@@ -640,12 +761,12 @@ if(!this.MuseSuperChar.Widget) {
 
     pPublicApi.sCancelSc = function() {
         try {
-            if(MuseUtils.isValidId(currSc.sc_def_id) && 
+            if(MuseUtils.isValidId(currSc.scdef_id) && 
                 superCharDeletePushButton.text == "Cancel") {
-                setPopulatedState(currSc.sc_def_id);
-            } else if(MuseUtils.isValidId(currSc.sc_def_id) && 
+                setPopulatedState(currSc.scdef_id);
+            } else if(MuseUtils.isValidId(currSc.scdef_id) && 
                 superCharDeletePushButton.text == "Delete") {
-                deleteSuperChar(currSc.sc_def_id);
+                deleteSuperChar(currSc.scdef_id);
                 setSelectState();
             } else {
                 setSelectState();
@@ -703,6 +824,38 @@ if(!this.MuseSuperChar.Widget) {
         }
     };
 
+    pPublicApi.sAddValRule = function() {
+        try {
+            addValRule();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
+    pPublicApi.sEditValRule = function() {
+        try {
+            editValRule();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
+    pPublicApi.sDeleteValRule = function() {
+        try {
+            deleteValRule();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
+    pPublicApi.sCondValRuleSelected = function() {
+        try {
+            setCondValButtons();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
     try {
         //--------------------------------------------------------------------
         //  Initialization Logic Setup 
@@ -719,6 +872,8 @@ if(!this.MuseSuperChar.Widget) {
             pPublicApi.sSuperCharSelected);
         listOfValuesXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sLovValueSelected);
+        condValXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
+            pPublicApi.sCondValRuleSelected);
 
         superCharAddPushButton.clicked.connect(pPublicApi.sAddSc);
         superCharSavePushButton.clicked.connect(pPublicApi.sSaveSc);
@@ -728,6 +883,10 @@ if(!this.MuseSuperChar.Widget) {
         listOfValuesDeletePushButton.clicked.connect(pPublicApi.sDeleteLov);
         listOfValuesMoveDownPushButton.clicked.connect(pPublicApi.sMoveDownLovValue);
         listOfValuesMoveUpPushButton.clicked.connect(pPublicApi.sMoveUpLovValue);
+
+        condValAddPushButton.clicked.connect(pPublicApi.sAddValRule);
+        condValEditPushButton.clicked.connect(pPublicApi.sEditValRule);
+        condValDeletePushButton.clicked.connect(pPublicApi.sDeleteValRule);
 
         descriptionXTextEdit["textChanged()"].connect(pPublicApi.sFieldsUpdated);
         listQueryXTextEdit["textChanged()"].connect(pPublicApi.sFieldsUpdated);

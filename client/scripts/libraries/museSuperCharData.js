@@ -51,91 +51,91 @@ if(!this.MuseUtils) {
         var whereClause = "WHERE true ";
 
         if(!MuseUtils.isTrue(pParams.isInactiveIncluded || false)) {
-            whereClause = whereClause + " AND sc_def_is_active ";
+            whereClause = whereClause + " AND scdef_is_active ";
         }
         
-        if(pParams.hasOwnProperty("sc_def_id")) {
-            whereClause = whereClause + 'AND sc_def_id = ' +
-                '<? value("sc_def_id") ?> ';
+        if(pParams.hasOwnProperty("scdef_id")) {
+            whereClause = whereClause + 'AND scdef_id = ' +
+                '<? value("scdef_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_internal_name")) {
-            whereClause = whereClause + 'AND sc_def_internal_name = ' +
-                '<? value("sc_def_internal_name") ?> ';
+        if(pParams.hasOwnProperty("scdef_internal_name")) {
+            whereClause = whereClause + 'AND scdef_internal_name = ' +
+                '<? value("scdef_internal_name") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_display_name")) {
-            whereClause = whereClause + 'AND sc_def_display_name = ' +
-                '<? value("sc_def_display_name") ?> ';
+        if(pParams.hasOwnProperty("scdef_display_name")) {
+            whereClause = whereClause + 'AND scdef_display_name = ' +
+                '<? value("scdef_display_name") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_pkghead_id")) {
-            whereClause = whereClause + 'AND sc_def_pkghead_id = ' +
-                '<? value("sc_def_pkghead_id") ?> ';
+        if(pParams.hasOwnProperty("scdef_pkghead_id")) {
+            whereClause = whereClause + 'AND scdef_pkghead_id = ' +
+                '<? value("scdef_pkghead_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_is_system_locked")) {
-            whereClause = whereClause + 'AND sc_def_is_system_locked = ' +
-                '<? value("sc_def_is_system_locked") ?> ';
+        if(pParams.hasOwnProperty("scdef_is_system_locked")) {
+            whereClause = whereClause + 'AND scdef_is_system_locked = ' +
+                '<? value("scdef_is_system_locked") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_data_type_id")) {
-            whereClause = whereClause + 'AND sc_def_data_type_id = ' +
-                '<? value("sc_def_data_type_id") ?> ';
+        if(pParams.hasOwnProperty("scdef_datatype_id")) {
+            whereClause = whereClause + 'AND scdef_datatype_id = ' +
+                '<? value("scdef_datatype_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_is_searchable")) {
-            whereClause = whereClause + 'AND sc_def_is_searchable = ' +
-                '<? value("sc_def_is_searchable") ?> ';
+        if(pParams.hasOwnProperty("scdef_is_searchable")) {
+            whereClause = whereClause + 'AND scdef_is_searchable = ' +
+                '<? value("scdef_is_searchable") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_def_sc_group_ass_sc_group_id")) {
-            whereClause = whereClause + 'AND sc_def_sc_group_ass_sc_group_id = ' +
-                '<? value("sc_def_sc_group_ass_sc_group_id") ?> ';
+        if(pParams.hasOwnProperty("scdef_scgrp_ass_scgrp_id")) {
+            whereClause = whereClause + 'AND scdef_scgrp_ass_scgrp_id = ' +
+                '<? value("scdef_scgrp_ass_scgrp_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("entity_sc_group_ass_entity_id")) {
-            whereClause = whereClause + 'AND entity_sc_group_ass_entity_id = ' +
-                '<? value("entity_sc_group_ass_entity_id") ?> ';
+        if(pParams.hasOwnProperty("entity_scgrp_ass_entity_id")) {
+            whereClause = whereClause + 'AND entity_scgrp_ass_entity_id = ' +
+                '<? value("entity_scgrp_ass_entity_id") ?> ';
         }
 
         try {
             return MuseUtils.executeQuery(
-                "SELECT   DISTINCT sc_def_id " +
-                        ",sc_def_internal_name " +
-                        ",sc_def_display_name " +
-                        ",sc_def_description " +
-                        ",sc_def_pkghead_id " +
-                        ",sc_def_is_system_locked " +
-                        ",data_type_id AS sc_def_data_type_id " +
-                        ",data_type_display_name AS sc_def_data_type_display_name " +
-                        ",data_type_internal_name AS sc_def_data_type_internal_name " +
-                        ",data_type_is_text AS sc_defdata_type_is_text" +
-                        ",data_type_is_numeric AS sc_defdata_type_is_numeric" +
-                        ",data_type_is_date AS sc_defdata_type_is_date" +
-                        ",data_type_is_flag AS sc_defdata_type_is_flag" +
-                        ",data_type_is_array AS sc_defdata_type_is_array" +
-                        ",data_type_is_lov_based AS sc_defdata_type_is_lov_based" +
-                        ",array_to_string(sc_def_values_list, ', ') AS sc_def_values_list " +
-                        ",sc_def_list_query " +
-                        ",sc_def_is_searchable " +
-                        ",pkghead_name AS sc_def_package_name " +
+                "SELECT   DISTINCT scdef_id " +
+                        ",scdef_internal_name " +
+                        ",scdef_display_name " +
+                        ",scdef_description " +
+                        ",scdef_pkghead_id " +
+                        ",scdef_is_system_locked " +
+                        ",datatype_id AS scdef_datatype_id " +
+                        ",datatype_display_name AS scdef_datatype_display_name " +
+                        ",datatype_internal_name AS scdef_datatype_internal_name " +
+                        ",datatype_is_text AS scdefdatatype_is_text" +
+                        ",datatype_is_numeric AS scdefdatatype_is_numeric" +
+                        ",datatype_is_date AS scdefdatatype_is_date" +
+                        ",datatype_is_flag AS scdefdatatype_is_flag" +
+                        ",datatype_is_array AS scdefdatatype_is_array" +
+                        ",datatype_is_lov_based AS scdefdatatype_is_lov_based" +
+                        ",array_to_string(scdef_values_list, ', ') AS scdef_values_list " +
+                        ",scdef_list_query " +
+                        ",scdef_is_searchable " +
+                        ",pkghead_name AS scdef_package_name " +
                         ",CASE " +
-                                "WHEN sc_def_is_system_locked THEN " +
+                                "WHEN scdef_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
-                            " END AS sc_def_display_name_qtbackgroundrole " +
-                "FROM    musesuperchar.sc_def " +
-                    "JOIN musesuperchar.data_type " +
-                        "ON sc_def_data_type_id = data_type_id " +
+                            " END AS scdef_display_name_qtbackgroundrole " +
+                "FROM    musesuperchar.scdef " +
+                    "JOIN musesuperchar.datatype " +
+                        "ON scdef_datatype_id = datatype_id " +
                     "LEFT OUTER JOIN public.pkghead " +
-                        "ON sc_def_pkghead_id = pkghead_id  " +
-                    "LEFT OUTER JOIN musesuperchar.sc_def_sc_group_ass " +
-                        "ON sc_def_id = sc_def_sc_group_ass_sc_def_id " +
-                    "LEFT OUTER JOIN musesuperchar.entity_sc_group_ass " +
-                        "ON sc_def_sc_group_ass_sc_group_id = " +
-                            "entity_sc_group_ass_sc_group_id " +
+                        "ON scdef_pkghead_id = pkghead_id  " +
+                    "LEFT OUTER JOIN musesuperchar.scdef_scgrp_ass " +
+                        "ON scdef_id = scdef_scgrp_ass_scdef_id " +
+                    "LEFT OUTER JOIN musesuperchar.entity_scgrp_ass " +
+                        "ON scdef_scgrp_ass_scgrp_id = " +
+                            "entity_scgrp_ass_scgrp_id " +
                 whereClause, pParams);
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -155,12 +155,12 @@ if(!this.MuseUtils) {
         try {
             var scQuery = getSuperChars(
                 {
-                    sc_def_id: pSuperCharId,
+                    scdef_id: pSuperCharId,
                     isInactiveIncluded: true
                 });
 
             if(!scQuery.first() || 
-                !MuseUtils.isValidId(scQuery.value("sc_def_id"))) {
+                !MuseUtils.isValidId(scQuery.value("scdef_id"))) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
                     "We did not find the requested Super Characteristic.",
@@ -186,14 +186,14 @@ if(!this.MuseUtils) {
 
         try {
             var scQuery = MuseUtils.executeQuery(
-                "SELECT sc_def_is_system_locked " +
-                "FROM   musesuperchar.sc_def " +
-                'WHERE sc_def_id = <? value("pSuperCharId") ?> ',
+                "SELECT scdef_is_system_locked " +
+                "FROM   musesuperchar.scdef " +
+                'WHERE scdef_id = <? value("pSuperCharId") ?> ',
                 {pSuperCharId: pSuperCharId});
 
             if(scQuery.first()) {
                 return MuseUtils.isTrue(
-                    scQuery.value("sc_def_is_system_locked"));
+                    scQuery.value("scdef_is_system_locked"));
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -219,7 +219,7 @@ if(!this.MuseUtils) {
         try {
             return getSuperChars(
                 {
-                    sc_def_sc_group_ass_sc_group_id: pGroupId
+                    scdef_scgrp_ass_scgrp_id: pGroupId
                 });
         } catch(e) {
             throw new MuseUtils.ApiException(
@@ -239,7 +239,7 @@ if(!this.MuseUtils) {
         try {
             return getSuperChars(
                 {
-                    entity_sc_group_ass_entity_id: pEntityId
+                    entity_scgrp_ass_entity_id: pEntityId
                 });
         } catch(e) {
             throw new MuseUtils.ApiException(
@@ -292,21 +292,21 @@ if(!this.MuseUtils) {
         
         try {
             var scQuery = MuseUtils.executeQuery(
-                "INSERT INTO musesuperchar.sc_def " +
-                    "(sc_def_internal_name, sc_def_display_name, " +
-                        "sc_def_description, sc_def_data_type_id, " +
-                        "sc_def_is_searchable) " +
+                "INSERT INTO musesuperchar.scdef " +
+                    "(scdef_internal_name, scdef_display_name, " +
+                        "scdef_description, scdef_datatype_id, " +
+                        "scdef_is_searchable) " +
                         "VALUES " +
-                    '( <? value("sc_def_internal_name") ?> ' +
-                     ',<? value("sc_def_display_name") ?> '  +
-                     ',<? value("sc_def_description") ?> ' +
-                     ',<? value("sc_def_data_type_id") ?> ' +
-                     ',<? value("sc_def_is_searchable") ?>) ' +
-                     "RETURNING sc_def_id ",
+                    '( <? value("scdef_internal_name") ?> ' +
+                     ',<? value("scdef_display_name") ?> '  +
+                     ',<? value("scdef_description") ?> ' +
+                     ',<? value("scdef_datatype_id") ?> ' +
+                     ',<? value("scdef_is_searchable") ?>) ' +
+                     "RETURNING scdef_id ",
                      pSuperCharData);
 
             if (!scQuery.first() || 
-                !MuseUtils.isValidId(scQuery.value("sc_def_id"))) {
+                !MuseUtils.isValidId(scQuery.value("scdef_id"))) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
                     "We did not verify that we successfully created the Super Characteristic as requested.",
@@ -314,7 +314,7 @@ if(!this.MuseUtils) {
                     {params: funcParams});
             }
 
-            return scQuery.value("sc_def_id");
+            return scQuery.value("scdef_id");
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
@@ -331,79 +331,79 @@ if(!this.MuseUtils) {
         };
 
         var updateColumns = [];
-        var queryText = "UPDATE musesuperchar.sc_def SET ";
+        var queryText = "UPDATE musesuperchar.scdef SET ";
 
-        if (pSuperCharData.hasOwnProperty("sc_def_id")) {
+        if (pSuperCharData.hasOwnProperty("scdef_id")) {
             updateColumns.push(
-                'sc_def_id = ' +
-                    '<? value("sc_def_id") ?> ');
+                'scdef_id = ' +
+                    '<? value("scdef_id") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_internal_name")) {
+        if (pSuperCharData.hasOwnProperty("scdef_internal_name")) {
             updateColumns.push(
-                'sc_def_internal_name = ' +
-                    '<? value("sc_def_internal_name") ?> ');
+                'scdef_internal_name = ' +
+                    '<? value("scdef_internal_name") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_display_name")) {
+        if (pSuperCharData.hasOwnProperty("scdef_display_name")) {
             updateColumns.push(
-                'sc_def_display_name = ' +
-                    '<? value("sc_def_display_name") ?> ');
+                'scdef_display_name = ' +
+                    '<? value("scdef_display_name") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_description")) {
+        if (pSuperCharData.hasOwnProperty("scdef_description")) {
             updateColumns.push(
-                'sc_def_description = ' +
-                    '<? value("sc_def_description") ?> ');
+                'scdef_description = ' +
+                    '<? value("scdef_description") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_is_system_locked")) {
+        if (pSuperCharData.hasOwnProperty("scdef_is_system_locked")) {
             updateColumns.push(
-                'sc_def_is_system_locked = ' +
-                    '<? value("sc_def_is_system_locked") ?> ');
+                'scdef_is_system_locked = ' +
+                    '<? value("scdef_is_system_locked") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_data_type_id")) {
+        if (pSuperCharData.hasOwnProperty("scdef_datatype_id")) {
             updateColumns.push(
-                'sc_def_data_type_id = ' +
-                    '<? value("sc_def_data_type_id") ?> ');
+                'scdef_datatype_id = ' +
+                    '<? value("scdef_datatype_id") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_values_list")) {
+        if (pSuperCharData.hasOwnProperty("scdef_values_list")) {
             updateColumns.push(
-                'sc_def_values_list = ' +
-                    'translate(<? value("sc_def_values_list") ?>, ' +
+                'scdef_values_list = ' +
+                    'translate(<? value("scdef_values_list") ?>, ' +
                         "'[]', '{}')::text[] ");
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_list_query")) {
+        if (pSuperCharData.hasOwnProperty("scdef_list_query")) {
             updateColumns.push(
-                'sc_def_list_query = ' +
-                    '<? value("sc_def_list_query") ?> ');
+                'scdef_list_query = ' +
+                    '<? value("scdef_list_query") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_is_searchable")) {
+        if (pSuperCharData.hasOwnProperty("scdef_is_searchable")) {
             updateColumns.push(
-                'sc_def_is_searchable = ' +
-                    '<? value("sc_def_is_searchable") ?> ');
+                'scdef_is_searchable = ' +
+                    '<? value("scdef_is_searchable") ?> ');
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_is_active")) {
+        if (pSuperCharData.hasOwnProperty("scdef_is_active")) {
             updateColumns.push(
-                'sc_def_is_active = ' +
-                    '<? value("sc_def_is_active") ?> ');
+                'scdef_is_active = ' +
+                    '<? value("scdef_is_active") ?> ');
         }
 
         try {
             queryText = queryText + updateColumns.join(', ') +
-                ' WHERE sc_def_id = <? value("sc_def_id") ?> ' +
-                'RETURNING sc_def_id';
+                ' WHERE scdef_id = <? value("scdef_id") ?> ' +
+                'RETURNING scdef_id';
 
             var scQuery = MuseUtils.executeQuery(queryText, pSuperCharData);
 
             if(scQuery.first() && 
-                MuseUtils.isValidId(scQuery.value("sc_def_id"))) {
-                return scQuery.value("sc_def_id");
+                MuseUtils.isValidId(scQuery.value("scdef_id"))) {
+                return scQuery.value("scdef_id");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -418,7 +418,6 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.SuperChar.updateSuperChar",
                 {params: funcParams, thrownError: e});
         }
-
     };
 
     var deleteSuperChar = function(pSuperCharId) {
@@ -429,14 +428,14 @@ if(!this.MuseUtils) {
         
         try {
             var scQuery = MuseUtils.executeQuery(
-                "DELETE FROM musesuperchar.sc_def " +
-                'WHERE sc_def_id = <? value("pSuperCharId") ?> ' +
-                "RETURNING sc_def_id",
+                "DELETE FROM musesuperchar.scdef " +
+                'WHERE scdef_id = <? value("pSuperCharId") ?> ' +
+                "RETURNING scdef_id",
                 {pSuperCharId: pSuperCharId});
 
             if(scQuery.first() && 
-                MuseUtils.isValidId(scQuery.value("sc_def_id"))) {
-                return scQuery.value("sc_def_id");
+                MuseUtils.isValidId(scQuery.value("scdef_id"))) {
+                return scQuery.value("scdef_id");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -461,27 +460,27 @@ if(!this.MuseUtils) {
         
         try {
             return MuseUtils.executeQuery(
-                "SELECT   sg.sc_group_id " +
-                        ",sg.sc_group_internal_name " +
-                        ",sg.sc_group_display_name " +
-                        ",array_agg(e.entity_id) AS sc_group_entity_ids " +
-                        ",string_agg(e.entity_display_name,', ') AS sc_group_entity_display_names " +
-                "FROM    musesuperchar.sc_def_sc_group_ass sdsga  " +
-                    "JOIN musesuperchar.sc_group sg  " +
-                        "ON sdsga.sc_def_sc_group_ass_sc_group_id = sg.sc_group_id  " +
-                            "AND sg.sc_group_is_active " +
-                    "LEFT OUTER JOIN musesuperchar.entity_sc_group_ass esga  " +
-                        "ON sg.sc_group_id = esga.entity_sc_group_ass_sc_group_id " +
-                            "AND esga.entity_sc_group_ass_is_active " +
+                "SELECT   sg.scgrp_id " +
+                        ",sg.scgrp_internal_name " +
+                        ",sg.scgrp_display_name " +
+                        ",array_agg(e.entity_id) AS scgrp_entity_ids " +
+                        ",string_agg(e.entity_display_name,', ') AS scgrp_entity_display_names " +
+                "FROM    musesuperchar.scdef_scgrp_ass sdsga  " +
+                    "JOIN musesuperchar.scgrp sg  " +
+                        "ON sdsga.scdef_scgrp_ass_scgrp_id = sg.scgrp_id  " +
+                            "AND sg.scgrp_is_active " +
+                    "LEFT OUTER JOIN musesuperchar.entity_scgrp_ass esga  " +
+                        "ON sg.scgrp_id = esga.entity_scgrp_ass_scgrp_id " +
+                            "AND esga.entity_scgrp_ass_is_active " +
                     "LEFT OUTER JOIN musesuperchar.entity e  " +
-                        "ON esga.entity_sc_group_ass_entity_id = e.entity_id " +
+                        "ON esga.entity_scgrp_ass_entity_id = e.entity_id " +
                             "AND e.entity_is_active " +
-                "WHERE   sdsga.sc_def_sc_group_ass_is_active " +
-                    'AND sdsga.sc_def_sc_group_ass_sc_def_id = ' +
+                "WHERE   sdsga.scdef_scgrp_ass_is_active " +
+                    'AND sdsga.scdef_scgrp_ass_scdef_id = ' +
                                 '<? value("pSuperCharId") ?> ' +
-                "GROUP BY  sg.sc_group_id " +
-                         ",sg.sc_group_internal_name " +
-                         ",sg.sc_group_display_name ",
+                "GROUP BY  sg.scgrp_id " +
+                         ",sg.scgrp_internal_name " +
+                         ",sg.scgrp_display_name ",
                 {pSuperCharId: pSuperCharId});
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -492,39 +491,7 @@ if(!this.MuseUtils) {
         }
     };
 
-    var isValidatorSystemLocked = function(pValidatorId) {
-        // Capture function parameters for later exception references.
-        var funcParams = {
-            pValidatorId: pValidatorId
-        };
 
-        try {
-            var condValQuery = MuseUtils.executeQuery(
-                "SELECT conditional_validation_rule_is_system_locked " +
-                "FROM  musesuperchar.conditional_validation_rule cvr " +
-                "WHERE conditional_validation_rule_id = " +
-                    '<? value("pValidatorId") ?> ',
-                    {pValidatorId: pValidatorId});
-
-            if(condValQuery.first()) {
-                return MuseUtils.isTrue(condValQuery.value(
-                    "conditional_validation_rule_is_system_locked"));
-            } else {
-                throw new MuseUtils.NotFoundException(
-                    "musesuperchar",
-                    "We did not find the requested conditional validation rule while trying to check if it was system locked.",
-                    "MuseSuperChar.SuperChar.isValidatorSystemLocked",
-                    {params: funcParams});
-            }
-        } catch(e) {
-            throw new MuseUtils.DatabaseException(
-                "musesuperchar",
-                "We encountered a problem trying to find if a conditional validator was system locked or not.",
-                "MuseSuperChar.SuperChar.isValidatorSystemLocked",
-                {params: funcParams, thrownError: e});
-        }
-        
-    };
 
     var getDefaultScInternalName = function(pDisplayName) {
         // Capture function parameters for later exception references.
@@ -573,6 +540,77 @@ if(!this.MuseUtils) {
                 "musesuperchar",
                 "We encountered a problem trying to retrieve Super Characteristic delete validator violations.",
                 "MuseSuperChar.SuperChar.getSuperCharDeleteViolations",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getSuperCharList = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+        
+        try {
+            if(MuseUtils.isValidId(pSuperCharId)) {
+                return MuseUtils.executeQuery(
+                    "SELECT     scdef_id " +
+                              ",scdef_display_name " +
+                              ",scdef_internal_name " +
+                    "FROM   musesuperchar.scdef " +
+                    'WHERE  scdef_id = <? value("pSuperCharId") ?> ',
+                    {pSuperCharId: pSuperCharId});
+            } else {
+                return MuseUtils.executeQuery(
+                    "SELECT     scdef_id " +
+                              ",scdef_display_name " +
+                              ",scdef_internal_name " +
+                    "FROM   musesuperchar.scdef " +
+                    "WHERE  scdef_is_active " +
+                    "ORDER BY scdef_display_name ");
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem retrieving a simple list of Super Characteristics.",
+                "MuseSuperChar.SuperChar.getSuperCharList",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getValidatorTypesForSuperChar = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+
+        try {
+            return MuseUtils.executeQuery(
+                "SELECT   vt.valtype_id " +
+                        ",vt.valtype_display_name " +
+                        ",vt.valtype_internal_name " +
+                "FROM    musesuperchar.scdef sd " +
+                    "JOIN musesuperchar.datatype dt " +
+                        "ON sd.scdef_datatype_id = dt.datatype_id " +
+                    "JOIN musesuperchar.valtype vt " +
+                        "ON  (dt.datatype_is_text = vt.valtype_is_text " +
+                                "AND dt.datatype_is_text = true) " +
+                        "OR (dt.datatype_is_numeric = vt.valtype_is_numeric " +
+                                "AND dt.datatype_is_numeric = true) " +
+                        "OR (dt.datatype_is_date = vt.valtype_is_date " +
+                                "AND dt.datatype_is_date = true) " +
+                        "OR (dt.datatype_is_flag = vt.valtype_is_flag " +
+                                "AND dt.datatype_is_flag = true) " +
+                'WHERE  scdef_id = <? value("pSuperCharId") ?> ' +
+                    "AND vt.valtype_is_active " +
+                    "AND vt.valtype_is_user_visible " +
+                "ORDER BY vt.valtype_display_order ",
+                {pSuperCharId: pSuperCharId});
+
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem retrieving the list of available validator types for the requested Super Characteristic/",
+                "MuseSuperChar.SuperChar.getValidatorTypesForSuperChar",
                 {params: funcParams, thrownError: e});
         }
     };
@@ -651,6 +689,15 @@ if(!this.MuseUtils) {
 
         return getSuperCharsByEntityId(pEntityId);
     };
+
+    pPublicApi.getSuperCharList = function(pSuperCharId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pSuperCharId: pSuperCharId
+        };
+
+        return getSuperCharList(pSuperCharId);
+    };
     
     pPublicApi.createSuperChar = function(pSuperCharData) {
         // Capture function parameters for later exception references.
@@ -666,8 +713,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pSuperCharData.hasOwnProperty("sc_def_internal_name") ||
-            MuseUtils.coalesce(pSuperCharData.sc_def_internal_name,"") === "") {
+        if(!pSuperCharData.hasOwnProperty("scdef_internal_name") ||
+            MuseUtils.coalesce(pSuperCharData.scdef_internal_name,"") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We require an internal name for the Super Characteristic and did not receive one.",
@@ -675,8 +722,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pSuperCharData.hasOwnProperty("sc_def_display_name") ||
-            MuseUtils.coalesce(pSuperCharData.sc_def_display_name,"") === "") {
+        if(!pSuperCharData.hasOwnProperty("scdef_display_name") ||
+            MuseUtils.coalesce(pSuperCharData.scdef_display_name,"") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We require a display name for the Super Characteristic and did not receive one.",
@@ -684,8 +731,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pSuperCharData.hasOwnProperty("sc_def_description") ||
-            MuseUtils.coalesce(pSuperCharData.sc_def_description,"") === "") {
+        if(!pSuperCharData.hasOwnProperty("scdef_description") ||
+            MuseUtils.coalesce(pSuperCharData.scdef_description,"") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We require a description of the Super Characteristic and did not receive one.",
@@ -693,8 +740,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pSuperCharData.hasOwnProperty("sc_def_data_type_id") ||
-            !MuseUtils.isValidId(pSuperCharData.sc_def_data_type_id)) {
+        if(!pSuperCharData.hasOwnProperty("scdef_datatype_id") ||
+            !MuseUtils.isValidId(pSuperCharData.scdef_datatype_id)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "New Super Characteristics must identify a valid data type and we did not understand which to use in from your request.",
@@ -702,8 +749,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        pSuperCharData.sc_def_is_searchable = MuseUtils.isTrue(
-            MuseUtils.coalesce(pSuperCharData.sc_def_is_searchable, false));
+        pSuperCharData.scdef_is_searchable = MuseUtils.isTrue(
+            MuseUtils.coalesce(pSuperCharData.scdef_is_searchable, false));
 
         return createSuperChar(pSuperCharData);
     };
@@ -714,8 +761,8 @@ if(!this.MuseUtils) {
             pSuperCharData: pSuperCharData
         };
         
-        if (!pSuperCharData.hasOwnProperty("sc_def_id") || 
-            !MuseUtils.isValidId(pSuperCharData.sc_def_id)) {
+        if (!pSuperCharData.hasOwnProperty("scdef_id") || 
+            !MuseUtils.isValidId(pSuperCharData.scdef_id)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand which Super Characteristic you wished to update.",
@@ -729,7 +776,7 @@ if(!this.MuseUtils) {
                 "You do not have permission to update Super Characteristics.",
                 "MuseSuperChar.SuperChar.pPublicApi.updateSuperChar",
                 {params: funcParams});
-        } else if (isSuperCharSystemLocked(pSuperCharData.sc_def_id) && 
+        } else if (isSuperCharSystemLocked(pSuperCharData.scdef_id) && 
             !privileges.check("maintainSuperCharSysLockRecsManually")) {
             throw new MuseUtils.PermissionException(
                 "musesuperchar",
@@ -738,7 +785,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if (pSuperCharData.hasOwnProperty("sc_def_internal_name") &&
+        if (pSuperCharData.hasOwnProperty("scdef_internal_name") &&
             !privileges.check("maintainSuperCharInternalNames")) {
             throw new MuseUtils.PermissionException(
                 "musesuperchar",
@@ -819,21 +866,21 @@ if(!this.MuseUtils) {
 
     };
 
-    pPublicApi.isValidatorSystemLocked = function(pValidatorId) {
+    pPublicApi.getValidatorTypesForSuperChar = function(pSuperCharId) {
         // Capture function parameters for later exception references.
         var funcParams = {
-            pValidatorId: pValidatorId
+            pSuperCharId: pSuperCharId
         };
         
-        if(!MuseUtils.isValidId(pValidatorId)) {
+        if(!MuseUtils.isValidId(pSuperCharId)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
-                "We did not understand which validator need checking for being systems locked.",
-                "MuseSuperChar.SuperChar.pPublicApi.isValidatorSystemLocked",
+                "We did not understand for which Super Characteristic we should retrieve validation types.",
+                "MuseSuperChar.SuperChar.pPublicApi.getValidatorTypesForSuperChar",
                 {params: funcParams});
         }
 
-        return isValidatorSystemLocked(pValidatorId);
+        return getValidatorTypesForSuperChar(pSuperCharId);
     };
 
     pPublicApi.getSubjectObjectNonOverlappingEntities = function(pSubjectScId, 
@@ -878,18 +925,6 @@ if(!this.MuseUtils) {
         }
         
         return getSuperCharDeleteViolations(pSuperCharId);
-    };
-
-    pPublicApi.createValidator = function(pValidatorData) {
-
-    };
-
-    pPublicApi.updateValidator = function(pValidatorData) {
-
-    };
-
-    pPublicApi.deleteValidator = function(pValidatorId) {
-
     };
 
     pPublicApi.getDefaultScInternalName = function(pDisplayName) {
