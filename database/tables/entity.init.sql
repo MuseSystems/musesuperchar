@@ -64,7 +64,7 @@ DO
                     $DOC$A non-technical name to display in user interfaces.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.entity.entity_is_system_locked IS
-                    $DOC$When this value is true, this entity is not managable via the user interface.  It must be managed via its installing package (see entity_package for the managing package).$DOC$;
+                    $DOC$When this value is true, this entity is not managable via the user interface.  It must be managed via its installing package (see entitypkg for the managing package).$DOC$;
 
 
                 -- Let's now add the audit columns and triggers

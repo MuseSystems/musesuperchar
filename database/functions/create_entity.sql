@@ -81,18 +81,18 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
                             AND NOT entity_is_system_locked;
 
                     -- If we have a package name, make sure it's in the
-                    -- entity_package table.
-                    INSERT INTO musesuperchar.entity_package (
-                             entity_package_pkghead_id
-                            ,entity_package_entity_id)
+                    -- entitypkg table.
+                    INSERT INTO musesuperchar.entitypkg (
+                             entitypkg_pkghead_id
+                            ,entitypkg_entity_id)
                         SELECT   pkghead_id
                                 ,vEntityId
                         FROM    public.pkghead
-                            LEFT OUTER JOIN musesuperchar.entity_package
-                                ON entity_package_pkghead_id = pkghead_id
-                                    AND entity_package_entity_id = vEntityId
+                            LEFT OUTER JOIN musesuperchar.entitypkg
+                                ON entitypkg_pkghead_id = pkghead_id
+                                    AND entitypkg_entity_id = vEntityId
                         WHERE   pkghead_name = pPackageName
-                            AND entity_package_id IS NULL;
+                            AND entitypkg_id IS NULL;
                 END IF;
 
                 RETURN vEntityId;

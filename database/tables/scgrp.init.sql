@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:         sc_group.sql
+ ** File:         scgrp.sql
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
@@ -25,58 +25,58 @@ DO
             IF NOT EXISTS(SELECT     true 
                           FROM         musextputils.v_basic_catalog 
                           WHERE     table_schema_name = 'musesuperchar' 
-                                  AND table_name = 'sc_group') THEN
+                                  AND table_name = 'scgrp') THEN
                 -- The table doesn't exist, so let's create it.
-                CREATE TABLE musesuperchar.sc_group (
-                     sc_group_id    bigserial    NOT NULL    PRIMARY KEY
-                    ,sc_group_internal_name text NOT NULL UNIQUE
-                    ,sc_group_display_name text NOT NULL UNIQUE
-                    ,sc_group_description text NOT NULL
-                    ,sc_group_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
-                    ,sc_group_is_system_locked boolean NOT NULL DEFAULT false
+                CREATE TABLE musesuperchar.scgrp (
+                     scgrp_id    bigserial    NOT NULL    PRIMARY KEY
+                    ,scgrp_internal_name text NOT NULL UNIQUE
+                    ,scgrp_display_name text NOT NULL UNIQUE
+                    ,scgrp_description text NOT NULL
+                    ,scgrp_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
+                    ,scgrp_is_system_locked boolean NOT NULL DEFAULT false
                 );
                 
-                ALTER TABLE  musesuperchar.sc_group OWNER TO admin;
+                ALTER TABLE  musesuperchar.scgrp OWNER TO admin;
 
-                REVOKE ALL ON TABLE musesuperchar.sc_group FROM public;
-                GRANT ALL ON TABLE musesuperchar.sc_group TO admin;
-                GRANT ALL ON TABLE musesuperchar.sc_group TO xtrole;
+                REVOKE ALL ON TABLE musesuperchar.scgrp FROM public;
+                GRANT ALL ON TABLE musesuperchar.scgrp TO admin;
+                GRANT ALL ON TABLE musesuperchar.scgrp TO xtrole;
                 
-                COMMENT ON TABLE musesuperchar.sc_group 
+                COMMENT ON TABLE musesuperchar.scgrp 
                     IS $DOC$A table to hold the defined groups to which super characteristics belong.  It is only through these groups that characteristics are made visible.  Note that all entities have a default group which is automatically created and assigned to themselves.$DOC$;
 
                 -- Column Comments
-                COMMENT ON COLUMN musesuperchar.sc_group.sc_group_id IS
+                COMMENT ON COLUMN musesuperchar.scgrp.scgrp_id IS
                 $DOC$A surrogate key by which to uniquely identify each record. This is the primary key.$DOC$;
 
-                COMMENT ON COLUMN   musesuperchar.sc_group.sc_group_internal_name IS
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_internal_name IS
                 $DOC$An computer friendly name which serves as the natural key of the record.  This is value to reference programmatically.$DOC$;
 
-                COMMENT ON COLUMN   musesuperchar.sc_group.sc_group_display_name IS
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_display_name IS
                 $DOC$A human friendly name which is to be displayed in user interfaces.$DOC$;
 
-                COMMENT ON COLUMN   musesuperchar.sc_group.sc_group_description IS
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_description IS
                 $DOC$A description of the purpose of the group.$DOC$;
 
-                COMMENT ON COLUMN   musesuperchar.sc_group.sc_group_pkghead_id IS
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_pkghead_id IS
                 $DOC$If the group is managed through an extension package, this is a reference to that package.$DOC$;
 
-                COMMENT ON COLUMN   musesuperchar.sc_group.sc_group_is_system_locked IS
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_system_locked IS
                 $DOC$If the group is not user managed directly by users, the value of this column should be true.$DOC$;
 
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
-                                                                ,'sc_group'
-                                                                ,'sc_group_date_created'
-                                                                ,'sc_group_role_created'
-                                                                ,'sc_group_date_deactivated'
-                                                                ,'sc_group_role_deactivated' 
-                                                                ,'sc_group_date_modified'
-                                                                ,'sc_group_wallclock_modified'
-                                                                ,'sc_group_role_modified'
-                                                                ,'sc_group_row_version_number'
-                                                                ,'sc_group_is_active');
+                                                                ,'scgrp'
+                                                                ,'scgrp_date_created'
+                                                                ,'scgrp_role_created'
+                                                                ,'scgrp_date_deactivated'
+                                                                ,'scgrp_role_deactivated' 
+                                                                ,'scgrp_date_modified'
+                                                                ,'scgrp_wallclock_modified'
+                                                                ,'scgrp_role_modified'
+                                                                ,'scgrp_row_version_number'
+                                                                ,'scgrp_is_active');
                 
 
             ELSE

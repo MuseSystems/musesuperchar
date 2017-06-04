@@ -104,23 +104,23 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                     -- Next setup the default group for the entity.
                     -- First create the group and then do the assignment.  These
                     -- are system locked since we manage them with the entity.
-                    INSERT INTO musesuperchar.sc_group (
-                             sc_group_internal_name
-                            ,sc_group_display_name
-                            ,sc_group_description
-                            ,sc_group_is_system_locked)
+                    INSERT INTO musesuperchar.scgrp (
+                             scgrp_internal_name
+                            ,scgrp_display_name
+                            ,scgrp_description
+                            ,scgrp_is_system_locked)
                         VALUES
                             (NEW.entity_data_table ||'_mssc_dflt_grp'
                             ,NEW.entity_display_name ||' General'
                             ,'A general purpose group for characteristics assigned to the ' ||
                                 NEW.entity_display_name ||' record type.'
                             ,true)
-                        RETURNING sc_group_id INTO vEntityDefaultGroupId;
+                        RETURNING scgrp_id INTO vEntityDefaultGroupId;
 
-                    INSERT INTO musesuperchar.entity_sc_group_ass (
-                             entity_sc_group_ass_entity_id
-                            ,entity_sc_group_ass_sc_group_id
-                            ,entity_sc_group_ass_is_system_locked)
+                    INSERT INTO musesuperchar.entity_scgrp_ass (
+                             entity_scgrp_ass_entity_id
+                            ,entity_scgrp_ass_scgrp_id
+                            ,entity_scgrp_ass_is_system_locked)
                         VALUES 
                             (NEW.entity_id
                             ,vEntityDefaultGroupId
@@ -150,11 +150,11 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                     -- Finally delete the default group and related entity/group
                     -- assignments.
-                    DELETE FROM musesuperchar.entity_sc_group_ass
-                        WHERE entity_sc_group_ass_entity_id = OLD.entity_id;
+                    DELETE FROM musesuperchar.entity_scgrp_ass
+                        WHERE entity_scgrp_ass_entity_id = OLD.entity_id;
 
-                    DELETE FROM musesuperchar.sc_group 
-                        WHERE sc_group_internal_name = 
+                    DELETE FROM musesuperchar.scgrp 
+                        WHERE scgrp_internal_name = 
                                 OLD.entity_data_table || '_mssc_dflt_grp';
 
                     -- Now we return.

@@ -32,15 +32,15 @@
 --       "entity_id": 8,
 --       "entity_data_table": "public_emp",
 --       "entity_display_name": "Employee",
---       "sc_def_id": 3,
---       "sc_def_internal_name": "tstchr_3",
---       "sc_def_display_name": "Test Char 3",
---       "conditional_validation_rule_id": 4,
---       "conditional_validation_rule_fails_message_text": "1 fails 3",
---       "if_validator_type_id": 2,
---       "if_validator_type_display_name": "Equals",
---       "then_validator_type_id": 1,
---       "then_validator_type_display_name": "Text Regular Expression",
+--       "scdef_id": 3,
+--       "scdef_internal_name": "tstchr_3",
+--       "scdef_display_name": "Test Char 3",
+--       "condvalrule_id": 4,
+--       "condvalrule_fails_message_text": "1 fails 3",
+--       "if_valtype_id": 2,
+--       "if_valtype_display_name": "Equals",
+--       "then_valtype_id": 1,
+--       "then_valtype_display_name": "Text Regular Expression",
 --     }
 --   ]
 -- }
@@ -55,44 +55,44 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSub
                                                  'entity_id', entity_id
                                                 ,'entity_data_table', entity_data_table
                                                 ,'entity_display_name', entity_display_name
-                                                ,'sc_def_id', sc_def_id
-                                                ,'sc_def_internal_name', sc_def_internal_name
-                                                ,'sc_def_display_name', sc_def_display_name
-                                                ,'conditional_validation_rule_id', conditional_validation_rule_id
-                                                ,'conditional_validation_rule_fails_message_text', conditional_validation_rule_fails_message_text
-                                                ,'if_validator_type_id', if_validator_type_id
-                                                ,'if_validator_type_display_name', if_validator_type_display_name
-                                                ,'then_validator_type_id', then_validator_type_id
-                                                ,'then_validator_type_display_name', then_validator_type_display_name)
+                                                ,'scdef_id', scdef_id
+                                                ,'scdef_internal_name', scdef_internal_name
+                                                ,'scdef_display_name', scdef_display_name
+                                                ,'condvalrule_id', condvalrule_id
+                                                ,'condvalrule_fails_message_text', condvalrule_fails_message_text
+                                                ,'if_valtype_id', if_valtype_id
+                                                ,'if_valtype_display_name', if_valtype_display_name
+                                                ,'then_valtype_id', then_valtype_id
+                                                ,'then_valtype_display_name', then_valtype_display_name)
                                             ))
             FROM
                 (SELECT  DISTINCT sub.entity_id
                         ,sub.entity_data_table
                         ,sub.entity_display_name
-                        ,osd.sc_def_id
-                        ,osd.sc_def_internal_name
-                        ,osd.sc_def_display_name
-                        ,cvr.conditional_validation_rule_id 
-                        ,cvr.conditional_validation_rule_fails_message_text
-                        ,ifvt.validator_type_id AS if_validator_type_id 
-                        ,ifvt.validator_type_display_name AS if_validator_type_display_name 
-                        ,thenvt.validator_type_id AS then_validator_type_id 
-                        ,thenvt.validator_type_display_name AS then_validator_type_display_name 
-                FROM    musesuperchar.conditional_validation_rule cvr 
-                    JOIN musesuperchar.validator_type ifvt 
-                        ON cvr.conditional_validation_rule_if_validator_type_id = ifvt.validator_type_id
-                    JOIN musesuperchar.validator_type thenvt
-                        ON cvr.conditional_validation_rule_then_validator_type_id = thenvt.validator_type_id
+                        ,osd.scdef_id
+                        ,osd.scdef_internal_name
+                        ,osd.scdef_display_name
+                        ,cvr.condvalrule_id 
+                        ,cvr.condvalrule_fails_message_text
+                        ,ifvt.valtype_id AS if_valtype_id 
+                        ,ifvt.valtype_display_name AS if_valtype_display_name 
+                        ,thenvt.valtype_id AS then_valtype_id 
+                        ,thenvt.valtype_display_name AS then_valtype_display_name 
+                FROM    musesuperchar.condvalrule cvr 
+                    JOIN musesuperchar.valtype ifvt 
+                        ON cvr.condvalrule_if_valtype_id = ifvt.valtype_id
+                    JOIN musesuperchar.valtype thenvt
+                        ON cvr.condvalrule_then_valtype_id = thenvt.valtype_id
                     JOIN musesuperchar.v_superchar_entities sub
-                        ON cvr.conditional_validation_rule_subject_sc_def_id = sub.sc_def_id
-                    JOIN musesuperchar.sc_def osd 
-                        ON cvr.conditional_validation_rule_object_sc_def_id = osd.sc_def_id 
-                            AND osd.sc_def_id != pSubSuperCharId 
+                        ON cvr.condvalrule_subject_scdef_id = sub.scdef_id
+                    JOIN musesuperchar.scdef osd 
+                        ON cvr.condvalrule_object_scdef_id = osd.scdef_id 
+                            AND osd.scdef_id != pSubSuperCharId 
                     LEFT OUTER JOIN musesuperchar.v_superchar_entities obj 
                         ON sub.entity_id = obj.entity_id 
-                            AND pGroupId = ANY(obj.sc_group_ids) 
-                WHERE   obj.sc_def_id IS NULL 
-                    AND sub.sc_def_id = pSubSuperCharId) q;
+                            AND pGroupId = ANY(obj.scgrp_ids) 
+                WHERE   obj.scdef_id IS NULL 
+                    AND sub.scdef_id = pSubSuperCharId) q;
         $BODY$
     LANGUAGE sql STABLE;
 
@@ -113,15 +113,15 @@ COMMENT ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCh
       "entity_id": 8,
       "entity_data_table": "public_emp",
       "entity_display_name": "Employee",
-      "sc_def_id": 3,
-      "sc_def_internal_name": "tstchr_3",
-      "sc_def_display_name": "Test Char 3",
-      "conditional_validation_rule_id": 4,
-      "conditional_validation_rule_fails_message_text": "1 fails 3",
-      "if_validator_type_id": 2,
-      "if_validator_type_display_name": "Equals",
-      "then_validator_type_id": 1,
-      "then_validator_type_display_name": "Text Regular Expression",
+      "scdef_id": 3,
+      "scdef_internal_name": "tstchr_3",
+      "scdef_display_name": "Test Char 3",
+      "condvalrule_id": 4,
+      "condvalrule_fails_message_text": "1 fails 3",
+      "if_valtype_id": 2,
+      "if_valtype_display_name": "Equals",
+      "then_valtype_id": 1,
+      "then_valtype_display_name": "Text Regular Expression",
     }
   ]
 }

@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:         validator_types_seed_data.sql
+ ** File:         valtypes_seed_data.sql
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
@@ -15,25 +15,25 @@
  *************************************************************************
  ************************************************************************/
 
-INSERT INTO musesuperchar.validator_type (
-         validator_type_internal_name
-        ,validator_type_display_name
-        ,validator_type_description
-        ,validator_type_is_text
-        ,validator_type_is_numeric
-        ,validator_type_is_date
-        ,validator_type_display_order
-        ,validator_type_is_flag
-        ,validator_type_is_user_visible)
-    SELECT   validator_type_internal_name
-            ,validator_type_display_name
-            ,validator_type_description
-            ,validator_type_is_text
-            ,validator_type_is_numeric
-            ,validator_type_is_date
-            ,validator_type_display_order
-            ,validator_type_is_flag
-            ,validator_type_is_user_visible
+INSERT INTO musesuperchar.valtype (
+         valtype_internal_name
+        ,valtype_display_name
+        ,valtype_description
+        ,valtype_is_text
+        ,valtype_is_numeric
+        ,valtype_is_date
+        ,valtype_display_order
+        ,valtype_is_flag
+        ,valtype_is_user_visible)
+    SELECT   valtype_internal_name
+            ,valtype_display_name
+            ,valtype_description
+            ,valtype_is_text
+            ,valtype_is_numeric
+            ,valtype_is_date
+            ,valtype_display_order
+            ,valtype_is_flag
+            ,valtype_is_user_visible
     FROM (VALUES 
              ('regexp', 'Text Regular Expression', 'Allows a user to identify a text regular expression.', true, false, false, 10, false, true)
             ,('numericequal', 'Equals', 'Evaluates to true if the characteristic value matches the validation value.', false, true, false, 20, false, true)
@@ -50,15 +50,15 @@ INSERT INTO musesuperchar.validator_type (
             ,('datebetweeninclusive', 'Between (Inclusive)', 'Evaluates to true if the characteristic value is between or equal the validation range values.', false, false, true, 130, false, true)
             ,('flagistrue', 'Is Checked', 'Evaluates to true if the characteristic is checked.', false, false, false, 140, true, true)
             ,('flagisfalse', 'Is Not Checked', 'Evaluates to true if the characteristic is not checked.', false, false, false, 150, true, true))
-        AS q(    validator_type_internal_name 
-                ,validator_type_display_name 
-                ,validator_type_description 
-                ,validator_type_is_text 
-                ,validator_type_is_numeric 
-                ,validator_type_is_date
-                ,validator_type_display_order
-                ,validator_type_is_flag
-                ,validator_type_is_user_visible ) 
+        AS q(    valtype_internal_name 
+                ,valtype_display_name 
+                ,valtype_description 
+                ,valtype_is_text 
+                ,valtype_is_numeric 
+                ,valtype_is_date
+                ,valtype_display_order
+                ,valtype_is_flag
+                ,valtype_is_user_visible ) 
     WHERE NOT EXISTS(SELECT true 
-                     FROM   musesuperchar.validator_type 
-                     WHERE  validator_type_internal_name = q.validator_type_internal_name);
+                     FROM   musesuperchar.valtype 
+                     WHERE  valtype_internal_name = q.valtype_internal_name);

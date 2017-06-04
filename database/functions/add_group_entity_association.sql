@@ -42,25 +42,25 @@ CREATE OR REPLACE FUNCTION musesuperchar.add_group_entity_association(pGroupId b
                 FROM    public.pkghead
                 WHERE   pkghead_name = pPackageName;
 
-                INSERT INTO musesuperchar.entity_sc_group_ass 
-                    ( entity_sc_group_ass_sc_group_id
-                     ,entity_sc_group_ass_entity_id
-                     ,entity_sc_group_ass_pkghead_id
-                     ,entity_sc_group_ass_is_system_locked)
+                INSERT INTO musesuperchar.entity_scgrp_ass 
+                    ( entity_scgrp_ass_scgrp_id
+                     ,entity_scgrp_ass_entity_id
+                     ,entity_scgrp_ass_pkghead_id
+                     ,entity_scgrp_ass_is_system_locked)
                     VALUES ( pGroupId
                             ,pEntityId
                             ,vPkgHeadId
                             ,vPkgHeadId IS NOT NULL)
-                    ON CONFLICT ( entity_sc_group_ass_entity_id
-                                 ,entity_sc_group_ass_sc_group_id)
+                    ON CONFLICT ( entity_scgrp_ass_entity_id
+                                 ,entity_scgrp_ass_scgrp_id)
                     DO UPDATE SET 
-                        entity_sc_group_ass_pkghead_id =
-                            coalesce(entity_sc_group_ass.entity_sc_group_ass_pkghead_id
+                        entity_scgrp_ass_pkghead_id =
+                            coalesce(entity_scgrp_ass.entity_scgrp_ass_pkghead_id
                                 ,vPkgHeadId),
-                        entity_sc_group_ass_is_system_locked = 
-                                entity_sc_group_ass.entity_sc_group_ass_is_system_locked 
+                        entity_scgrp_ass_is_system_locked = 
+                                entity_scgrp_ass.entity_scgrp_ass_is_system_locked 
                             OR  vPkgHeadId IS NOT NULL
-                    RETURNING entity_sc_group_ass_id INTO vReturnVal;
+                    RETURNING entity_scgrp_ass_id INTO vReturnVal;
 
                 RETURN vReturnVal;
 

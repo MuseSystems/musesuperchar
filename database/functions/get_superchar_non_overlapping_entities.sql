@@ -50,9 +50,9 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_non_overlapping_entities(
                 FROM    musesuperchar.v_superchar_entities sub 
                     LEFT OUTER JOIN musesuperchar.v_superchar_entities obj 
                         ON sub.entity_id = obj.entity_id 
-                            AND obj.sc_def_id = pObjSuperCharId 
-                WHERE   obj.sc_def_id IS NULL 
-                    AND sub.sc_def_id = pSbjSuperCharId) q;
+                            AND obj.scdef_id = pObjSuperCharId 
+                WHERE   obj.scdef_id IS NULL 
+                    AND sub.scdef_id = pSbjSuperCharId) q;
         $BODY$
     LANGUAGE sql STABLE;
 

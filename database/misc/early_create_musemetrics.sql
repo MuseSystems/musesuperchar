@@ -58,3 +58,22 @@ SELECT musextputils.create_musemetric(  'musesuperchar'
                                        ,'isSystemLockedObjectUserExtendable'
                                        ,null::boolean) IS NULL;
 
+--
+--  When true, this parameter instructs the group layout engine to adjust the
+--  layout to minimize the space taken in case there are sections with fewer
+--  columns than others.  The side effect of this is that it can cause
+--  reordering of the windows from those specified.  When false, each section
+--  takes the full screen width regardless whether it has sufficient columns to
+--  justify the space; this upside of this approach is that the space will
+--  follow the user defined order.
+--
+
+SELECT musextputils.create_musemetric(  'musesuperchar'
+                                       ,'isLayoutSpaceConserved'
+                                       ,'When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the windows from those specified.  When false, each section takes the full screen width regardless whether it has sufficient columns to justify the space; this upside of this approach is that the space will follow the user defined order. '
+                                       ,false
+                                    )
+    WHERE musextputils.get_musemetric(  'musesuperchar'
+                                       ,'isLayoutSpaceConserved'
+                                       ,null::boolean) IS NULL;
+

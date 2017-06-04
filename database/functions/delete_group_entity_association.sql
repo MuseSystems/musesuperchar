@@ -43,14 +43,14 @@ CREATE OR REPLACE FUNCTION musesuperchar.delete_group_entity_association(pGroupI
                 WHERE   pkghead_name = pPackageName;
 
                 DELETE 
-                    FROM    musesuperchar.entity_sc_group_ass 
-                    WHERE   entity_sc_group_ass_entity_id = pEntityId
-                        AND entity_sc_group_ass_sc_group_id = pGroupId
-                        AND coalesce(entity_sc_group_ass_pkghead_id, -1)
+                    FROM    musesuperchar.entity_scgrp_ass 
+                    WHERE   entity_scgrp_ass_entity_id = pEntityId
+                        AND entity_scgrp_ass_scgrp_id = pGroupId
+                        AND coalesce(entity_scgrp_ass_pkghead_id, -1)
                                 = coalesce(vPkgHeadId, -1)
-                        AND (NOT entity_sc_group_ass_is_system_locked 
+                        AND (NOT entity_scgrp_ass_is_system_locked 
                                 OR vPkgHeadId IS NOT NULL)
-                    RETURNING entity_sc_group_ass_id INTO vReturnVal;
+                    RETURNING entity_scgrp_ass_id INTO vReturnVal;
 
                 RETURN vReturnVal;
 
