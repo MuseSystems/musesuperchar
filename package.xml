@@ -74,21 +74,21 @@
     
     
     <initscript file="database/misc/early_create_musemetrics.sql" />
-    <initscript file="database/tables/data_type.init.sql" />
-    <initscript file="database/tables/validator_type.init.sql" />
+    <initscript file="database/tables/datatype.init.sql" />
+    <initscript file="database/tables/valtype.init.sql" />
     <initscript file="database/tables/entity.init.sql" />
-    <initscript file="database/tables/entity_package.init.sql" />
-    <initscript file="database/tables/sc_def.init.sql" />
-    <initscript file="database/tables/sc_group.init.sql" />
-    <initscript file="database/tables/sc_def_sc_group_ass.init.sql" />
-    <initscript file="database/tables/entity_sc_group_ass.init.sql" />
-    <initscript file="database/tables/conditional_validation_rule.init.sql" />
+    <initscript file="database/tables/entitypkg.init.sql" />
+    <initscript file="database/tables/scdef.init.sql" />
+    <initscript file="database/tables/scgrp.init.sql" />
+    <initscript file="database/tables/scdef_scgrp_ass.init.sql" />
+    <initscript file="database/tables/entity_scgrp_ass.init.sql" />
+    <initscript file="database/tables/condvalrule.init.sql" />
     <initscript file="database/views/v_superchar_entities.init.sql" />
 
     <createfunction file="database/functions/get_sc_table_name.sql" name="get_sc_table_name" />
     <createfunction file="database/functions/is_superchar_table_populated.sql" name="is_superchar_table_populated" />
     <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
-    <createfunction file="database/triggers/trig_a_d_entity_package_manage_entity_syslock.sql" name="trig_a_d_entity_package_manage_entity_syslock" />
+    <createfunction file="database/triggers/trig_a_d_entitypkg_manage_entity_syslock.sql" name="trig_a_d_entitypkg_manage_entity_syslock" />
     <createfunction file="database/functions/create_entity.sql" name="create_entity" />
     <createfunction file="database/functions/add_group_entity_association.sql" name="add_group_entity_association" />
     <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
@@ -99,19 +99,19 @@
     <createfunction file="database/functions/get_group_entity_remove_violations.sql" name="get_group_entity_remove_violations" />
     <createfunction file="database/functions/get_superchar_delete_violations.sql" name="get_superchar_delete_violations" />
     
-    <createfunction file="database/triggers/trig_b_iu_conditional_validation_rule_violation_check.sql" name="trig_b_iu_conditional_validation_rule_violation_check" />
-    <createfunction file="database/triggers/trig_b_iud_sc_def_sc_group_ass_violation_check.sql" name="trig_b_iud_sc_def_sc_group_ass_violation_check" />
-    <createfunction file="database/triggers/trig_b_iud_entity_sc_group_ass_violation_check.sql" name="trig_b_iud_entity_sc_group_ass_violation_check" />
+    <createfunction file="database/triggers/trig_b_iu_condvalrule_violation_check.sql" name="trig_b_iu_condvalrule_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_scdef_scgrp_ass_violation_check.sql" name="trig_b_iud_scdef_scgrp_ass_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_entity_scgrp_ass_violation_check.sql" name="trig_b_iud_entity_scgrp_ass_violation_check" />
     
-    <createtable file="database/tables/data_type.sql" name="data_type" />
-    <createtable file="database/tables/validator_type.sql" name="validator_type" />
+    <createtable file="database/tables/datatype.sql" name="datatype" />
+    <createtable file="database/tables/valtype.sql" name="valtype" />
     <createtable file="database/tables/entity.sql" name="entity" />
-    <createtable file="database/tables/entity_package.sql" name="entity_package" />
-    <createtable file="database/tables/sc_def.sql" name="sc_def" />
-    <createtable file="database/tables/sc_group.sql" name="sc_group" />
-    <createtable file="database/tables/sc_def_sc_group_ass.sql" name="sc_def_sc_group_ass" />
-    <createtable file="database/tables/entity_sc_group_ass.sql" name="entity_sc_group_ass" />
-    <createtable file="database/tables/conditional_validation_rule.sql" name="conditional_validation_rule" />
+    <createtable file="database/tables/entitypkg.sql" name="entitypkg" />
+    <createtable file="database/tables/scdef.sql" name="scdef" />
+    <createtable file="database/tables/scgrp.sql" name="scgrp" />
+    <createtable file="database/tables/scdef_scgrp_ass.sql" name="scdef_scgrp_ass" />
+    <createtable file="database/tables/entity_scgrp_ass.sql" name="entity_scgrp_ass" />
+    <createtable file="database/tables/condvalrule.sql" name="condvalrule" />
     <createview file="database/views/v_superchar_entities.sql" name="v_superchar_entities" />
     
     <loadappui file="client/uiforms/museScGroupMaint.ui" order="20">Muse Systems Super Characteristic Group/Entity Maintenance (setup subform).</loadappui>
@@ -120,20 +120,24 @@
     <loadappui file="client/uiforms/museScCreateGroup.ui" order="20">Muse Systems Super Characteristic Create Groups Form</loadappui>
     <loadappui file="client/uiforms/museScViolationsDialog.ui" order="20">Muse Systems Super Characteristic Validator Violations Dialog</loadappui>
     <loadappui file="client/uiforms/museScNewListValue.ui" order="20">Muse Systems Super Characteristic New List of Value Value form.</loadappui>
+    <loadappui file="client/uiforms/museScCreateCondValRule.ui" order="20">Muse Systems Super Characteristic Create Validation Rule form.</loadappui>
     
     <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
     <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="10">Muse Systems Super Characteristic Widget Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="10">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
     
     <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
     <loadappscript file="client/scripts/forms/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
     
-    <finalscript file="database/misc/data_types_seed_data.sql" />
-    <finalscript file="database/misc/validator_types_seed_data.sql" />
+    
+    <finalscript file="database/misc/datatypes_seed_data.sql" />
+    <finalscript file="database/misc/valtypes_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
     
 </package>
