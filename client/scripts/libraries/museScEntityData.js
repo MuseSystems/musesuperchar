@@ -108,9 +108,9 @@ if(!this.MuseUtils) {
                            ",e.entity_role_deactivated " +
                            ",e.entity_row_version_number " +
                            ",string_agg(pkghead_name, ', ') " +
-                                "AS entity_package_names " +
+                                "AS entitypkg_names " +
                            ",array_agg(pkghead_id) " +
-                                "AS entity_package_ids " +
+                                "AS entitypkg_ids " +
                            ",CASE " +
                                 "WHEN e.entity_is_system_locked THEN " +
                                     "'bisque' " +
@@ -118,10 +118,10 @@ if(!this.MuseUtils) {
                                     "'palegreen' " +
                            " END AS entity_display_name_qtbackgroundrole " +
                 "FROM        musesuperchar.entity e " +
-                    "LEFT OUTER JOIN musesuperchar.entity_package ep " +
-                        "ON e.entity_id = ep.entity_package_entity_id " +
+                    "LEFT OUTER JOIN musesuperchar.entitypkg ep " +
+                        "ON e.entity_id = ep.entitypkg_entity_id " +
                     "LEFT OUTER JOIN public.pkghead ph " +
-                        "ON ep.entity_package_pkghead_id = ph.pkghead_id " +
+                        "ON ep.entitypkg_pkghead_id = ph.pkghead_id " +
                 whereClause +
                 "GROUP BY    e.entity_id " +
                            ",e.entity_schema " +
@@ -485,7 +485,7 @@ if(!this.MuseUtils) {
                 "                        ,tc.table_name " +
                 "                        ,tc.constraint_type " +
                 "                        ,kcu.column_name " +
-                "                        ,c.data_type " +
+                "                        ,c.datatype " +
                 "                        ,count(kcu.column_name) OVER (PARTITION BY tc.table_schema,tc.table_name,kcu.constraint_name) AS col_count " +
                 "                FROM    information_schema.table_constraints tc " +
                 "                    JOIN information_schema.key_column_usage kcu " +
@@ -507,7 +507,7 @@ if(!this.MuseUtils) {
                 "        ,column_name " +
                 "FROM    source " +
                 "WHERE   col_count = 1  " +
-                "    AND (data_type = 'integer' OR data_type = 'bigint') ",
+                "    AND (datatype = 'integer' OR datatype = 'bigint') ",
                 funcParams);
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -558,14 +558,14 @@ if(!this.MuseUtils) {
         
         try {
             return MuseUtils.executeQuery(
-                "SELECT       sc_group_id " +
-                            ",sc_group_display_name " +
-                            ",sc_group_internal_name " +
-                "FROM   musesuperchar.sc_group " +
-                    "JOIN musesuperchar.entity_sc_group_ass " +
-                        "ON sc_group_id = entity_sc_group_ass_sc_group_id " +
-                "WHERE  sc_group_is_active AND entity_sc_group_ass_is_active " +
-                    'AND entity_sc_group_ass_entity_id = <? value("pEntityId") ?>',
+                "SELECT       scgrp_id " +
+                            ",scgrp_display_name " +
+                            ",scgrp_internal_name " +
+                "FROM   musesuperchar.scgrp " +
+                    "JOIN musesuperchar.entity_scgrp_ass " +
+                        "ON scgrp_id = entity_scgrp_ass_scgrp_id " +
+                "WHERE  scgrp_is_active AND entity_scgrp_ass_is_active " +
+                    'AND entity_scgrp_ass_entity_id = <? value("pEntityId") ?>',
                 {pEntityId: pEntityId});
         } catch(e) {
             throw new MuseUtils.DatabaseException(

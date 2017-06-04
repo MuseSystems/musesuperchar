@@ -101,13 +101,13 @@ if(!this.MuseSuperChar.Widget) {
     var populate = function(pGroupId) {
         groupData = MuseSuperChar.Group.getGroupById(pGroupId);
 
-        displayNameXLineEdit.text = groupData.sc_group_display_name;
+        displayNameXLineEdit.text = groupData.scgrp_display_name;
         lastGroupDisplayName = displayNameXLineEdit.text;
 
-        internalNameXLineEdit.text = groupData.sc_group_internal_name;
+        internalNameXLineEdit.text = groupData.scgrp_internal_name;
         lastGroupInternalName = internalNameXLineEdit.text;
 
-        descXTextArea.setPlainText(groupData.sc_group_description);
+        descXTextArea.setPlainText(groupData.scgrp_description);
         lastGroupDescription = descXTextArea.document.toPlainText();
 
         availEntityXTreeWidget.populate(MuseSuperChar.Group.getNonGroupEntities(
@@ -220,25 +220,25 @@ if(!this.MuseSuperChar.Widget) {
 
         if(mode == "new") {
             groupData = {
-                sc_group_display_name: displayNameXLineEdit.text,
-                sc_group_internal_name: internalNameXLineEdit.text,
-                sc_group_description: descXTextArea.document.toPlainText()
+                scgrp_display_name: displayNameXLineEdit.text,
+                scgrp_internal_name: internalNameXLineEdit.text,
+                scgrp_description: descXTextArea.document.toPlainText()
             };
             setEditMode(MuseSuperChar.Group.createGroup(groupData));            
         } else if(mode == "edit") {
-            groupData = {sc_group_id: currGroupId};
+            groupData = {scgrp_id: currGroupId};
 
             if(displayNameXLineEdit.text != lastGroupDisplayName) {
-                groupData.sc_group_display_name = displayNameXLineEdit.text;
+                groupData.scgrp_display_name = displayNameXLineEdit.text;
             }
 
             if(internalNameXLineEdit.text != lastGroupInternalName &&
                 privileges.check("maintainSuperCharInternalNames")) {
-                groupData.sc_group_internal_name = internalNameXLineEdit.text;
+                groupData.scgrp_internal_name = internalNameXLineEdit.text;
             }
 
             if(descXTextArea.document.toPlainText() != lastGroupDescription) {
-                groupData.sc_group_description = 
+                groupData.scgrp_description = 
                     descXTextArea.document.toPlainText();
             }
 
@@ -394,7 +394,7 @@ if(!this.MuseSuperChar.Widget) {
             }
         } else if(pParams.mode == "edit" && 
                     privileges.check("maintainSuperCharGroups")) {
-            if(!MuseUtils.isValidId(pParams.sc_group_id)) {
+            if(!MuseUtils.isValidId(pParams.scgrp_id)) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "We require a valid group id for edit mode.",
@@ -402,10 +402,10 @@ if(!this.MuseSuperChar.Widget) {
                     {params: funcParams});
             }
 
-            setEditMode(pParams.sc_group_id);
+            setEditMode(pParams.scgrp_id);
         } else if(pParams.mode == "view" && 
                     privileges.check("maintainSuperCharGroups")) {
-            if(!MuseUtils.isValidId(pParams.sc_group_id)) {
+            if(!MuseUtils.isValidId(pParams.scgrp_id)) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "We require a valid group id for view mode.",
@@ -413,7 +413,7 @@ if(!this.MuseSuperChar.Widget) {
                     {params: funcParams});
             }
 
-            setViewMode(pParams.sc_group_id);
+            setViewMode(pParams.scgrp_id);
         }
         
         //----------------------------------------------------------------

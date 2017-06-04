@@ -50,13 +50,13 @@ if(!this.MuseUtils) {
 
         try {
             var groupQuery = MuseUtils.executeQuery(
-                "SELECT sc_group_is_system_locked " +
-                "FROM musesuperchar.sc_group " +
-                'WHERE sc_group_id = <? value(pGroupId) ?> ',
+                "SELECT scgrp_is_system_locked " +
+                "FROM musesuperchar.scgrp " +
+                'WHERE scgrp_id = <? value(pGroupId) ?> ',
                 {pGroupId: pGroupId});
             if(groupQuery.first()) {
                 return MuseUtils.isTrue(
-                    groupQuery.value("sc_group_is_system_locked"));
+                    groupQuery.value("scgrp_is_system_locked"));
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -82,69 +82,69 @@ if(!this.MuseUtils) {
         var whereClause = "WHERE true ";
 
         if(!MuseUtils.isTrue(pParams.isInactiveIncluded || false)) {
-            whereClause = whereClause + "AND sc_group_is_active ";
+            whereClause = whereClause + "AND scgrp_is_active ";
         }
 
-        if(pParams.hasOwnProperty("sc_group_id")) {
+        if(pParams.hasOwnProperty("scgrp_id")) {
             whereClause = whereClause + 
-                'AND sc_group_id = <? value("sc_group_id") ?> ';
+                'AND scgrp_id = <? value("scgrp_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_group_internal_name")) {
+        if(pParams.hasOwnProperty("scgrp_internal_name")) {
             whereClause = whereClause +
-                'AND sc_group_internal_name = ' +
-                '<? value("sc_group_internal_name") ?> ';
+                'AND scgrp_internal_name = ' +
+                '<? value("scgrp_internal_name") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_group_display_name")) {
+        if(pParams.hasOwnProperty("scgrp_display_name")) {
             whereClause = whereClause +
-                'AND sc_group_display_name = ' +
-                '<? value("sc_group_display_name") ?> ';
+                'AND scgrp_display_name = ' +
+                '<? value("scgrp_display_name") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_group_pkghead_id")) {
+        if(pParams.hasOwnProperty("scgrp_pkghead_id")) {
             whereClause = whereClause +
-                'AND sc_group_pkghead_id = <? value("sc_group_pkghead_id") ?> ';
+                'AND scgrp_pkghead_id = <? value("scgrp_pkghead_id") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_group_package_name")) {
+        if(pParams.hasOwnProperty("scgrp_package_name")) {
             whereClause = whereClause +
                 'AND pkghead_name = <? value("pkghead_name") ?> ';
         }
 
-        if(pParams.hasOwnProperty("sc_group_is_system_locked")) {
+        if(pParams.hasOwnProperty("scgrp_is_system_locked")) {
             whereClause = whereClause + 
-                'AND sc_group_is_system_locked = ' +
-                '<? value("sc_group_is_system_locked") ?> ';
+                'AND scgrp_is_system_locked = ' +
+                '<? value("scgrp_is_system_locked") ?> ';
         }
 
         try {
             return MuseUtils.executeQuery(
-                "SELECT       sc_group_id " +
-                            ",sc_group_internal_name " +
-                            ",sc_group_display_name " +
-                            ",sc_group_description " +
-                            ",sc_group_pkghead_id " +
-                            ",sc_group_is_system_locked " +
-                            ",sc_group_is_active " +
-                            ",sc_group_date_created " +
-                            ",sc_group_role_created " +
-                            ",sc_group_date_modified " +
-                            ",sc_group_wallclock_modified " +
-                            ",sc_group_role_modified " +
-                            ",sc_group_date_deactivated " +
-                            ",sc_group_role_deactivated " +
-                            ",sc_group_row_version_number " +
-                            ",pkghead_name AS sc_group_package_name " +
+                "SELECT       scgrp_id " +
+                            ",scgrp_internal_name " +
+                            ",scgrp_display_name " +
+                            ",scgrp_description " +
+                            ",scgrp_pkghead_id " +
+                            ",scgrp_is_system_locked " +
+                            ",scgrp_is_active " +
+                            ",scgrp_date_created " +
+                            ",scgrp_role_created " +
+                            ",scgrp_date_modified " +
+                            ",scgrp_wallclock_modified " +
+                            ",scgrp_role_modified " +
+                            ",scgrp_date_deactivated " +
+                            ",scgrp_role_deactivated " +
+                            ",scgrp_row_version_number " +
+                            ",pkghead_name AS scgrp_package_name " +
                             ",CASE " +
-                                "WHEN sc_group_is_system_locked THEN " +
+                                "WHEN scgrp_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
-                            " END AS sc_group_display_name_qtbackgroundrole " +
-                "FROM   musesuperchar.sc_group " + 
+                            " END AS scgrp_display_name_qtbackgroundrole " +
+                "FROM   musesuperchar.scgrp " + 
                     "LEFT OUTER JOIN public.pkghead " + 
-                        "ON sc_group_pkghead_id = pkghead_id " + whereClause,
+                        "ON scgrp_pkghead_id = pkghead_id " + whereClause,
                 pParams);
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -164,7 +164,7 @@ if(!this.MuseUtils) {
         try {
             var groupQuery = getGroups(
                 {
-                    sc_group_id: pGroupId, 
+                    scgrp_id: pGroupId, 
                     isInactiveIncluded: true
                 });
 
@@ -198,16 +198,16 @@ if(!this.MuseUtils) {
                             ",entity_display_name " +
                             ",entity_schema || '.' || entity_table AS entity_code" +
                             ",CASE " +
-                                "WHEN entity_sc_group_ass_is_system_locked THEN " +
+                                "WHEN entity_scgrp_ass_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
                            " END AS entity_display_name_qtbackgroundrole " +
                 "FROM   musesuperchar.entity " +
-                    "JOIN musesuperchar.entity_sc_group_ass " +
-                        "ON entity_id = entity_sc_group_ass_entity_id " + 
-                "WHERE  entity_is_active AND entity_sc_group_ass_is_active " +
-                    'AND entity_sc_group_ass_sc_group_id = <? value("pGroupId") ?>',
+                    "JOIN musesuperchar.entity_scgrp_ass " +
+                        "ON entity_id = entity_scgrp_ass_entity_id " + 
+                "WHERE  entity_is_active AND entity_scgrp_ass_is_active " +
+                    'AND entity_scgrp_ass_scgrp_id = <? value("pGroupId") ?>',
                 {pGroupId: pGroupId});
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -230,19 +230,19 @@ if(!this.MuseUtils) {
                             ",entity_display_name " +
                             ",entity_schema || '.' || entity_table AS entity_code" +
                             ",CASE " +
-                                "WHEN entity_sc_group_ass_is_system_locked THEN " +
+                                "WHEN entity_scgrp_ass_is_system_locked THEN " +
                                     "'bisque' " +
                                 "ELSE " +
                                     "'palegreen' " +
                            " END AS entity_display_name_qtbackgroundrole " +
                 "FROM   musesuperchar.entity " +
-                    "LEFT OUTER JOIN musesuperchar.entity_sc_group_ass " +
-                        "ON entity_id = entity_sc_group_ass_entity_id " + 
-                            "AND entity_sc_group_ass_is_active " +
-                            'AND entity_sc_group_ass_sc_group_id = ' +
+                    "LEFT OUTER JOIN musesuperchar.entity_scgrp_ass " +
+                        "ON entity_id = entity_scgrp_ass_entity_id " + 
+                            "AND entity_scgrp_ass_is_active " +
+                            'AND entity_scgrp_ass_scgrp_id = ' +
                                 '<? value("pGroupId") ?> ' +
                 "WHERE  entity_is_active  " +
-                    "AND entity_sc_group_ass_id IS NULL",
+                    "AND entity_scgrp_ass_id IS NULL",
                 {pGroupId: pGroupId});
         } catch(e) {
             throw new MuseUtils.DatabaseException(
@@ -282,18 +282,18 @@ if(!this.MuseUtils) {
         
         try {
             var groupQuery = MuseUtils.executeQuery(
-                "INSERT INTO musesuperchar.sc_group " +
-                    "(sc_group_internal_name, sc_group_display_name, " +
-                        "sc_group_description) " +
+                "INSERT INTO musesuperchar.scgrp " +
+                    "(scgrp_internal_name, scgrp_display_name, " +
+                        "scgrp_description) " +
                         "VALUES " +
-                    '( <? value("sc_group_internal_name") ?> ' +
-                    ',<? value("sc_group_display_name") ?> ' +
-                    ',<? value("sc_group_description") ?>) ' +
-                    "RETURNING sc_group_id",
+                    '( <? value("scgrp_internal_name") ?> ' +
+                    ',<? value("scgrp_display_name") ?> ' +
+                    ',<? value("scgrp_description") ?>) ' +
+                    "RETURNING scgrp_id",
                 pGroupData);
 
             if(!groupQuery.first() || 
-                !MuseUtils.isValidId(groupQuery.value("sc_group_id"))) {
+                !MuseUtils.isValidId(groupQuery.value("scgrp_id"))) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
                     "We did not verify that the new group was created properly.",
@@ -301,7 +301,7 @@ if(!this.MuseUtils) {
                     {params: funcParams});
             }
 
-            return groupQuery.value("sc_group_id");
+            return groupQuery.value("scgrp_id");
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
@@ -318,52 +318,52 @@ if(!this.MuseUtils) {
         };
 
         var updateColumns = [];
-        var queryText = "UPDATE musesuperchar.sc_group SET ";
+        var queryText = "UPDATE musesuperchar.scgrp SET ";
 
-        if(pGroupData.hasOwnProperty("sc_group_id")) {
+        if(pGroupData.hasOwnProperty("scgrp_id")) {
             updateColumns.push(
-                'sc_group_id = <? value("sc_group_id" ?> ');
+                'scgrp_id = <? value("scgrp_id" ?> ');
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_internal_name")) {
+        if(pGroupData.hasOwnProperty("scgrp_internal_name")) {
             updateColumns.push(
-                'sc_group_internal_name = ' +
-                    '<? value("sc_group_internal_name") ?> ');
+                'scgrp_internal_name = ' +
+                    '<? value("scgrp_internal_name") ?> ');
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_display_name")) {
+        if(pGroupData.hasOwnProperty("scgrp_display_name")) {
             updateColumns.push(
-                'sc_group_display_name = ' +
-                    '<? value("sc_group_display_name") ?> ');
+                'scgrp_display_name = ' +
+                    '<? value("scgrp_display_name") ?> ');
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_description")) {
+        if(pGroupData.hasOwnProperty("scgrp_description")) {
             updateColumns.push(
-                'sc_group_description = ' +
-                    '<? value("sc_group_description") ?> ');
+                'scgrp_description = ' +
+                    '<? value("scgrp_description") ?> ');
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_is_system_locked")) {
+        if(pGroupData.hasOwnProperty("scgrp_is_system_locked")) {
             updateColumns.push(
-                'sc_group_is_system_locked = ' +
-                    '<? value("sc_group_is_system_locked") ?> ');
+                'scgrp_is_system_locked = ' +
+                    '<? value("scgrp_is_system_locked") ?> ');
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_is_active")) {
+        if(pGroupData.hasOwnProperty("scgrp_is_active")) {
             updateColumns.push(
-                'sc_group_is_active = <? value("sc_group_is_active") ?> ');
+                'scgrp_is_active = <? value("scgrp_is_active") ?> ');
         }
 
         try {
             queryText = queryText + updateColumns.join(', ') + 
-                'WHERE sc_group_id = <? value("sc_group_id") ?> ' +
-                'RETURNING sc_group_id';
+                'WHERE scgrp_id = <? value("scgrp_id") ?> ' +
+                'RETURNING scgrp_id';
 
             var groupQuery = MuseUtils.executeQuery(queryText, pGroupData);
 
             if(groupQuery.first() && 
-                MuseUtils.isValidId(groupQuery.value("sc_group_id"))) {
-                return groupQuery.value("sc_group_id");
+                MuseUtils.isValidId(groupQuery.value("scgrp_id"))) {
+                return groupQuery.value("scgrp_id");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -388,14 +388,14 @@ if(!this.MuseUtils) {
         
         try {
             var groupQuery = MuseUtils.executeQuery(
-                "DELETE FROM musesuperchar.sc_group " +
-                'WHERE sc_group_id = <? value("pGroupId") ?> ' +
-                "RETURNING sc_group_id",
+                "DELETE FROM musesuperchar.scgrp " +
+                'WHERE scgrp_id = <? value("pGroupId") ?> ' +
+                "RETURNING scgrp_id",
                 {pGroupId: pGroupId});
             
             if(groupQuery.first() && 
-                MuseUtils.isValidId(groupQuery.value("sc_group_id"))) {
-                return groupQuery.value("sc_group_id");
+                MuseUtils.isValidId(groupQuery.value("scgrp_id"))) {
+                return groupQuery.value("scgrp_id");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -487,14 +487,14 @@ if(!this.MuseUtils) {
 
         try {
             var groupQuery = MuseUtils.executeQuery(
-                "SELECT entity_sc_group_ass_is_system_locked " +
-                "FROM musesuperchar.entity_sc_group_ass " +
-                'WHERE entity_sc_group_ass_sc_group_id = <? value("pGroupId") ?> ' +
-                    'AND entity_sc_group_ass_entity_id = <? value("pEntityId") ?> ',
+                "SELECT entity_scgrp_ass_is_system_locked " +
+                "FROM musesuperchar.entity_scgrp_ass " +
+                'WHERE entity_scgrp_ass_scgrp_id = <? value("pGroupId") ?> ' +
+                    'AND entity_scgrp_ass_entity_id = <? value("pEntityId") ?> ',
                     {pGroupId: pGroupId, pEntityId: pEntityId});
             if(groupQuery.first()) {
                 return MuseUtils.isTrue(
-                    groupQuery.value("entity_sc_group_ass_is_system_locked"));
+                    groupQuery.value("entity_scgrp_ass_is_system_locked"));
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -821,8 +821,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
         
-        if(!pGroupData.hasOwnProperty("sc_group_internal_name") ||
-            MuseUtils.coalesce(pGroupData.sc_group_internal_name, "") === "") {
+        if(!pGroupData.hasOwnProperty("scgrp_internal_name") ||
+            MuseUtils.coalesce(pGroupData.scgrp_internal_name, "") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We require at least a plausable internal name for the new group.",
@@ -830,8 +830,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pGroupData.hasOwnProperty("sc_group_display_name") ||
-            MuseUtils.coalesce(pGroupData.sc_group_display_name,"") === "") {
+        if(!pGroupData.hasOwnProperty("scgrp_display_name") ||
+            MuseUtils.coalesce(pGroupData.scgrp_display_name,"") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We require a display name for the new group.",
@@ -839,8 +839,8 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(!pGroupData.hasOwnProperty("sc_group_description") ||
-            MuseUtils.coalesce(pGroupData.sc_group_description, "") === "") {
+        if(!pGroupData.hasOwnProperty("scgrp_description") ||
+            MuseUtils.coalesce(pGroupData.scgrp_description, "") === "") {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "You must provide a group description when creating a new group.",
@@ -857,8 +857,8 @@ if(!this.MuseUtils) {
             pGroupData: pGroupData
         };
 
-        if(!pGroupData.hasOwnProperty("sc_group_id") ||
-            !MuseUtils.isValidId(pGroupData.sc_group_id)) {
+        if(!pGroupData.hasOwnProperty("scgrp_id") ||
+            !MuseUtils.isValidId(pGroupData.scgrp_id)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand which super characteristic group you wished to update.",
@@ -872,7 +872,7 @@ if(!this.MuseUtils) {
                 "You do not have permission to update super characteristic groups.",
                 "MuseSuperChar.Group.pPublicApi.updateGroup",
                 {params: funcParams});
-        } else if(isGroupSystemLocked(pGroupData.sc_group_id) &&
+        } else if(isGroupSystemLocked(pGroupData.scgrp_id) &&
                     !privileges.check("maintainSuperCharSysLockRecsManually")) {
             throw new MuseUtils.PermissionException(
                 "musesuperchar",
@@ -881,7 +881,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(pGroupData.hasOwnProperty("sc_group_internal_name") && 
+        if(pGroupData.hasOwnProperty("scgrp_internal_name") && 
             !privileges.check("maintainSuperCharInternalNames")) {
             throw new MuseUtils.PermissionException(
                 "musesuperchar",

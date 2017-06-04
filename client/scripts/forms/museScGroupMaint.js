@@ -89,15 +89,15 @@ if(!this.MuseSuperChar.Group) {
     entityListXTreeWidget.addColumn("Table", 100, Qt.AlignLeft, false, "entity_table");
     entityListXTreeWidget.addColumn("Primary Key Column", 150, Qt.AlignLeft, false, "entity_pk_column");
     entityListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "entity_is_system_locked");
-    entityListXTreeWidget.addColumn("Packages", 150, Qt.AlignLeft, false, "entity_package_names");
+    entityListXTreeWidget.addColumn("Packages", 150, Qt.AlignLeft, false, "entitypkg_names");
 
     // Add columns to groupListXTreeWidget
-    groupListXTreeWidget.addColumn("Group Id", 60, Qt.AlignRight, false, "sc_group_id");
-    groupListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "sc_group_display_name");
-    groupListXTreeWidget.addColumn("Internal Name", 150, Qt.AlignCenter, false, "sc_group_internal_name");
-    groupListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "sc_group_is_system_locked");
-    groupListXTreeWidget.addColumn("Description", -1, Qt.AlignLeft, true, "sc_group_description");
-    groupListXTreeWidget.addColumn("Package", 150, Qt.AlignLeft, false, "sc_group_package_name");
+    groupListXTreeWidget.addColumn("Group Id", 60, Qt.AlignRight, false, "scgrp_id");
+    groupListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "scgrp_display_name");
+    groupListXTreeWidget.addColumn("Internal Name", 150, Qt.AlignCenter, false, "scgrp_internal_name");
+    groupListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "scgrp_is_system_locked");
+    groupListXTreeWidget.addColumn("Description", -1, Qt.AlignLeft, true, "scgrp_description");
+    groupListXTreeWidget.addColumn("Package", 150, Qt.AlignLeft, false, "scgrp_package_name");
     
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
@@ -313,7 +313,7 @@ if(!this.MuseSuperChar.Group) {
         //            currentItem.id()));
         
             groupLayoutGroupBox.title = 
-                currentItem.rawValue("sc_group_display_name") + 
+                currentItem.rawValue("scgrp_display_name") + 
                 " Super Characteristic Layout";
         }
 
@@ -347,7 +347,7 @@ if(!this.MuseSuperChar.Group) {
             toolbox.lastWindow().set(
                 {
                     mode: "edit", 
-                    sc_group_id: groupListXTreeWidget.id()
+                    scgrp_id: groupListXTreeWidget.id()
                 });
             museScCreateGroup.exec();
             
