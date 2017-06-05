@@ -82,6 +82,10 @@ if(!this.MuseUtils) {
 
         whereClause = "WHERE true ";
 
+        if(!MuseUtils.isTrue(pParams.isInactiveIncluded || false)) {
+            whereClause = whereClause + " AND condvalrule_is_active ";
+        }
+
         if(pParams.hasOwnProperty("condvalrule_id")) {
             whereClause += "AND condvalrule_id = " +
                 '<? value("condvalrule_id") ?> ';
