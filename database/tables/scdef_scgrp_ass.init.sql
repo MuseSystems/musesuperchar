@@ -31,6 +31,11 @@ DO
                      scdef_scgrp_ass_id    bigserial    NOT NULL    PRIMARY KEY
                     ,scdef_scgrp_ass_scdef_id bigint NOT NULL REFERENCES musesuperchar.scdef (scdef_id) ON DELETE CASCADE
                     ,scdef_scgrp_ass_scgrp_id bigint NOT NULL REFERENCES musesuperchar.scgrp (scgrp_id) ON DELETE CASCADE
+                    ,scdef_scgrp_ass_sequence integer NOT NULL DEFAULT 99999
+                    ,scdef_scgrp_ass_section_name text NOT NULL DEFAULT 'General'
+                    ,scdef_scgrp_ass_is_column_start boolean NOT NULL default false
+                    ,scdef_scgrp_ass_width integer
+                    ,scdef_scgrp_ass_height integer
                     ,scdef_scgrp_ass_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,scdef_scgrp_ass_is_system_locked boolean NOT NULL DEFAULT false
                 );
@@ -53,6 +58,21 @@ DO
 
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_scgrp_id IS
                 $DOC$A reference to the group to which the super characteristic is being assigned.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_sequence IS 
+                $DOC$Determines the display order on screen with lowest value being displayed first.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_section_name IS 
+                $DOC$Allows the association of an assigned Super Characteristic to a section within the group.  When the layout is generated, each section gets it's own QGroupBox and the sequencing and column breaks are bounded by section.  If no section is specifically created, the default of "General" applies to all SuperChars.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_is_column_start IS 
+                $DOC$Sets the start of a new column.  For the first column the of a section by sequence number, the column start marker is inferred.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_width IS 
+                $DOC$If set, will become the minimum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_height IS 
+                $DOC$If set, will become the minimum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_pkghead_id IS
                 $DOC$If the group/characteristic relationship is managed by an extension package if this value is not null.$DOC$;

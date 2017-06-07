@@ -87,8 +87,6 @@
 
     <createfunction file="database/functions/get_sc_table_name.sql" name="get_sc_table_name" />
     <createfunction file="database/functions/is_superchar_table_populated.sql" name="is_superchar_table_populated" />
-    <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
-    <createfunction file="database/triggers/trig_a_d_entitypkg_manage_entity_syslock.sql" name="trig_a_d_entitypkg_manage_entity_syslock" />
     <createfunction file="database/functions/create_entity.sql" name="create_entity" />
     <createfunction file="database/functions/add_group_entity_association.sql" name="add_group_entity_association" />
     <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
@@ -98,7 +96,15 @@
     <createfunction file="database/functions/get_group_entity_add_violations.sql" name="get_group_entity_add_violations" />
     <createfunction file="database/functions/get_group_entity_remove_violations.sql" name="get_group_entity_remove_violations" />
     <createfunction file="database/functions/get_superchar_delete_violations.sql" name="get_superchar_delete_violations" />
+    <createfunction file="database/functions/get_group_layout_item_next_sequence.sql" name="get_group_layout_item_next_sequence" />
+    <createfunction file="database/functions/get_group_layout_item_max_sequence.sql" name="get_group_layout_item_max_sequence" />
+    <createfunction file="database/functions/move_group_layout_item_up.sql" name="move_group_layout_item_up" />
+    <createfunction file="database/functions/move_group_layout_item_down.sql" name="move_group_layout_item_down" />
     
+    <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
+    <createfunction file="database/triggers/trig_a_d_entitypkg_manage_entity_syslock.sql" name="trig_a_d_entitypkg_manage_entity_syslock" />
+    <createfunction file="database/triggers/trig_b_i_scdef_scgrp_ass_assign_next_sequence.sql" name="trig_b_i_scdef_scgrp_ass_assign_next_sequence" />
+    <createfunction file="database/triggers/trig_a_d_scdef_scgrp_ass_sequence_maint.sql" name="trig_a_d_scdef_scgrp_ass_sequence_maint" />
     <createfunction file="database/triggers/trig_b_iu_condvalrule_violation_check.sql" name="trig_b_iu_condvalrule_violation_check" />
     <createfunction file="database/triggers/trig_b_iud_scdef_scgrp_ass_violation_check.sql" name="trig_b_iud_scdef_scgrp_ass_violation_check" />
     <createfunction file="database/triggers/trig_b_iud_entity_scgrp_ass_violation_check.sql" name="trig_b_iud_entity_scgrp_ass_violation_check" />
@@ -121,6 +127,7 @@
     <loadappui file="client/uiforms/museScViolationsDialog.ui" order="20">Muse Systems Super Characteristic Validator Violations Dialog</loadappui>
     <loadappui file="client/uiforms/museScNewListValue.ui" order="20">Muse Systems Super Characteristic New List of Value Value form.</loadappui>
     <loadappui file="client/uiforms/museScCreateCondValRule.ui" order="20">Muse Systems Super Characteristic Create Validation Rule form.</loadappui>
+    <loadappui file="client/uiforms/museScCreateGroupLayoutItem.ui" order="20">Muse Systems Super Characteristic Create Group Layout Item form.</loadappui>
     
     <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
@@ -134,7 +141,7 @@
     <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
-    
+    <loadappscript file="client/scripts/forms/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
     
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />

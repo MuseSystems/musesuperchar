@@ -573,6 +573,505 @@ if(!this.MuseUtils) {
         }
     };
 
+    var getGroupLayoutItems = function(pParams) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pParams: pParams
+        };
+        
+        var whereClause = "WHERE true ";
+
+        if(!MuseUtils.isTrue(pParams.isInactiveIncluded || false)) {
+            whereClause = whereClause + " AND scdef_scgrp_ass_is_active ";
+        }
+
+        if(pParams.hasOwnProperty("scdef_scgrp_ass_id") &&
+            MuseUtils.isValidId(pParams.scdef_scgrp_ass_id)) {
+            whereClause += 
+                'AND scdef_scgrp_ass_id = <? value("scdef_scgrp_ass_id") ?> ';
+        }
+
+        if(pParams.hasOwnProperty("scdef_scgrp_ass_scgrp_id") &&
+            MuseUtils.isValidId(pParams.scdef_scgrp_ass_scgrp_id)) {
+            whereClause +=
+                'AND scdef_scgrp_ass_scgrp_id = ' +
+                '<? value("scdef_scgrp_ass_scgrp_id") ?> ';
+        }
+
+        if(pParams.hasOwnProperty("scdef_scgrp_ass_section_name") && 
+            MuseUtils.coalesce(pParams.scdef_scgrp_ass_section_name, "") !== "") {
+            whereClause += 
+                'AND scdef_scgrp_ass_section_name = ' +
+                '<? value("scdef_scgrp_ass_section_name") ?> ';
+        }
+
+        try {
+            return MuseUtils.executeQuery(
+                "SELECT   ssa.scdef_scgrp_ass_id " +
+                        ",ssa.scdef_scgrp_ass_scdef_id " +
+                        ",sc.scdef_internal_name AS scdef_scgrp_ass_scdef_internal_name " +
+                        ",sc.scdef_display_name AS scdef_scgrp_ass_scdef_display_name " +
+                        ",ssa.scdef_scgrp_ass_scgrp_id " +
+                        ",sg.scgrp_internal_name AS scdef_scgrp_ass_scgrp_internal_name " +
+                        ",sg.scgrp_display_name AS scdef_scgrp_ass_scgrp_display_name " +
+                        ",ssa.scdef_scgrp_ass_sequence " +
+                        ",ssa.scdef_scgrp_ass_section_name " +
+                        ",ssa.scdef_scgrp_ass_is_column_start " +
+                        ",ssa.scdef_scgrp_ass_width " +
+                        ",ssa.scdef_scgrp_ass_height " +
+                        ",ssa.scdef_scgrp_ass_pkghead_id " +
+                        ",ssa.scdef_scgrp_ass_is_system_locked " +
+                        ",CASE " +
+                            "WHEN scdef_scgrp_ass_is_system_locked THEN " +
+                                "'bisque' " +
+                            "ELSE " +
+                                "'palegreen' " +
+                        " END AS qtbackgroundrole " +
+                "FROM    musesuperchar.scdef_scgrp_ass ssa  " +
+                    "JOIN musesuperchar.scdef sc  " +
+                        "ON ssa.scdef_scgrp_ass_scdef_id = sc.scdef_id " +
+                    "JOIN musesuperchar.scgrp sg  " +
+                        "ON ssa.scdef_scgrp_ass_scgrp_id = sg.scgrp_id  " +
+                whereClause +
+                "ORDER BY scdef_scgrp_ass_sequence ", pParams);
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered an error getting group layout items.",
+                "MuseSuperChar.Group.getGroupLayoutItems",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getGroupLayoutItemById = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+      
+        try {
+            var gliQry = getGroupLayoutItems({
+                scdef_scgrp_ass_id: pGroupLayoutItemId,
+                isInactiveIncluded: true
+            });
+
+            if(gliQry.first()) {
+                return gliQry.firstJson();
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We did not find the requested Group Layout Item.",
+                    "MuseSuperChar.Group.getGroupLayoutItemById",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to retieve the requested Group Layout Item.",
+                "MuseSuperChar.Group.getGroupLayoutItemById",
+                {params: funcParams, thrownError: e});
+        }  
+    };
+
+    var getGroupLayoutItemsByGroupId = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+        
+        try {
+            return getGroupLayoutItems({
+                scdef_scgrp_ass_scgrp_id: pGroupId
+            });
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to retrieve the Group Layout Items for the requested Group.",
+                "MuseSuperChar.getGroupLayoutItemsByGroupId",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var createGroupLayoutItem = function(pGroupLayoutData) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutData: pGroupLayoutData
+        };
+
+        var columnList = [
+                "scdef_scgrp_ass_scdef_id",
+                "scdef_scgrp_ass_scgrp_id",
+            ];
+        var valueList = [
+                '<? value("scdef_scgrp_ass_scdef_id") ?>',
+                '<? value("scdef_scgrp_ass_scgrp_id") ?>',
+            ];
+        
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_section_name") &&
+            MuseUtils.coalesce(
+                pGroupLayoutData.scdef_scgrp_ass_section_name) !== "") {
+            columnList.push("scdef_scgrp_ass_section_name");
+            valueList.push('<? value("scdef_scgrp_ass_section_name") ?>');
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_is_column_start") &&
+            MuseUtils.realNull(
+                pGroupLayoutData.scdef_scgrp_ass_is_column_start) !== null) {
+            columnList.push("scdef_scgrp_ass_is_column_start");
+            valueList.push('<? value("scdef_scgrp_ass_is_column_start") ?>');
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
+            pGroupLayoutData.scdef_scgrp_ass_width > 0) {
+            columnList.push("scdef_scgrp_ass_width");
+            valueList.push('<? value("scdef_scgrp_ass_width") ?>');
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
+            pGroupLayoutData.scdef_scgrp_ass_height > 0) {
+            columnList.push("scdef_scgrp_ass_height");
+            valueList.push('<? value("scdef_scgrp_ass_height") ?>');
+        }
+
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "INSERT INTO musesuperchar.scdef_scgrp_ass " + 
+                    "(" + columnList.join(",") + ") VALUES " +
+                    "(" + valueList.join(",") + ") " +
+                    "RETURNING scdef_scgrp_ass_id",
+                    pGroupLayoutData);
+
+            if(gliQry.first() && 
+                MuseUtils.isValidId(gliQry.value("scdef_scgrp_ass_id"))) {
+                return gliQry.value("scdef_scgrp_ass_id");
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to verify that we created a new Group Layout Item.",
+                    "MuseSuperChar.Group.createGroupLayoutItem",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem trying to save a new Group Layout Item.",
+                "MuseSuperChar.Group.createGroupLayoutItem",
+                {params: funcParams, thrownError: e});
+        }
+
+    };
+
+    var updateGroupLayoutItem = function(pGroupLayoutData) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutData: pGroupLayoutData
+        };
+
+        var queryText = 
+            "UPDATE musesuperchar.scdef_scgrp_ass " +
+                "SET scdef_scgrp_ass_id = scdef_scgrp_ass_id ";
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_section_name")) {
+            queryText += ',scdef_scgrp_ass_section_name = ' +
+                '<? value("scdef_scgrp_ass_section_name") ?> ';
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_is_column_start")) {
+            queryText += ',scdef_scgrp_ass_is_column_start = ' +
+                '<? value("scdef_scgrp_ass_is_column_start") ?> ';
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
+            pGroupLayoutData.scdef_scgrp_ass_width > 0) {
+            queryText += ',scdef_scgrp_ass_width = ' +
+                '<? value("scdef_scgrp_ass_width") ?> ';
+        } else if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
+            pGroupLayoutData.scdef_scgrp_ass_width < 1) {
+            queryText += ',scdef_scgrp_ass_width = ' +
+                'null ';
+        }
+
+        if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
+            pGroupLayoutData.scdef_scgrp_ass_height > 0) {
+            queryText += ',scdef_scgrp_ass_height = ' +
+                '<? value("scdef_scgrp_ass_height") ?> ';
+        } else if(pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
+            Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
+            pGroupLayoutData.scdef_scgrp_ass_height < 1) {
+            queryText += ',scdef_scgrp_ass_height = ' +
+                'null ';
+        }
+
+        queryText += 'WHERE scdef_scgrp_ass_id = ' +
+            '<? value("scdef_scgrp_ass_id") ?> ' +
+            'RETURNING scdef_scgrp_ass_id';
+
+        try {
+            var gliQry = MuseUtils.executeQuery(queryText, pGroupLayoutData);
+
+            if(gliQry.first() && 
+                MuseUtils.isValidId(gliQry.value("scdef_scgrp_ass_id"))) {
+                return gliQry.value("scdef_scgrp_ass_id");
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to verify that we successfully updated the requeste Group Layout Item.",
+                    "MuseSuperChar.Group.moveUpGroupLayoutItem",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem trying to update a Group Layout Item.",
+                "MuseSuperChar.Group.updateGroupLayoutItem",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var deleteGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "DELETE FROM musesuperchar.scdef_scgrp_ass " +
+                'WHERE scdef_scgrp_ass_id = <? value("pGroupLayoutItemId") ?> ' +
+                "RETURNING scdef_scgrp_ass_id ",
+                {pGroupLayoutItemId: pGroupLayoutItemId});
+
+            if(gliQry.first() && 
+                MuseUtils.isValidId(gliQry.value("scdef_scgrp_ass_id"))) {
+                return gliQry.value("scdef_scgrp_ass_id");
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to delete a Group Layout Item.",
+                "MuseSuperChar.Group.deleteGroupLayoutItem",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var isGroupLayoutItemSystemLocked = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "SELECT scdef_scgrp_ass_is_system_locked " +
+                "FROM musesuperchar.scdef_scgrp_ass " +
+                'WHERE scdef_scgrp_ass_id = <? value("pGroupLayoutItemId") ?>',
+                {pGroupLayoutItemId: pGroupLayoutItemId});
+
+            if(gliQry.first()) {
+                return MuseUtils.isTrue(
+                    gliQry.value("scdef_scgrp_ass_is_system_locked"));
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to find the requested Group Layout Item while checking its system lock status.",
+                    "MuseSuperChar.Group.isGroupLayoutItemSystemLocked",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem trying to determine if a Group Layout Item is system locked.",
+                "MuseSuperChar,Group.isGroupLayoutItemSystemLocked",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var moveUpGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "SELECT musesuperchar.move_group_layout_item_up( " +
+                    '<? value("pGroupLayoutItemId") ?>) AS result ',
+                    {pGroupLayoutItemId: pGroupLayoutItemId});
+
+            if(gliQry.first() && 
+                MuseUtils.isValidId(gliQry.value("result"))) {
+                return gliQry.value("result");
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to verify that we moved the requested Group Layout Item up in the layout.",
+                    "MuseSuperChar.Group.moveUpGroupLayoutItem",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered problems trying to move a Group Layout Item up in the layout.",
+                "MuseSuperChar.Group.moveUpGroupLayoutItem",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var moveDownGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "SELECT musesuperchar.move_group_layout_item_down( " +
+                    '<? value("pGroupLayoutItemId") ?>) AS result ',
+                    {pGroupLayoutItemId: pGroupLayoutItemId});
+
+            if(gliQry.first() && 
+                MuseUtils.isValidId(gliQry.value("result"))) {
+                return gliQry.value("result");
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We failed to verify that we moved the requested Group Layout Item down in the layout.",
+                    "MuseSuperChar.Group.moveDownGroupLayoutItem",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered problems trying to move a Group Layout Item down in the layout.",
+                "MuseSuperChar.Group.moveDownGroupLayoutItem",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getGroupList = function() {
+        try {
+            return MuseUtils.executeQuery(
+                "SELECT   scgrp_id " +
+                        ",scgrp_display_name " +
+                        ",scgrp_internal_name " +
+                "FROM musesuperchar.scgrp " +
+                "WHERE scgrp_is_active " +
+                "ORDER BY scgrp_display_name");
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a database problem retrieving the list of groups.",
+                "MuseSuperChar.Group.getGroupList",
+                {thrownError: e});
+        }
+    };
+
+    var getGroupLayoutSectionNames = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+        
+        try {
+            var secQry =  MuseUtils.executeQuery(
+                            "SELECT   row_number() OVER (ORDER BY section_name) " +
+                                        "AS section_id " +
+                                    ",section_name " +
+                                    ",section_code " +
+                            "FROM " +
+                                "(SELECT   DISTINCT scdef_scgrp_ass_section_name " +
+                                            "AS section_name " +
+                                        ",scdef_scgrp_ass_section_name " +
+                                            "AS section_code " +
+                                    "FROM musesuperchar.scdef_scgrp_ass " +
+                                    "WHERE scdef_scgrp_ass_scgrp_id = " +
+                                        '<? value("pGroupId") ?> ' +
+                                "ORDER BY scdef_scgrp_ass_section_name) q",
+                            {pGroupId: pGroupId});
+            
+            if(secQry.first()) {
+                return secQry;
+            } else {
+                return MuseUtils.executeQuery(
+                    "SELECT 1 AS section_id, 'General' AS section_name, " +
+                        "'General' AS section_coded");
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered problem retrieving the list of section names for the given Group ID.",
+                "MuseSuperChar.Group.getGroupLayoutSectionNames",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getGroupUnAssignedSuperChars = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+
+        try {
+            return MuseUtils.executeQuery(
+                'SELECT   scdef_id ' +
+                        ',scdef_display_name ' +
+                        ',scdef_internal_name ' +
+                'FROM    musesuperchar.scdef ' +
+                    'LEFT OUTER JOIN musesuperchar.scdef_scgrp_ass  ' +
+                        'ON scdef_id = scdef_scgrp_ass_scdef_id  ' +
+                            'AND scdef_scgrp_ass_is_active ' +
+                            'AND scdef_scgrp_ass_scgrp_id =  ' +
+                                    '<? value("pGroupId") ?> ' +
+                'WHERE   scdef_is_active ' +
+                    'AND scdef_scgrp_ass_id IS NULL ',
+                    {pGroupId: pGroupId});
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem retrieving the list of unassigned Super Characteristics for the requested group.",
+                "MuseSuperChar.Group.getGroupUnAssignedSuperChars",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var isGroupLayoutItemAtBotton = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        try {
+            var gliQry = MuseUtils.executeQuery(
+                "SELECT scdef_scgrp_ass_sequence = " +
+                    "musesuperchar.get_group_layout_item_max_sequence(" +
+                    "scdef_scgrp_ass_scgrp_id) AS result " +
+                "FROM musesuperchar.scdef_scgrp_ass " +
+                'WHERE scdef_scgrp_ass_id = <? value("pGroupLayoutItemId") ?>',
+                {pGroupLayoutItemId: pGroupLayoutItemId});
+
+            if(gliQry.first()) {
+                return MuseUtils.isTrue(gliQry.value("result"));
+            } else {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We could not find a result when we asked if a Group Layout Item was at the bottom of the layout.",
+                    "MuseSuperChar.Group.isGroupLayoutItemAtBotton",
+                    {params: funcParams});
+            }
+        } catch(e) {
+            throw new MuseUtils.DatabaseException(
+                "musesuperchar",
+                "We encountered a problem trying to find if the requested Group Layout Item is already at the bottom of its layout.",
+                "MuseSuperChar.Group.isGroupLayoutItemAtBotton",
+                {params: funcParams, thrownError: e});
+        }    
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -726,16 +1225,59 @@ if(!this.MuseUtils) {
         return isGroupEntityAsscSystemLocked(pGroupId, pEntityId);
     };
 
-    pPublicApi.getGroupLayoutItems = function() {
-
+    pPublicApi.getGroupLayoutItems = function(pParams) {
+        return getGroupLayoutItems(pParams || {});
     };
 
-    pPublicApi.getGroupLayoutItemById = function() {
+    pPublicApi.getGroupLayoutItemById = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item we should look up for you.",
+                "MuseSuperChar.Group.pPublicApi.getGroupLayoutItemById",
+                {params: funcParams});
+        }
 
+        return getGroupLayoutItemById(pGroupLayoutItemId);
     };
 
-    pPublicApi.isGroupLayoutItemSystemLocked = function() {
+    pPublicApi.getGroupLayoutItemsByGroupId = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which group you wished to retrieve related Group Layout Items.",
+                "MuseSuperChar.Group.pPublicApi.getGroupLayoutItemsByGroupId",
+                {params: funcParams});
+        }
 
+        return getGroupLayoutItemsByGroupId(pGroupId);
+    };
+
+    pPublicApi.isGroupLayoutItemSystemLocked = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wanted to check for being system locked.",
+                "MuseSuperChar.Group.pPublicApi.isGroupLayoutItemSystemLocked",
+                {params: funcParams});
+        }
+
+        return isGroupLayoutItemSystemLocked(pGroupLayoutItemId);
     };
 
     pPublicApi.getDefaultGroupInternalName = function(pDisplayName) {
@@ -925,24 +1467,154 @@ if(!this.MuseUtils) {
         return deleteGroup(pGroupId);
     };
 
-    pPublicApi.createGroupLayoutItem = function() {
+    pPublicApi.createGroupLayoutItem = function(pGroupLayoutData) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutData: pGroupLayoutData
+        };
+        
+        if(!pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_scdef_id") ||
+            !MuseUtils.isValidId(pGroupLayoutData.scdef_scgrp_ass_scdef_id)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Super Characteristic you wished to add to a Group Layout.",
+                "MuseSuperChar.Group.pPublicApi.createGroupLayoutItem",
+                {params: funcParams});
+        }
 
+        if(!pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_scgrp_id") ||
+            !MuseUtils.isValidId(pGroupLayoutData.scdef_scgrp_ass_scgrp_id)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand to which Group's Layout you wanted to add a Super Characteristic.",
+                "MuseSuperChar.Group.pPublicApi.createGroupLayoutItem",
+                {params: funcParams});
+        }
+
+        return createGroupLayoutItem(pGroupLayoutData);
     };
 
-    pPublicApi.updateGroupLayoutItem = function() {
+    pPublicApi.updateGroupLayoutItem = function(pGroupLayoutData) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutData: pGroupLayoutData
+        };
+        
+        if(!pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_id") ||
+            !MuseUtils.isValidId(pGroupLayoutData.scdef_scgrp_ass_id)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wished to update.",
+                "MuseSuperChar.Group.pPublicApi.updateGroupLayoutItem",
+                {params: funcParams});
+        }
 
+        return updateGroupLayoutItem(pGroupLayoutData);
     };
 
-    pPublicApi.deleteGroupLayoutItem = function() {
+    pPublicApi.deleteGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wished to delete.",
+                "MuseSuperChar.Group.pPublicApi.deleteGroupLayoutItem",
+                {params: funcParams});
+        }
 
+        return deleteGroupLayoutItem(pGroupLayoutItemId);
     };
 
-    pPublicApi.moveUpGroupLayoutItem = function() {
+    pPublicApi.moveUpGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
 
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wished to move up in the layout.",
+                "MuseSuperChar.Group.pPublicApi.moveUpGroupLayoutItem",
+                {params: funcParams});
+        }
+
+        return moveUpGroupLayoutItem(pGroupLayoutItemId);
     };
 
-    pPublicApi.moveDownGroupLayoutItem = function() {
+    pPublicApi.moveDownGroupLayoutItem = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
 
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wished to move down in the layout.",
+                "MuseSuperChar.Group.pPublicApi.moveDownGroupLayoutItem",
+                {params: funcParams});
+        }
+
+        return moveDownGroupLayoutItem(pGroupLayoutItemId);
     };
 
+    pPublicApi.getGroupLayoutSectionNames = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which group you wished to retrieve section names.",
+                "MuseSuperChar.Group.pPublicApi.getGroupLayoutSectionNames",
+                {params: funcParams});
+        }
+
+        return getGroupLayoutSectionNames(pGroupId);
+    };
+
+    pPublicApi.isGroupLayoutItemAtBotton = function(pGroupLayoutItemId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupLayoutItemId: pGroupLayoutItemId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupLayoutItemId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand which Group Layout Item you wished to see was already at the bottom of the layout.",
+                "MuseSuperChar.Group.pPublicApi.isGroupLayoutItemAtBotton",
+                {params: funcParams});
+        }
+
+        return isGroupLayoutItemAtBotton(pGroupLayoutItemId);
+    };
+
+    pPublicApi.getGroupUnAssignedSuperChars = function(pGroupId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pGroupId: pGroupId
+        };
+        
+        if(!MuseUtils.isValidId(pGroupId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which Group we should retrieve the unassigned Super Characteristics list.",
+                "MuseSuperChar.Group.pPublicApi.getGroupUnAssignedSuperChars",
+                {params: funcParams});
+        }
+
+        return getGroupUnAssignedSuperChars(pGroupId);
+    };
+
+    pPublicApi.getGroupList = function() {
+        return getGroupList();
+    };
 })(this.MuseSuperChar.Group);

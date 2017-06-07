@@ -96,8 +96,23 @@ if(!this.MuseSuperChar.Group) {
     groupListXTreeWidget.addColumn("Group", 150, Qt.AlignCenter, true, "scgrp_display_name");
     groupListXTreeWidget.addColumn("Internal Name", 150, Qt.AlignCenter, false, "scgrp_internal_name");
     groupListXTreeWidget.addColumn("System Locked?", 45, Qt.AlignCenter, false, "scgrp_is_system_locked");
-    groupListXTreeWidget.addColumn("Description", -1, Qt.AlignLeft, true, "scgrp_description");
+    groupListXTreeWidget.addColumn("Description", 200, Qt.AlignLeft, true, "scgrp_description");
     groupListXTreeWidget.addColumn("Package", 150, Qt.AlignLeft, false, "scgrp_package_name");
+
+    //Add columns to groupLayoutXTreeWidget
+    groupLayoutXTreeWidget.addColumn("Group Layout ID", 45, Qt.AlignRight, false, "scdef_scgrp_ass_id");
+    groupLayoutXTreeWidget.addColumn("Sort Order", 45, Qt.AlignRight, true, "scdef_scgrp_ass_sequence");
+    groupLayoutXTreeWidget.addColumn("Group", 15, Qt.AlignCenter, false, "scdef_scgrp_ass_scgrp_display_name");
+    groupLayoutXTreeWidget.addColumn("Group ID", -1, Qt.AlignCenter, false, "scdef_scgrp_ass_scgrp_id");
+    groupLayoutXTreeWidget.addColumn("Group Int. Name", -1, Qt.AlignCenter, false, "scdef_scgrp_ass_scgrp_internal_name");
+    groupLayoutXTreeWidget.addColumn("Section", 150, Qt.AlignCenter, true, "scdef_scgrp_ass_section_name");
+    groupLayoutXTreeWidget.addColumn("SuperChar", 150, Qt.AlignCenter, true, "scdef_scgrp_ass_scdef_display_name");
+    groupLayoutXTreeWidget.addColumn("SuperChar ID", 45, Qt.AlignRight, false, "scdef_scgrp_ass_scdef_id");
+    groupLayoutXTreeWidget.addColumn("SuperChar Int. Name", 100, Qt.AlignCenter, false, "scdef_scgrp_ass_scdef_internal_name");
+    groupLayoutXTreeWidget.addColumn("Is Column Start?", 45, Qt.AlignCenter, true, "scdef_scgrp_ass_is_column_start");
+    groupLayoutXTreeWidget.addColumn("Width", 45, Qt.AlignRight, true, "scdef_scgrp_ass_width");
+    groupLayoutXTreeWidget.addColumn("Height", 45, Qt.AlignRight, true, "scdef_scgrp_ass_height");
+    groupLayoutXTreeWidget.addColumn("Is System Locked", 45, Qt.AlignCenter, false, "scdef_scgrp_ass_is_system_locked");
     
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
@@ -196,7 +211,7 @@ if(!this.MuseSuperChar.Group) {
         if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null && 
             MuseUtils.realNull(groupLayoutXTreeWidget.currentItem()) !== null) {
             
-            var currGroupLayoutItem = groupListXTreeWidget.currentItem();
+            var currGroupLayoutItem = groupLayoutXTreeWidget.currentItem();
             groupLayoutAddPushButton.enabled = true &&
                 (
                     (
@@ -228,8 +243,13 @@ if(!this.MuseSuperChar.Group) {
                 );
 
             groupLayoutEditPushButton.enabled = true && isGroupLayoutEditingPrivileged;
-            groupLayoutMoveUpPushButton.enabled = true && isGroupLayoutEditingPrivileged;
-            groupLayoutMoveDownPushButton.enabled = true && isGroupLayoutEditingPrivileged;
+            groupLayoutMoveUpPushButton.enabled = true && 
+                isGroupLayoutEditingPrivileged && 
+                currGroupLayoutItem.rawValue("scdef_scgrp_ass_sequence") > 1;
+            groupLayoutMoveDownPushButton.enabled = true && 
+                isGroupLayoutEditingPrivileged &&
+                !MuseSuperChar.Group.isGroupLayoutItemAtBotton(
+                    currGroupLayoutItem.id());
             groupLayoutDeletePushButton.enabled = true && isGroupLayoutEditingPrivileged;
 
         } else if(MuseUtils.realNull(groupListXTreeWidget.currentItem()) !== null) {
@@ -315,6 +335,11 @@ if(!this.MuseSuperChar.Group) {
             groupLayoutGroupBox.title = 
                 currentItem.rawValue("scgrp_display_name") + 
                 " Super Characteristic Layout";
+
+            groupLayoutXTreeWidget.clear();
+            groupLayoutXTreeWidget.populate(
+                MuseSuperChar.Group.getGroupLayoutItems(
+                    {scdef_scgrp_ass_scgrp_id: currentItem.id()}));
         }
 
         setButtons();
@@ -378,6 +403,104 @@ if(!this.MuseSuperChar.Group) {
                 "Super Characteristic Layout / No Group Selected";
             setButtons();
         }
+    };
+
+    var addGroupLayoutItem = function() {
+        // Open a box with the requisite fields.
+        var museScCreateGroupLayoutItem = 
+            toolbox.openWindow("museScCreateGroupLayoutItem", mywindow, 
+                Qt.WindowModal);
+        toolbox.lastWindow().set({
+            mode: "new",
+            scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()
+        });
+        museScCreateGroupLayoutItem.exec();
+        
+        // We may have new entities, so lets populate them.
+        groupLayoutXTreeWidget.clear();
+        groupLayoutXTreeWidget.populate(
+            MuseSuperChar.Group.getGroupLayoutItems(
+                {scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()}));
+        setButtons();
+    };
+
+    var editGroupLayoutItem = function() {
+        var currGroupLayoutItemId = groupLayoutXTreeWidget.id();
+        // Open a box with the requisite fields.
+        var museScCreateGroupLayoutItem = 
+            toolbox.openWindow("museScCreateGroupLayoutItem", mywindow, 
+                Qt.WindowModal);
+        toolbox.lastWindow().set({
+            mode: "edit",
+            scdef_scgrp_ass_id: currGroupLayoutItemId
+        });
+        museScCreateGroupLayoutItem.exec();
+        
+        groupLayoutXTreeWidget.clear();
+        groupLayoutXTreeWidget.populate(
+            MuseSuperChar.Group.getGroupLayoutItems(
+                {scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()}));
+
+        groupLayoutXTreeWidget.setId(currGroupLayoutItemId);
+        setButtons();
+    };
+
+    var deleteGroupLayoutItem = function() {
+        try {
+            MuseSuperChar.Group.deleteGroupLayoutItem(
+                groupLayoutXTreeWidget.id());
+            
+            groupLayoutXTreeWidget.clear();
+            groupLayoutXTreeWidget.populate(
+                MuseSuperChar.Group.getGroupLayoutItems(
+                    {scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()}));
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We confirm that the requested Group Layout Item was deleted.",
+                "MuseSuperChar.GroupMaint.deleteGroupLayoutItem",
+                {thrownError: e});
+        }
+    };
+
+    var moveGroupLayoutItemUp = function() {
+        var currGroupLayoutItemId = groupLayoutXTreeWidget.id();
+        
+        try {
+            MuseSuperChar.Group.moveUpGroupLayoutItem(currGroupLayoutItemId);    
+            groupLayoutXTreeWidget.populate(
+                MuseSuperChar.Group.getGroupLayoutItems(
+                    {scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()}));
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to properly move a Group Layout Item up in the layout.",
+                "MuseSuperChar.GroupMaint.moveGroupLayoutItemUp",
+                {thrownError: e});
+        }
+
+        groupLayoutXTreeWidget.setId(currGroupLayoutItemId);
+        setButtons();
+    };
+
+    var moveGroupLayoutItemDown = function() {
+        var currGroupLayoutItemId = groupLayoutXTreeWidget.id();
+        
+        try {
+            MuseSuperChar.Group.moveDownGroupLayoutItem(currGroupLayoutItemId);    
+            groupLayoutXTreeWidget.populate(
+                MuseSuperChar.Group.getGroupLayoutItems(
+                    {scdef_scgrp_ass_scgrp_id: groupListXTreeWidget.id()}));
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to properly move a Group Layout Item up in the layout.",
+                "MuseSuperChar.GroupMaint.moveGroupLayoutItemDown",
+                {thrownError: e});
+        }
+
+        groupLayoutXTreeWidget.setId(currGroupLayoutItemId);
+        setButtons();
     };
 
     //--------------------------------------------------------------------
@@ -448,7 +571,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sAddSuperCharToLayout = function() {
         try {
-
+            addGroupLayoutItem();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -456,7 +579,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sEditSuperCharInLayout = function() {
         try {
-
+            editGroupLayoutItem();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -464,7 +587,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sDeleteSuperCharFromLayout = function() {
         try {
-
+            deleteGroupLayoutItem();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -472,7 +595,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sMoveSuperCharUpInLayout = function() {
         try {
-
+            moveGroupLayoutItemUp();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -480,7 +603,7 @@ if(!this.MuseSuperChar.Group) {
 
     pPublicApi.sMoveSuperCharDownInLayout = function() {
         try {
-
+            moveGroupLayoutItemDown();
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -497,6 +620,14 @@ if(!this.MuseSuperChar.Group) {
     pPublicApi.sGroupSelected = function(pXtreeWidgetItem, pColumnIndex) {
         try {
             groupSelected();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
+    pPublicApi.sGroupLayoutSelected = function() {
+        try {
+            setButtons();      
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
@@ -540,6 +671,8 @@ if(!this.MuseSuperChar.Group) {
             pPublicApi.sMoveSuperCharUpInLayout);
         groupLayoutMoveDownPushButton.clicked.connect(
             pPublicApi.sMoveSuperCharDownInLayout);
+        groupLayoutXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
+            pPublicApi.sGroupLayoutSelected);
         
     } catch(e) {
         MuseUtils.displayError(e, mywindow);

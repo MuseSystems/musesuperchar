@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <comment>This file is part of the xTuple ERP: PostBooks Edition, a free and
+open source Enterprise Resource Planning software suite,
+Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+It is licensed to you under the Common Public Attribution License
+version 1.0, the full text of which (including xTuple-specific Exhibits)
+is available at www.xtuple.com/CPAL.  By using this software, you agree
+to be bound by its terms.</comment>
+ <class>museScCreateGroupLayoutItem</class>
+ <widget class="QDialog" name="museScCreateGroupLayoutItem">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>856</width>
+    <height>198</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>New Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="fieldsHBoxLayout">
+     <item>
+      <layout class="QFormLayout" name="leftFieldsFormLayout">
+       <item row="0" column="0">
+        <widget class="XLabel" name="groupXLabel">
+         <property name="text">
+          <string>Group:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="XComboBox" name="groupComboBox"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="XLabel" name="sectionXLabel">
+         <property name="text">
+          <string>Section:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="XComboBox" name="sectionComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="XLabel" name="heightXLabel">
+         <property name="text">
+          <string>Height:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="XLineEdit" name="heightXLineEdit"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="XCheckBox" name="isNewColumnCheckBox">
+         <property name="text">
+          <string>Starts New Column?</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="rightFieldsFormLayout">
+       <item row="0" column="0">
+        <widget class="XLabel" name="superCharXLabel">
+         <property name="text">
+          <string>Super Characteristic:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="XComboBox" name="superCharComboBox"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="XLabel" name="seqXLabel">
+         <property name="text">
+          <string>Sequence:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="XLabel" name="seqValueXLabel"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="XLabel" name="widthXLabel">
+         <property name="text">
+          <string>Width:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="XLineEdit" name="widthXLineEdit"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="saveButtonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>xcheckbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XComboBox</class>
+   <extends>QComboBox</extends>
+   <header>xcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XLabel</class>
+   <extends>QLabel</extends>
+   <header>xlabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>xlineedit.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
