@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="0.0.3"
+         version="0.0.4"
          updater="2.2.5">
 
     <pkgnotes>
@@ -128,6 +128,7 @@
     <loadappui file="client/uiforms/museScNewListValue.ui" order="20">Muse Systems Super Characteristic New List of Value Value form.</loadappui>
     <loadappui file="client/uiforms/museScCreateCondValRule.ui" order="20">Muse Systems Super Characteristic Create Validation Rule form.</loadappui>
     <loadappui file="client/uiforms/museScCreateGroupLayoutItem.ui" order="20">Muse Systems Super Characteristic Create Group Layout Item form.</loadappui>
+    <loadappui file="client/uiforms/museScUnifiedSetup.ui" order="20">Muse Systems Super Characteristic Setup Parent Form.</loadappui>
     
     <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
@@ -142,6 +143,7 @@
     <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScUnifiedSetup.js" name="museScUnifiedSetup" order="10">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
     
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
