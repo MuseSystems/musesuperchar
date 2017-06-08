@@ -242,7 +242,7 @@ if(!this.MuseSuperChar.SuperChar) {
                     MuseUtils.getCleanTextLine(sectionComboBox.text),
                 scdef_scgrp_ass_is_column_start: isNewColumnCheckBox.checked,
                 scdef_scgrp_ass_width: widthXLineEdit.getNumericValue(),
-                scdef_scgrp_ass_height: widthXLineEdit.getNumericValue(),
+                scdef_scgrp_ass_height: heightXLineEdit.getNumericValue(),
             };
 
         try {
