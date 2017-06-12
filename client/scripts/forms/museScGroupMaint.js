@@ -65,6 +65,7 @@ if(!this.MuseSuperChar.Group) {
     var groupLayoutButtonsRightSpacer = mywindow.findChild("groupLayoutButtonsRightSpacer");
     var groupLayoutDeletePushButton = mywindow.findChild("groupLayoutDeletePushButton");
     var groupLayoutEditPushButton = mywindow.findChild("groupLayoutEditPushButton");
+    var groupLayoutPreviewPushButton = mywindow.findChild("groupLayoutPreviewPushButton");
     var groupLayoutGroupBox = mywindow.findChild("groupLayoutGroupBox");
     var groupLayoutMoveDownPushButton = mywindow.findChild("groupLayoutMoveDownPushButton");
     var groupLayoutMoveUpPushButton = mywindow.findChild("groupLayoutMoveUpPushButton");
@@ -279,6 +280,14 @@ if(!this.MuseSuperChar.Group) {
             groupLayoutMoveUpPushButton.enabled = false;
             groupLayoutMoveDownPushButton.enabled = false;
             groupLayoutDeletePushButton.enabled = false;
+        }
+
+        // If the Group layout has any items, we should allow previewing.
+        if(groupLayoutXTreeWidget.topLevelItemCount > 0 &&
+            MuseUtils.isValidId(groupListXTreeWidget.id())) {
+            groupLayoutPreviewPushButton.enabled = true;
+        } else {
+            groupLayoutPreviewPushButton.enabled = false;
         }
         
     };
@@ -503,6 +512,14 @@ if(!this.MuseSuperChar.Group) {
         setButtons();
     };
 
+    var previewGroupUiForm = function() {
+        var objectPrefix = MuseUtils.getTextMetric("musesuperchar","widgetPrefix");
+        var groupPreviewUiForm = toolbox.openWindow(
+            objectPrefix + '_' +  groupListXTreeWidget.rawValue("scgrp_internal_name"), 
+            mywindow, Qt.WindowModal);
+        toolbox.lastWindow().set({mode: "preview"});
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
@@ -633,6 +650,14 @@ if(!this.MuseSuperChar.Group) {
         }
     };
 
+    pPublicApi.sPreviewGroupUiForm = function() {
+        try {
+            previewGroupUiForm();
+        } catch(e) {
+            MuseUtils.displayError(e, mywindow);
+        }
+    };
+
     try {
         //--------------------------------------------------------------------
         //  Initialization Logic Setup 
@@ -673,6 +698,8 @@ if(!this.MuseSuperChar.Group) {
             pPublicApi.sMoveSuperCharDownInLayout);
         groupLayoutXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sGroupLayoutSelected);
+        groupLayoutPreviewPushButton.clicked.connect(
+            pPublicApi.sPreviewGroupUiForm);
         
     } catch(e) {
         MuseUtils.displayError(e, mywindow);

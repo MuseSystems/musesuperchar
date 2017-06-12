@@ -77,3 +77,17 @@ SELECT musextputils.create_musemetric(  'musesuperchar'
                                        ,'isLayoutSpaceConserved'
                                        ,null::boolean) IS NULL;
 
+
+--
+--  Since we're dynamically creating widget object names, there is a small change that we could cause a naming collision with object names defined externally to the Super Characteristic package.  So we will prefix our object names with this value as a sort of namespace.
+--
+
+SELECT musextputils.create_musemetric(  'musesuperchar'
+                                       ,'widgetPrefix'
+                                       ,'Since we''re dynamically creating widget object names, there is a small change that we could cause a naming collision with object names defined externally to the Super Characteristic package.  So we will prefix our object names with this value as a sort of namespace.'
+                                       ,'mssc'::text
+                                    )
+    WHERE musextputils.get_musemetric(  'musesuperchar'
+                                       ,'widgetPrefix'
+                                       ,null::text) IS NULL;
+

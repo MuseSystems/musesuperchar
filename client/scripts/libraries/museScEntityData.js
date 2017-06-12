@@ -485,7 +485,7 @@ if(!this.MuseUtils) {
                 "                        ,tc.table_name " +
                 "                        ,tc.constraint_type " +
                 "                        ,kcu.column_name " +
-                "                        ,c.datatype " +
+                "                        ,c.data_type " +
                 "                        ,count(kcu.column_name) OVER (PARTITION BY tc.table_schema,tc.table_name,kcu.constraint_name) AS col_count " +
                 "                FROM    information_schema.table_constraints tc " +
                 "                    JOIN information_schema.key_column_usage kcu " +
@@ -507,7 +507,7 @@ if(!this.MuseUtils) {
                 "        ,column_name " +
                 "FROM    source " +
                 "WHERE   col_count = 1  " +
-                "    AND (datatype = 'integer' OR datatype = 'bigint') ",
+                "    AND (data_type = 'integer' OR data_type = 'bigint') ",
                 funcParams);
         } catch(e) {
             throw new MuseUtils.DatabaseException(
