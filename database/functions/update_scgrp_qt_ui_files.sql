@@ -38,6 +38,13 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_scgrp_qt_ui_files(pGroupId bigin
                     RAISE EXCEPTION 'We require a valid Group ID in order to update its Qt UI related files. (FUNC: musesuperchar.update_scgrp_qt_ui_files) (pGroupId: %)',pGroupId;
                 END IF;
 
+                ALTER TABLE musesuperchar.pkguiform
+                    DISABLE TRIGGER pkguiformaftertrigger;
+                ALTER TABLE musesuperchar.pkguiform
+                    DISABLE TRIGGER pkguiformaltertrigger;
+                ALTER TABLE musesuperchar.pkguiform
+                    DISABLE TRIGGER pkguiformbeforetrigger;
+
                 vUiFormName := vCfgPfx||'_'||vScGrpIntName;
 
                 -- We do different things depending on if we have Group Layout 
@@ -90,6 +97,13 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_scgrp_qt_ui_files(pGroupId bigin
                     END IF;
 
                 END IF;
+
+                ALTER TABLE musesuperchar.pkguiform
+                    ENABLE TRIGGER pkguiformaftertrigger;
+                ALTER TABLE musesuperchar.pkguiform
+                    ENABLE TRIGGER pkguiformaltertrigger;
+                ALTER TABLE musesuperchar.pkguiform
+                    ENABLE TRIGGER pkguiformbeforetrigger;
 
             END;
         $BODY$
