@@ -107,7 +107,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_scgrp_qt_ui_files(pGroupId bigin
 
             END;
         $BODY$
-    LANGUAGE plpgsql VOLATILE;
+    LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
 ALTER FUNCTION musesuperchar.update_scgrp_qt_ui_files(pGroupId bigint)
     OWNER TO admin;
