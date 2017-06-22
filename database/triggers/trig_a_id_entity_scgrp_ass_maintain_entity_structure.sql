@@ -45,9 +45,9 @@ COMMENT ON FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_str
     IS $DOC$Maintains the entity data structure as changes in characteristic assignment are made.$DOC$;
 
 -- Add the trigger to the target table(s).
-DROP TRIGGER IF EXISTS z99_trig_a_id_entity_scgrp_ass_maintain_entity_structure ON musesuperchar.entity_scgrp_ass;
+DROP TRIGGER IF EXISTS d95_trig_a_id_entity_scgrp_ass_maintain_entity_structure ON musesuperchar.entity_scgrp_ass;
 
-CREATE TRIGGER z99_trig_a_id_entity_scgrp_ass_maintain_entity_structure AFTER INSERT OR DELETE
+CREATE TRIGGER d95_trig_a_id_entity_scgrp_ass_maintain_entity_structure AFTER INSERT OR DELETE
     ON musesuperchar.entity_scgrp_ass FOR EACH ROW 
     EXECUTE PROCEDURE musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure();
 

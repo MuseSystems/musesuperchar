@@ -45,9 +45,9 @@ COMMENT ON FUNCTION musesuperchar.trig_a_id_scdef_scgrp_ass_maintain_entity_stru
     IS $DOC$Ensures the that entity data structure is in sync with the group/super characteristic definition.$DOC$;
 
 -- Add the trigger to the target table(s).
-DROP TRIGGER IF EXISTS z99_trig_a_id_scdef_scgrp_ass_maintain_entity_structure ON musesuperchar.scdef_scgrp_ass;
+DROP TRIGGER IF EXISTS d95_trig_a_id_scdef_scgrp_ass_maintain_entity_structure ON musesuperchar.scdef_scgrp_ass;
 
-CREATE TRIGGER z99_trig_a_id_scdef_scgrp_ass_maintain_entity_structure AFTER INSERT OR DELETE
+CREATE TRIGGER d95_trig_a_id_scdef_scgrp_ass_maintain_entity_structure AFTER INSERT OR DELETE
     ON musesuperchar.scdef_scgrp_ass FOR EACH ROW 
     EXECUTE PROCEDURE musesuperchar.trig_a_id_scdef_scgrp_ass_maintain_entity_structure();
 
