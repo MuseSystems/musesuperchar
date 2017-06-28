@@ -338,7 +338,7 @@ if(!this.MuseUtils) {
 
     var setValue = function(pScIntName, pDataRecId, pValue) {
         if(data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] == pValue) {
-            // Nothing changed. Done do anything else.  We need this to help 
+            // Nothing changed. Don't do anything else.  We need this to help 
             // stop recursive set/signal loops, especially with XTextEdit.
             return;
         }
