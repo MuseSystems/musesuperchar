@@ -114,7 +114,7 @@ if(!this.MuseUtils) {
                 data[recObjName].database = entQry.firstJson();
                 Object.assign(data[recObjName].working, data[recObjName].database);
                 mainwindow.sEmitSignal(
-                    PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId,
+                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@_",
                     "update_all");
             } else {
                 throw new MuseUtils.NotFoundException(
@@ -339,7 +339,7 @@ if(!this.MuseUtils) {
     var setValue = function(pScIntName, pDataRecId, pValue) {
         data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] = pValue;
         mainwindow.sEmitSignal(
-            PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName,
+            "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName"@_",
             "update");
     };
 
