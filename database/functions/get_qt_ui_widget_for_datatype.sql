@@ -16,7 +16,9 @@
  ************************************************************************/
 
 --
--- A function which returns the UI XML for a standard Qt widget based on the datatype.
+-- A function which returns the UI XML for a standard Qt widget based on the
+-- datatype.   Note that other parts of this package expect the trailing name of
+-- each widget to be the lowercase name of the widget class.
 --
 
 CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer DEFAULT 0, pWidth integer DEFAULT 0) 
