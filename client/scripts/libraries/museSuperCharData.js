@@ -116,7 +116,7 @@ if(!this.MuseUtils) {
                         ",datatype_is_flag AS scdefdatatype_is_flag" +
                         ",datatype_is_array AS scdefdatatype_is_array" +
                         ",datatype_is_lov_based AS scdefdatatype_is_lov_based" +
-                        ",array_to_string(scdef_values_list, ', ') AS scdef_values_list " +
+                        ",array_to_string(scdef_values_list, ',') AS scdef_values_list " +
                         ",scdef_list_query " +
                         ",scdef_is_searchable " +
                         ",pkghead_name AS scdef_package_name " +

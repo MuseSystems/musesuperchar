@@ -232,8 +232,12 @@ if(!this.MuseSuperChar.CondValRule) {
 
     var setCurrSc = function(pSuperCharId) {
         currSc = MuseSuperChar.SuperChar.getSuperCharById(pSuperCharId);
-
-        currSc.scdef_values_list = currSc.scdef_values_list.split(", ");
+        
+        if(MuseUtils.coalesce(currSc.scdef_values_list,"") !== "") {
+            currSc.scdef_values_list = currSc.scdef_values_list.split(",");
+        } else {
+            currSc.scdef_values_list = [];
+        }
     };
 
     var setListOfValuesButtons = function() {
