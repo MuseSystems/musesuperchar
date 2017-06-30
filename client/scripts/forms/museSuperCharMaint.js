@@ -376,6 +376,7 @@ if(!this.MuseSuperChar.CondValRule) {
 
         listOfValuesXTreeWidget.clear();
         if(MuseUtils.isTrue(currSc.scdefdatatype_is_lov_based)) {
+            listQueryXTextEdit.setPlainText(currSc.scdef_list_query);
             superCharValuesRightGroupBox.enabled = true;
             listQueryXTextEdit.enabled = true && 
                 privileges.check("maintainSuperCharListQuery");
@@ -386,6 +387,7 @@ if(!this.MuseSuperChar.CondValRule) {
         } else {
             superCharValuesRightGroupBox.enabled = false;
             listQueryXTextEdit.enabled = false;
+            listQueryXTextEdit.clear();
         }
 
 
@@ -547,6 +549,12 @@ if(!this.MuseSuperChar.CondValRule) {
                 currSc.scdef_description) {
                 scData.scdef_description = 
                     descriptionXTextEdit.document.toPlainText();
+            }
+
+            if(listQueryXTextEdit.document.toPlainText() != 
+                currSc.scdef_list_query) {
+                scData.scdef_list_query = 
+                    listQueryXTextEdit.document.toPlainText();
             }
 
             if(isSearchableXCheckBox.checked != currSc.scdef_is_searchable) {
