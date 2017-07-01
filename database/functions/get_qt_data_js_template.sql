@@ -87,10 +87,77 @@ if(!this.MuseUtils) {
     // Mutable Data
     var data = {};
 
+    // Hook Function Containers
+    var onNewFuncs = [];
+    var onLoadFuncs = [];
+    var beforeSetFuncs = {};
+    var afterSetFuncs = {};
+    var beforeSaveFuncs = [];
+    var afterSaveFuncs = [];
+
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
     
+    var addOnNewFunction = function(pFunc) {
+        onNewFuncs.push(pFunc);
+    };
+
+    var addOnLoadFunction = function(pFunc) {
+        onLoadFuncs.push(pFunc);
+    };
+
+    var addBeforeSetFunction = function(pScIntName, pFunc) {
+        beforeSetFuncs[pScIntName].push(pFunc);
+    };
+
+    var addAfterSetFunction = function(pScIntName, pFunc) {
+        afterSetFuncs[pScIntName].push(pFunc);
+    };
+
+    var addBeforeSaveFunction = function(pFunc) {
+        beforeSaveFuncs.push(pFunc);
+    };
+
+    var addAfterSaveFunction = function(pFunc) {
+        afterSaveFuncs.push(pFunc);
+    };
+
+    var hookRunner = function(pHookFuncArray, pDataRecId, pNewValue) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pHookFuncArray: pHookFuncArray,
+            pDataRecId: pDataRecId,
+            pNewValue: pNewValue
+        };
+
+        var wrkObjCopy;
+        Object.assign(wrkObjCopy, data[SC_DATA_TABLE + "_" + pDataRecId].working); 
+        var returnText = "";
+
+        for(var i = 0; i < pHookFuncArray.length; i++) {
+            var hookReturn = "";
+            
+            if(typeof pHookFuncArray[i] === "function") {
+                try {
+                    hookReturn = pHookFuncArray[i](wrkObjCopy, pNewValue);
+                } catch(e) {
+                    throw new MuseUtils.ApiException(
+                        "musesuperchar",
+                        "We encountered a problem while running a 'hook' function.",
+                        "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".hookRunner",
+                        {params: funcParams, thrownError: e});
+                }
+            }
+
+            if(MuseUtils.realNull(hookReturn) !== null) {
+                returnText += (hookReturn + "\n\n");
+            } 
+        }
+
+        return MuseUtils.realNull(returnText);
+    };
+
     var loadFormData = function(pDataRecId) {
         // Capture function parameters for later exception references.
         var funcParams = {
@@ -113,9 +180,6 @@ if(!this.MuseUtils) {
             if(entQry.first()) {
                 data[recObjName].database = entQry.firstJson();
                 Object.assign(data[recObjName].working, data[recObjName].database);
-                mainwindow.sEmitSignal(
-                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@_",
-                    "update_all");
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -124,11 +188,39 @@ if(!this.MuseUtils) {
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
                     {params: funcParams});
             }
-
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
                 "We encountered a problem loading " + ENTITY_DISPLAY_NAME + " form data.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
+                {params: funcParams, thrownError: e});
+        }
+
+        try {
+            // Run our On Load Hooks.  If we get a non-null result, we display 
+            // the message to the user.
+            var onLoadResultMsg = hookRunner(onLoadFuncs, pDataRecId);
+
+            if(onLoadResultMsg !== null) {
+                QMessageBox.information(mywindow, "On " + 
+                    ENTITY_DISPLAY_NAME + " Load Notices", onLoadResultMsg);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We received errors from on load hook function execution.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
+                {params: funcParams, thrownError: e});
+        }
+
+        try {
+            mainwindow.sEmitSignal(
+                "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@_",
+                "update_all");
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We received errors while signalling that we loaded data.",
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
                 {params: funcParams, thrownError: e});
         }
@@ -262,24 +354,60 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId
         };
+        
+        try {
+            // Run our Before Save Hooks.  If we get a non-null result, we  
+            // display the message to the user and abort the save.
+            var beforeSaveHookResultMsg = hookRunner(beforeSaveFuncs, pDataRecId);
+
+            if(beforeSaveHookResultMsg !== null) {
+                QMessageBox.critical(mywindow, "Cannot Save " + 
+                    ENTITY_DISPLAY_NAME + " Data", beforeSaveHookResultMsg);
+
+                return pDataRecId;
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                 "musesuperchar",
+                 "We encountered errors running 'Before Save' hook functions.",
+                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
+                 {params: funcParams, thrownError: e});
+        }
 
         var newDataRecId;
 
-        // If the pDataRecId parameter is null, we perform and update operation,
-        // otherwise it's an insert.
+        // If the pDataRecId parameter starts with "new" we insert,
+        // otherwise it's an update.
         try { 
             if(pDataRecId.match(/^new/) !== null) {
                 newDataRecId = insertEntityData(pDataRecId);
             } else {
                 newDataRecId = updateEntityData(pDataRecId);
             }
-         } catch(e) {
-             throw new MuseUtils.ApiException(
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to save entity record data.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
+                {params: funcParams, thrownError: e});
+        }
+        
+        try {
+            // Run our After Save Hooks.  If we get a non-null result, we display 
+            // the message to the user.
+            var afterSaveHookResultMsg = hookRunner(afterSaveFuncs, pDataRecId);
+
+            if(afterSaveHookResultMsg !== null) {
+                QMessageBox.information(mywindow, "After Save " + 
+                    ENTITY_DISPLAY_NAME + " Notices", afterSaveHookResultMsg);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
                  "musesuperchar",
-                 "We failed to save entity record data.",
+                 "We encountered errors running 'After Save' hook functions.",
                  "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
                  {params: funcParams, thrownError: e});
-         } 
+        }
 
         try {
             loadFormData(newDataRecId);
@@ -300,6 +428,13 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId
         };
+
+        // Create setValue hook objects
+        var keys = Object.keys(DATA_STRUCT);
+        for(var i = 0; i < keys.length; i++) {
+            beforeSetFuncs[keys[i]] = [];
+            afterSetFuncs[keys[i]] = [];
+        }
         
         if(MuseUtils.realNull(pDataRecId) === null) {
             var newRecHandle = "new" + Date.now();
@@ -309,6 +444,24 @@ if(!this.MuseUtils) {
                 working: Object.assign({},DATA_STRUCT),
                 validators: []
             };
+
+            try {
+                // Run our On New Hooks.  If we get a non-null result, we 
+                // display the message to the user.
+                var onNewHookMsg = hookRunner(onNewFuncs, newRecHandle);
+
+                if(onNewHookMsg !== null) {
+                    QMessageBox.information(mywindow, "New " + 
+                        ENTITY_DISPLAY_NAME + " Notices", 
+                        onNewHookMsg);
+                }
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                     "musesuperchar",
+                     "We encountered errors running 'On New' hook functions.",
+                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".initFormData",
+                     {params: funcParams, thrownError: e});
+            }
 
             return newRecHandle;
         } else {
@@ -326,7 +479,8 @@ if(!this.MuseUtils) {
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".initFormData",
                     {params: funcParams, thrownError: e});
             }
-            load(pDataRecId);
+            
+            loadFormData(pDataRecId);
 
             return pDataRecId;
         }
@@ -337,16 +491,70 @@ if(!this.MuseUtils) {
     };
 
     var setValue = function(pScIntName, pDataRecId, pValue) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pScIntName: pScIntName,
+            pDataRecId: pDataRecId,
+            pValue: pValue
+        };
+
         if(data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] == pValue) {
             // Nothing changed. Don't do anything else.  We need this to help 
             // stop recursive set/signal loops, especially with XTextEdit.
             return;
         }
 
+        try {
+            // Run our Before Set Hooks.  If we get a non-null result, we  
+            // display the message to the user and abort the save.
+            var beforeSetValueHookMsg = hookRunner(beforeSetFuncs, pDataRecId, 
+                pValue);
+
+            if(beforeSetValueHookMsg !== null) {
+                QMessageBox.critical(mywindow, "Value Not Set", 
+                    beforeSetValueHookMsg);
+
+                return;
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                 "musesuperchar",
+                 "We encountered errors running 'Before Set Value' hook functions.",
+                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
+                 {params: funcParams, thrownError: e});
+        }
+
         data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] = pValue;
-        mainwindow.sEmitSignal(
-            "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName"@_",
-            "update");
+        
+        try {
+            // Run our After Set Hooks.  If we get a non-null result, we display 
+            // the message to the user.
+            var afterSetValueHookMsg = hookRunner(afterSetFuncs, pDataRecId,
+                pValue);
+
+            if(afterSetValueHookMsg !== null) {
+                QMessageBox.information(mywindow, "After Set Value Notices", 
+                    afterSetValueHookMsg);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                 "musesuperchar",
+                 "We encountered errors running 'After Set Value' hook functions.",
+                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
+                 {params: funcParams, thrownError: e});
+        }
+
+        try {
+            mainwindow.sEmitSignal(
+                "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName"@_",
+                "update");
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We received errors while signalling that we set a value.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
+                {params: funcParams, thrownError: e});
+        }
     };
 
     var getDataRecIdByParentId = function(pEntityFkId) {
@@ -392,6 +600,10 @@ if(!this.MuseUtils) {
 
     pPublicApi.getEntityTableName = function() {
         return ENTITY_TABLE;
+    };
+
+    pPublicApi.getEntityDisplayName = function() {
+        return ENTITY_DISPLAY_NAME;
     };
 
     pPublicApi.getEntityDataTableName = function() {
@@ -527,6 +739,119 @@ if(!this.MuseUtils) {
         return loadFormData(pDataRecId);
     };
 
+    pPublicApi.addOnNewFunction = function(pFunc) {
+        funcParams = {
+            pFunc: pFunc
+        };
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnNewFunction",
+                {params: funcParams});
+        }
+
+        addOnNewFunction(pFunc);
+    };
+
+    pPublicApi.addOnLoadFunction = function(pFunc) {
+        funcParams = {
+            pFunc: pFunc
+        };
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnLoadFunction",
+                {params: funcParams});
+        }
+
+        addOnLoadFunction(pFunc);
+    };
+
+    pPublicApi.addBeforeSetFunction = function(pScIntName, pFunc) {
+        funcParams = {
+            pScIntName: pScIntName,
+            pFunc: pFunc
+        };
+
+        if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand to which Super Characteristic you wished to apply a function.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetFunction",
+                {params: funcParams});
+        }
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetFunction",
+                {params: funcParams});
+        }
+
+        addBeforeSetFunction(pScIntName, pFunc);
+    };
+
+    pPublicApi.addAfterSetFunction = function(pScIntName, pFunc) {
+        funcParams = {
+            pScIntName: pScIntName,
+            pFunc: pFunc
+        };
+
+        if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand to which Super Characteristic you wished to apply a function.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetFunction",
+                {params: funcParams});
+        }
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetFunction",
+                {params: funcParams});
+        }
+
+        addAfterSetFunction(pScIntName, pFunc);
+    };
+
+    pPublicApi.addBeforeSaveFunction = function(pFunc) {
+        funcParams = {
+            pFunc: pFunc
+        };
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSaveFunction",
+                {params: funcParams});
+        }
+
+        addBeforeSaveFunction(pFunc);
+    };
+
+    pPublicApi.addAfterSaveFunction = function(pFunc) {
+        funcParams = {
+            pFunc: pFunc
+        };
+
+        if(typeof pFunc !== "function") {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not find a function to add to the event processing sequence.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSaveFunction",
+                {params: funcParams});
+        }
+
+        addAfterSaveFunction(pFunc);
+    };
 })(this.MuseSuperChar.Data.%5$s);
 
 $JS$::text;

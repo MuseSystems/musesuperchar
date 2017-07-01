@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="0.0.5"
+         version="0.0.6"
          updater="2.2.5">
 
     <pkgnotes>
@@ -104,6 +104,9 @@
     <createfunction file="database/functions/get_group_layout_structure.sql" name="get_group_layout_structure" />
     <createfunction file="database/functions/get_qt_ui_xml.sql" name="get_qt_ui_xml" />
     <createfunction file="database/functions/get_qt_ui_widget_for_datatype.sql" name="get_qt_ui_widget_for_datatype" />
+    <createfunction file="database/functions/get_qt_labels_from_ui_xml.sql" name="get_qt_labels_from_ui_xml" />
+    <createfunction file="database/functions/get_qt_widgets_from_ui_xml.sql" name="get_qt_widgets_from_ui_xml" />
+    <createfunction file="database/functions/get_qt_groupboxes_from_ui_xml.sql" name="get_qt_groupboxes_from_ui_xml" />
     <createfunction file="database/functions/get_qt_insert_metasql.sql" name="get_qt_insert_metasql" />
     <createfunction file="database/functions/get_qt_update_metasql.sql" name="get_qt_update_metasql" />
     <createfunction file="database/functions/get_qt_delete_metasql.sql" name="get_qt_delete_metasql" />
@@ -111,7 +114,9 @@
     <createfunction file="database/functions/update_entity_data_structure.sql" name="update_entity_data_structure" />
     <createfunction file="database/functions/update_scgrp_qt_ui_files.sql" name="update_scgrp_qt_ui_files" />
     <createfunction file="database/functions/get_qt_data_js_template.sql" name="get_qt_data_js_template" />
+    <createfunction file="database/functions/get_qt_form_js_template.sql" name="get_qt_form_js_template" />
     <createfunction file="database/functions/get_qt_data_js.sql" name="get_qt_data_js" />
+    <createfunction file="database/functions/get_qt_form_js.sql" name="get_qt_form_js" />
     <createfunction file="database/functions/update_entity_qt_data_js_files.sql" name="update_entity_qt_data_js_files" />
     <createfunction file="database/functions/update_entity_qt_data_metasql_files.sql" name="update_entity_qt_data_metasql_files" />
     
