@@ -54,20 +54,20 @@
                                 FROM musesuperchar.v_superchar_entities 
                                 WHERE entity_id = pEntityId) THEN
                     DELETE FROM musesuperchar.pkgscript
-                        WHERE script_name = vEntityDataTable
+                        WHERE script_name = vCfgPfx || '_' || vEntityDataTable
                             AND script_order = 0;
                 ELSE
 
                     WITH upd AS (
                         UPDATE musesuperchar.pkgscript 
-                            SET  script_name = vEntityDataTable   
+                            SET  script_name = vCfgPfx || '_' || vEntityDataTable   
                                 ,script_order = 0
                                 ,script_enabled = true
                                 ,script_source = musesuperchar.get_qt_data_js(pEntityId)
                                 ,script_notes = 'Super Characteristic ' || 
                                     vEntityDisplayName || 
                                     ' Data Library Script; Autoupdated on ' || now()
-                        WHERE script_name = vEntityDataTable
+                        WHERE script_name = vCfgPfx || '_' || vEntityDataTable
                             AND script_order = 0
                         RETURNING script_id
                         )
@@ -77,7 +77,7 @@
                          ,script_enabled
                          ,script_source
                          ,script_notes)
-                    SELECT   vEntityDataTable   
+                    SELECT   vCfgPfx || '_' || vEntityDataTable   
                             ,0
                             ,true
                             ,musesuperchar.get_qt_data_js(pEntityId)
