@@ -19,6 +19,7 @@
         $BODY$
             DECLARE
                 vCfgPfx text := musextputils.get_musemetric('musesuperchar','widgetPrefix',null::text);
+                vEntityDataTable text;
                 vEntityObjectName text;
                 vEntityDisplayName text;
             BEGIN
@@ -26,8 +27,9 @@
                 SELECT   replace(
                             initcap(
                                 replace(entity_data_table, '_', ' ')), ' ', '')
+                        ,entity_data_table
                         ,entity_display_name
-                    INTO vEntityObjectName, vEntityDisplayName
+                    INTO vEntityObjectName, ,vEntityDataTable, vEntityDisplayName
                 FROM musesuperchar.entity 
                 WHERE entity_id = pEntityId;
 
@@ -52,20 +54,20 @@
                                 FROM musesuperchar.v_superchar_entities 
                                 WHERE entity_id = pEntityId) THEN
                     DELETE FROM musesuperchar.pkgscript
-                        WHERE script_name = vCfgPfx || vEntityObjectName
+                        WHERE script_name = vEntityDataTable
                             AND script_order = 0;
                 ELSE
 
                     WITH upd AS (
                         UPDATE musesuperchar.pkgscript 
-                            SET  script_name = vCfgPfx || vEntityObjectName   
+                            SET  script_name = vEntityDataTable   
                                 ,script_order = 0
                                 ,script_enabled = true
                                 ,script_source = musesuperchar.get_qt_data_js(pEntityId)
                                 ,script_notes = 'Super Characteristic ' || 
                                     vEntityDisplayName || 
                                     ' Data Library Script; Autoupdated on ' || now()
-                        WHERE script_name = vCfgPfx || vEntityObjectName
+                        WHERE script_name = vEntityDataTable
                             AND script_order = 0
                         RETURNING script_id
                         )
@@ -75,7 +77,7 @@
                          ,script_enabled
                          ,script_source
                          ,script_notes)
-                    SELECT   vCfgPfx || vEntityObjectName   
+                    SELECT   vEntityDataTable   
                             ,0
                             ,true
                             ,musesuperchar.get_qt_data_js(pEntityId)
