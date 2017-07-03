@@ -99,27 +99,27 @@ if(!this.MuseUtils) {
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
     
-    var addOnNewFunction = function(pFunc) {
+    var addOnNewHookFunc = function(pFunc) {
         onNewFuncs.push(pFunc);
     };
 
-    var addOnLoadFunction = function(pFunc) {
+    var addOnLoadHookFunc = function(pFunc) {
         onLoadFuncs.push(pFunc);
     };
 
-    var addBeforeSetFunction = function(pScIntName, pFunc) {
+    var addBeforeSetHookFunc = function(pScIntName, pFunc) {
         beforeSetFuncs[pScIntName].push(pFunc);
     };
 
-    var addAfterSetFunction = function(pScIntName, pFunc) {
+    var addAfterSetHookFunc = function(pScIntName, pFunc) {
         afterSetFuncs[pScIntName].push(pFunc);
     };
 
-    var addBeforeSaveFunction = function(pFunc) {
+    var addBeforeSaveHookFunc = function(pFunc) {
         beforeSaveFuncs.push(pFunc);
     };
 
-    var addAfterSaveFunction = function(pFunc) {
+    var addAfterSaveHookFunc = function(pFunc) {
         afterSaveFuncs.push(pFunc);
     };
 
@@ -739,7 +739,7 @@ if(!this.MuseUtils) {
         return loadFormData(pDataRecId);
     };
 
-    pPublicApi.addOnNewFunction = function(pFunc) {
+    pPublicApi.addOnNewHookFunc = function(pFunc) {
         funcParams = {
             pFunc: pFunc
         };
@@ -748,14 +748,14 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnNewFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnNewHookFunc",
                 {params: funcParams});
         }
 
-        addOnNewFunction(pFunc);
+        addOnNewHookFunc(pFunc);
     };
 
-    pPublicApi.addOnLoadFunction = function(pFunc) {
+    pPublicApi.addOnLoadHookFunc = function(pFunc) {
         funcParams = {
             pFunc: pFunc
         };
@@ -764,14 +764,14 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnLoadFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnLoadHookFunc",
                 {params: funcParams});
         }
 
-        addOnLoadFunction(pFunc);
+        addOnLoadHookFunc(pFunc);
     };
 
-    pPublicApi.addBeforeSetFunction = function(pScIntName, pFunc) {
+    pPublicApi.addBeforeSetHookFunc = function(pScIntName, pFunc) {
         funcParams = {
             pScIntName: pScIntName,
             pFunc: pFunc
@@ -781,7 +781,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand to which Super Characteristic you wished to apply a function.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetHookFunc",
                 {params: funcParams});
         }
 
@@ -789,14 +789,14 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetHookFunc",
                 {params: funcParams});
         }
 
-        addBeforeSetFunction(pScIntName, pFunc);
+        addBeforeSetHookFunc(pScIntName, pFunc);
     };
 
-    pPublicApi.addAfterSetFunction = function(pScIntName, pFunc) {
+    pPublicApi.addAfterSetHookFunc = function(pScIntName, pFunc) {
         funcParams = {
             pScIntName: pScIntName,
             pFunc: pFunc
@@ -806,7 +806,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand to which Super Characteristic you wished to apply a function.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetHookFunc",
                 {params: funcParams});
         }
 
@@ -814,14 +814,14 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetHookFunc",
                 {params: funcParams});
         }
 
-        addAfterSetFunction(pScIntName, pFunc);
+        addAfterSetHookFunc(pScIntName, pFunc);
     };
 
-    pPublicApi.addBeforeSaveFunction = function(pFunc) {
+    pPublicApi.addBeforeSaveHookFunc = function(pFunc) {
         funcParams = {
             pFunc: pFunc
         };
@@ -830,14 +830,14 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSaveFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSaveHookFunc",
                 {params: funcParams});
         }
 
-        addBeforeSaveFunction(pFunc);
+        addBeforeSaveHookFunc(pFunc);
     };
 
-    pPublicApi.addAfterSaveFunction = function(pFunc) {
+    pPublicApi.addAfterSaveHookFunc = function(pFunc) {
         funcParams = {
             pFunc: pFunc
         };
@@ -846,11 +846,11 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSaveFunction",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSaveHookFunc",
                 {params: funcParams});
         }
 
-        addAfterSaveFunction(pFunc);
+        addAfterSaveHookFunc(pFunc);
     };
 })(this.MuseSuperChar.Data.%5$s);
 
