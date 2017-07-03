@@ -29,7 +29,7 @@
                                 replace(entity_data_table, '_', ' ')), ' ', '')
                         ,entity_data_table
                         ,entity_display_name
-                    INTO vEntityObjectName, ,vEntityDataTable, vEntityDisplayName
+                    INTO vEntityObjectName, vEntityDataTable, vEntityDisplayName
                 FROM musesuperchar.entity 
                 WHERE entity_id = pEntityId;
 
