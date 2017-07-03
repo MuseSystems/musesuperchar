@@ -546,7 +546,7 @@ if(!this.MuseUtils) {
 
         try {
             mainwindow.sEmitSignal(
-                "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName"@_",
+                "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
                 "update");
         } catch(e) {
             throw new MuseUtils.ApiException(
