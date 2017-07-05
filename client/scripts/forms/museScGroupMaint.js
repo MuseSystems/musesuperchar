@@ -517,6 +517,8 @@ if(!this.MuseSuperChar.Group) {
         var groupPreviewUiForm = toolbox.openWindow(
             objectPrefix + '_' +  groupListXTreeWidget.rawValue("scgrp_internal_name"), 
             mywindow, Qt.WindowModal);
+        // TODO: As of now we can't properly run the form script to get things
+        // like populate comboboxes; try and make that work.
         toolbox.lastWindow().set({mode: "preview"});
     };
 
