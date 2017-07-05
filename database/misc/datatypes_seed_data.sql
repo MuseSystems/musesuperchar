@@ -42,7 +42,7 @@ INSERT INTO musesuperchar.datatype (
         ,('extprice', 'Extended Price', 'A money value rounded to the "Ext. Price" locale precision.', false, true, false, 100, false, false, false, true)
         ,('weight', 'Weight', 'A quantity value rounded to the "Weight" locale precision.', false, true, false, 110, false, false, false, true)
         ,('percent', 'Percentage', 'A numeric value rounded to the "Percent" locale precision.', false, true, false, 115, false, false, false, true)
-        ,('filecluster', 'File', 'A file/attachment reference field.', true, false, false, 120, false, false, false, true)
+        --,('filecluster', 'File', 'A file/attachment reference field.', true, false, false, 120, false, false, false, true)
         ,('imagecluster', 'Image', 'An xTuple Image field.', true, false, false, 130, false, false, false, true)
     ON CONFLICT(datatype_internal_name)
         DO NOTHING;

@@ -91,3 +91,29 @@ SELECT musextputils.create_musemetric(  'musesuperchar'
                                        ,'widgetPrefix'
                                        ,null::text) IS NULL;
 
+--
+--  Used for "out-of-box" entity types like item to set the name of the tab where the Super Characteristics will be.
+--
+
+SELECT musextputils.create_musemetric(  'musesuperchar'
+                                       ,'superCharTabName'
+                                       ,'Used for "out-of-box" entity types like item to set the name of the tab where the Super Characteristics will be.'
+                                       ,'Super Characteristics'::text
+                                    )
+    WHERE musextputils.get_musemetric(  'musesuperchar'
+                                       ,'superCharTabName'
+                                       ,null::text) IS NULL;
+
+--
+--  If true, forms that add the Super Characteristics tab and also have an xTuple out-of-box characteristics tab should hide the xTuple tab.  If false, we display both side-by-side.
+--
+
+SELECT musextputils.create_musemetric(  'musesuperchar'
+                                       ,'isXtupleCharacteristicsTabHidden'
+                                       ,'If true, forms that add the Super Characteristics tab and also have an xTuple out-of-box characteristics tab should hide the xTuple tab.  If false, we display both side-by-side.'
+                                       ,false
+                                    )
+    WHERE musextputils.get_musemetric(  'musesuperchar'
+                                       ,'isXtupleCharacteristicsTabHidden'
+                                       ,null::boolean) IS NULL;
+
