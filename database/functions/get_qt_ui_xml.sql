@@ -63,11 +63,11 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                 -- This is a bit of a hack, but should work 
                                 -- since we're controlling generation in this
                                 -- process.
-                                IF array_position(
-                                    vCustomWidgets::text[],
+                                IF vCurrfieldWidget[2] IS NOT NULL
+                                    AND array_position(vCustomWidgets::text[],
                                     vCurrfieldWidget[2]::text) IS NULL THEN
-                                vCustomWidgets := vCustomWidgets ||
-                                    vCurrfieldWidget[2];
+                                    vCustomWidgets := vCustomWidgets ||
+                                        vCurrfieldWidget[2];
                                 END IF;
 
                                 vFields := vFields ||

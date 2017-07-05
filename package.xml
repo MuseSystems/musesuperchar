@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="0.0.6"
+         version="0.0.7"
          updater="2.2.5">
 
     <pkgnotes>
@@ -162,6 +162,7 @@
     <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
     <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="10">Muse Systems Super Characteristic Widget Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="10">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScLoader.js" name="museScLoader" order="10">Muse Systems Super Characteristics Widget Loader Script</loadappscript>
     
     <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
     <loadappscript file="client/scripts/forms/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
@@ -171,7 +172,8 @@
     <loadappscript file="client/scripts/forms/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScUnifiedSetup.js" name="museScUnifiedSetup" order="10">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
-    
+
+
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />

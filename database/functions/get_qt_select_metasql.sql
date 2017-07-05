@@ -55,7 +55,6 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint)
                      WHERE table_schema_name = 'musesuperchar'
                          AND table_name = vEntityDataTable
                          AND column_ordinal > 0
-                         AND column_name != vDataTablePkName
                      ORDER BY column_ordinal) q;
 
                 vColumnList := format(E'%1$s\n',vDataTablePkName);

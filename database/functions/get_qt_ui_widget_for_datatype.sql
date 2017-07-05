@@ -96,7 +96,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                         xmlelement(name customwidget,
                             xmlforest('DLineEdit' as class, 'QWidget' as extends, 'datecluster.h' as header))]
                     WHEN pDataTypeIntName = 'checkbox' THEN
-                        ARRAY[xmlelement(name widget, xmlattributes('XCheckBox' as class, pPrefix||'_'||pScDefIntName||'_xcheckbox' AS name),
+                        ARRAY[xmlelement(name widget, xmlattributes('QCheckBox' as class, pPrefix||'_'||pScDefIntName||'_qcheckbox' AS name),
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
@@ -116,8 +116,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                 ELSE
                                     null
                             END),
-                        xmlelement(name customwidget,
-                            xmlforest('XCheckBox' as class, 'QCheckBox' as extends, 'xheckbox.h' as header))]
+                        null::xml]
                     WHEN pDataTypeIntName = 'combobox' THEN
                         ARRAY[xmlelement(name widget, xmlattributes('XComboBox' as class, pPrefix||'_'||pScDefIntName||'_xcombobox' AS name),
                             CASE

@@ -47,15 +47,21 @@ $JS$
 //  Namespace Definition
 //////////////////////////////////////////////////////////////////////////
 
-this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.Groups = this.MuseSuperChar.Groups || {};
-this.MuseSuperChar.Groups.%2$s = this.MuseSuperChar.Groups.%2$s || {};
+if(typeof MuseSuperChar === 'undefined')  {
+    MuseSuperChar = {};
+}
+if(typeof MuseSuperChar.Groups === 'undefined')  {
+    MuseSuperChar.Groups = {};
+}
+if(typeof MuseSuperChar.Groups.%2$s === 'undefined')  {
+    MuseSuperChar.Groups.%2$s = {};
+}
 
 //////////////////////////////////////////////////////////////////////////
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!this.MuseUtils) {
+if(typeof MuseUtils === 'undefined') {
     include("museUtils");
 }
 
@@ -64,7 +70,7 @@ if(!this.MuseUtils) {
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
 
-(function(pPublicApi, pGlobal) {
+(function(pPublicApi) {
     //--------------------------------------------------------------------
     //  "Private" Constants & Configuration Structures
     //--------------------------------------------------------------------
@@ -80,6 +86,7 @@ if(!this.MuseUtils) {
     var myEntityObjectName;
     var myEntityDataRecId;
     var myMode;
+    var myIsConnectsSet = false;
     var sections = {};
     var labels = {};
     var widgets = {};
@@ -148,7 +155,7 @@ if(!this.MuseUtils) {
                 {params: funcParams, context: context});
         }
 
-        if(MuseUtils.coalesce(lovQry.value("scdef_list_query"), "") !== "") {
+        if(MuseUtils.realNull(lovQry.value("scdef_list_query")) !== null) {
             return lovQry.value("scdef_list_query");
         } else {
             try {
@@ -221,54 +228,67 @@ if(!this.MuseUtils) {
         var funcParams = {
             pScDefIntName: pScDefIntName
         };
-        
-        var dataObj = MuseSuperChar.Data[myEntityObjectName];
 
-        switch(SC_DEFS[pScDefIntName]) {
-        case "textfield":
-            widgets[pScDefIntName].text = dataObj.getValue(pScDefIntName, 
-                myEntityDataRecId);
-            break;
-        case "textarea":
-            widgets[pScDefIntName].setPlainText(
-                dataObj.getValue(pScDefIntName, myEntityDataRecId));
-            break;
-        case "datecluster":
-            widgets[pScDefIntName].date = dataObj.getValue(pScDefIntName, 
-                myEntityDataRecId);
-            break;
-        case "checkbox":
-            widgets[pScDefIntName].checked = dataObj.getValue(pScDefIntName, 
+        try {
+            var dataObj = MuseSuperChar.Data[myEntityObjectName];
+
+            switch(SC_DEFS[pScDefIntName]) {
+            case "textfield":
+                widgets[pScDefIntName].text = dataObj.getValue(pScDefIntName, 
                     myEntityDataRecId);
-            break;
-        case "combobox":
-            widgets[pScDefIntName].code = dataObj.getValue(pScDefIntName, 
+                break;
+            case "textarea":
+                widgets[pScDefIntName].setPlainText(
+                    dataObj.getValue(pScDefIntName, myEntityDataRecId));
+                break;
+            case "datecluster":
+                widgets[pScDefIntName].date = dataObj.getValue(pScDefIntName, 
                     myEntityDataRecId);
-            break;
-        case "wholenumber":
-        case "decimalnumber":
-        case "qty":
-        case "cost":
-        case "purchprice":
-        case "salesprice":
-        case "extprice":
-        case "weight":
-        case "percent":
-            widgets[pScDefIntName].setFormattedText(
-                dataObj.getValue(pScDefIntName, myEntityDataRecId));
-            break;
-        case "filecluster":
-            break;
-        case "imagecluster":
-            widgets[pScDefIntName].setId(
-                dataObj.getValue(pScDefIntName, myEntityDataRecId));
-            break;
-        default:
-            throw new MuseUtils.NotFoundException(
+                break;
+            case "checkbox":
+                widgets[pScDefIntName].checked = dataObj.getValue(pScDefIntName, 
+                        myEntityDataRecId);
+                break;
+            case "combobox":
+                widgets[pScDefIntName].code = 
+                    MuseUtils.realNull(
+                        dataObj.getValue(
+                            pScDefIntName, myEntityDataRecId)) !== null ?
+                    dataObj.getValue(pScDefIntName, myEntityDataRecId) : "";
+                break;
+            case "wholenumber":
+            case "decimalnumber":
+            case "qty":
+            case "cost":
+            case "purchprice":
+            case "salesprice":
+            case "extprice":
+            case "weight":
+            case "percent":
+                widgets[pScDefIntName].setFormattedText(
+                    MuseUtils.coalesce(
+                        dataObj.getValue(pScDefIntName, myEntityDataRecId),0));
+                break;
+            case "filecluster":
+                break;
+            case "imagecluster":
+                widgets[pScDefIntName].setId(
+                    MuseUtils.coalesce(
+                        dataObj.getValue(pScDefIntName, myEntityDataRecId), -1));
+                break;
+            default:
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We were asked to update a widget for an unknown Super Characteristic data type.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
+                    {params: funcParams, context: context});
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
                 "musesuperchar",
-                "We were asked to update a widget for an unknown Super Characteristic data type.",
+                "We failed to update the requested form field's value.",
                 "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
-                {params: funcParams, context: context});
+                {params: funcParams, context: context});   
         }
     };
 
@@ -284,7 +304,7 @@ if(!this.MuseUtils) {
                 "musesuperchar",
                 "We encountered problems updating the Super Characteristic Group's widgets.",
                 "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateAllValues",
-                {context: context});
+                {thrownError: e, context: context});
         }
     };
 
@@ -333,6 +353,28 @@ if(!this.MuseUtils) {
         return null;
     };
     
+    var resetForm = function(pMode, pDataRecId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pMode: pMode,
+            pDataRecId: pDataRecId
+        };
+        
+        myEntityDataRecId = pDataRecId;
+        myMode = pMode;
+
+        try {
+            setMode();
+            updateAllValues();
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to reset a Super Characteristic form.",
+                "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
@@ -431,7 +473,7 @@ if(!this.MuseUtils) {
                 "MuseSuperChar." + FORM_OBJECT_NAME + ".pPublicApi.set",
                 {params: funcParams, context: {jsonParams: jsonParams}});
         }
-
+        
         // We always want to have comboboxes viewable so populate the lists 
         // early.
         populateComboboxes();
@@ -474,45 +516,19 @@ if(!this.MuseUtils) {
             }
         };
 
-        updateAllValues();
+        resetForm(jsonParams.mode, jsonParams.data_record_id);
 
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
-        mainwindow["emitSignal(QString, QString)"].connect(
-            pPublicApi.sStringSignalHandler);
+        if(!myIsConnectsSet) {
+            mainwindow["emitSignal(QString, QString)"].connect(
+                pPublicApi.sStringSignalHandler);
+            
+%7$s        myIsConnectsSet = true;}
 
-%7$s        setMode();
     };
-    
-
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
-
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
-
-    // Lower graded scripts should be loaded prior to our call and as such we 
-    // should be able to intercept their set functions.
-    if(pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
-    }
-
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch(e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-        
-    };
-
-})(this.MuseSuperChar.Groups.%2$s , this);
+})(MuseSuperChar.Groups.%2$s);
 $JS$::text;
         $BODY$
     LANGUAGE sql IMMUTABLE;

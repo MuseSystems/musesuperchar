@@ -118,137 +118,137 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_form_js(pGroupId bigint, pQtUiXm
                     CASE vCurrScDefDataType
                         WHEN 'textfield' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.text);\n' ||
-                                    E'            });\n\n');
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.text);\n' ||
+                                    E'                });\n\n');
                         WHEN 'textarea' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["textChanged()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.toPlainText());\n' ||
-                                    E'            });\n\n');
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.toPlainText());\n' ||
+                                    E'                });\n\n');
                         WHEN 'datecluster' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["newDate(const QDate &)"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.date);\n' ||
-                                    E'            });\n\n');
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.date);\n' ||
+                                    E'                });\n\n');
                         WHEN 'checkbox' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["stateChanged(int)"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.checked);\n' ||
-                                    E'            });\n\n');
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.checked);\n' ||
+                                    E'                });\n\n');
                         WHEN 'combobox' THEN
                             vGuiManipList := vGuiManipList ||
                                 (E'    widgets.'||vCurrScDefIntName||E'.allowNull = true;\n' ||
                                     E'    widgets.'||vCurrScDefIntName||E'.nullStr = "-- Please Select --";\n');
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["currentIndexChanged(int)"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.code);\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.code);\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'wholenumber' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',0);\n\n');
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n');
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n');
                         WHEN 'decimalnumber' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',8);\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'qty' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("qty"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'cost' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("cost"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'purchprice' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("purchprice"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'salesprice' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("salesprice"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'extprice' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("extprice"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'weight' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("weight"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'percent' THEN
                             vGuiManipList := vGuiManipList || 
                                 (E'    MuseUtils.numericLineEdit(widgets.'||vCurrScDefIntName||E',toolbox.decimalPlaces("percent"));\n\n'); 
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.getNumericValue());\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'filecluster' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["editingFinished()"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.text);\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.text);\n' ||
+                                    E'                });\n\n'); 
                         WHEN 'imagecluster' THEN
                             vConnectList := vConnectList || 
-                                (E'        widgets.' || vCurrScDefIntName || 
+                                (E'            widgets.' || vCurrScDefIntName || 
                                     E'["newId(int)"].connect(\n' ||
-                                    E'            function() {\n' ||
-                                    E'                setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.id());\n' ||
-                                    E'            });\n\n'); 
+                                    E'                function() {\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.id());\n' ||
+                                    E'                });\n\n'); 
                         ELSE
                             RAISE EXCEPTION 'We encountered an unknown Super Characteristic data type. (FUNC: musesuperchar.get_qt_form_js) (pGroupId: %, pQtUiXml: %)',pGroupId,pQtUiXml;
                     END CASE;

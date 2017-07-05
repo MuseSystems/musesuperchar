@@ -131,7 +131,7 @@ if(!this.MuseUtils) {
             pNewValue: pNewValue
         };
 
-        var wrkObjCopy;
+        var wrkObjCopy = {};
         Object.assign(wrkObjCopy, data[SC_DATA_TABLE + "_" + pDataRecId].working); 
         var returnText = "";
 
@@ -178,6 +178,10 @@ if(!this.MuseUtils) {
             var entQry = MuseUtils.executeDbQuery("musesuperchar",METASQL_SELECT,qryParams);
 
             if(entQry.first()) {
+                data[SC_DATA_TABLE + "_" + pDataRecId] = {
+                    database: {},
+                    working: {},
+                };
                 data[recObjName].database = entQry.firstJson();
                 Object.assign(data[recObjName].working, data[recObjName].database);
             } else {
@@ -295,7 +299,7 @@ if(!this.MuseUtils) {
         };
         
         var recObjName = SC_DATA_TABLE + "_" + pDataRecId;
-        data[recObjName] = {};
+
         if(!data.hasOwnProperty(recObjName)) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
@@ -379,7 +383,7 @@ if(!this.MuseUtils) {
         // If the pDataRecId parameter starts with "new" we insert,
         // otherwise it's an update.
         try { 
-            if(pDataRecId.match(/^new/) !== null) {
+            if(pDataRecId.toString().match(/^new/) !== null) {
                 newDataRecId = insertEntityData(pDataRecId);
             } else {
                 newDataRecId = updateEntityData(pDataRecId);
@@ -393,9 +397,20 @@ if(!this.MuseUtils) {
         }
         
         try {
+            loadFormData(newDataRecId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to load Entity data record " + SC_DATA_TABLE + 
+                "_" + newDataRecId + "(" + pDataRecId + ") after saving.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
+                {params: funcParams, thrownError: e});
+        }
+        
+        try {
             // Run our After Save Hooks.  If we get a non-null result, we display 
             // the message to the user.
-            var afterSaveHookResultMsg = hookRunner(afterSaveFuncs, pDataRecId);
+            var afterSaveHookResultMsg = hookRunner(afterSaveFuncs, newDataRecId);
 
             if(afterSaveHookResultMsg !== null) {
                 QMessageBox.information(mywindow, "After Save " + 
@@ -407,17 +422,6 @@ if(!this.MuseUtils) {
                  "We encountered errors running 'After Save' hook functions.",
                  "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
                  {params: funcParams, thrownError: e});
-        }
-
-        try {
-            loadFormData(newDataRecId);
-        } catch(e) {
-            throw new MuseUtils.ApiException(
-                "musesuperchar",
-                "We failed to load Entity data record " + SC_DATA_TABLE + 
-                "_" + newDataRecId + "(" + pDataRecId + ") after saving.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                {params: funcParams, thrownError: e});
         }
 
         return newDataRecId;
@@ -441,8 +445,7 @@ if(!this.MuseUtils) {
             
             data[SC_DATA_TABLE + "_" + newRecHandle] = {
                 database: Object.assign({},DATA_STRUCT),
-                working: Object.assign({},DATA_STRUCT),
-                validators: []
+                working: Object.assign({},DATA_STRUCT)
             };
 
             try {
@@ -465,13 +468,8 @@ if(!this.MuseUtils) {
 
             return newRecHandle;
         } else {
-            data[SC_DATA_TABLE + "_" + pDataRecId] = {
-                database: {},
-                working: {},
-                validators: []
-            };
             try {
-                
+                loadFormData(pDataRecId);
             } catch(e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
@@ -480,7 +478,6 @@ if(!this.MuseUtils) {
                     {params: funcParams, thrownError: e});
             }
             
-            loadFormData(pDataRecId);
 
             return pDataRecId;
         }
@@ -590,6 +587,24 @@ if(!this.MuseUtils) {
         Object.assign(returnDataObj, DATA_STRUCT);
         return returnDataObj;
     };
+
+    var setParentRecId = function(pDataRecId, pParentRecId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pDataRecId: pDataRecId,
+            pParentRecId: pParentRecId
+        };
+
+        try {
+            setValue(SC_DATA_TABLE_FK, pDataRecId, pParentRecId);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to properly set the parent record id.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setParentRecId",
+                {params: funcParams, thrownError: e});
+        }
+    };
     
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
@@ -629,16 +644,17 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand for which Super Characteristic we should retrieve a value.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.getValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
                 {params: funcParams});
         }
 
-        if(!MuseUtils.isValidId(pDataRecId) &&
-            MuseUtils.coalesce(pDataRecId,"").toString().match(/^new/) === null) {
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We must have a valid entity data record identifier.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.getValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
                 {params: funcParams});
         }
 
@@ -646,7 +662,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
                 "The requested entity data record is not currently initialized.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.getValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
                 {params: funcParams});
         }
 
@@ -664,16 +680,17 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand for which Super Characteristic you wished to set a value.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.setValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
                 {params: funcParams});
         }
 
-        if(!MuseUtils.isValidId(pDataRecId) &&
-            MuseUtils.coalesce(pDataRecId,"").toString().match(/^new/) === null) {
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We must have a valid entity data record identifier.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.setValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
                 {params: funcParams});
         }
 
@@ -681,7 +698,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
                 "The requested entity data record is not currently initialized.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.setValue",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
                 {params: funcParams});
         }
 
@@ -698,7 +715,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand for which parent record id you wished to retrieve its child entity data record id.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.getDataRecIdByParentId",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getDataRecIdByParentId",
                 {params: funcParams});
         }
 
@@ -714,12 +731,17 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.saveFormData = function(pDataRecId) {
-        if(!MuseUtils.isValidId(pDataRecId) &&
-            MuseUtils.coalesce(pDataRecId,"").toString().match(/^new/) === null) {
+        var funcParams = {
+            pDataRecId: pDataRecId
+        };
+
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We must have a valid entity data record identifier.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.saveFormData",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.saveFormData",
                 {params: funcParams});
         }
 
@@ -727,12 +749,17 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.loadFormData = function(pDataRecId) {
-        if(!MuseUtils.isValidId(pDataRecId) &&
-            MuseUtils.coalesce(pDataRecId,"").toString().match(/^new/) === null) {
+        var funcParams = {
+            pDataRecId: pDataRecId
+        };
+
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We must have a valid entity data record identifier.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.saveFormData",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.saveFormData",
                 {params: funcParams});
         }
 
@@ -740,7 +767,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addOnNewHookFunc = function(pFunc) {
-        funcParams = {
+        var funcParams = {
             pFunc: pFunc
         };
 
@@ -748,7 +775,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnNewHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addOnNewHookFunc",
                 {params: funcParams});
         }
 
@@ -756,7 +783,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addOnLoadHookFunc = function(pFunc) {
-        funcParams = {
+        var funcParams = {
             pFunc: pFunc
         };
 
@@ -764,7 +791,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addOnLoadHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addOnLoadHookFunc",
                 {params: funcParams});
         }
 
@@ -772,7 +799,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addBeforeSetHookFunc = function(pScIntName, pFunc) {
-        funcParams = {
+        var funcParams = {
             pScIntName: pScIntName,
             pFunc: pFunc
         };
@@ -781,7 +808,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand to which Super Characteristic you wished to apply a function.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSetHookFunc",
                 {params: funcParams});
         }
 
@@ -789,7 +816,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSetHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSetHookFunc",
                 {params: funcParams});
         }
 
@@ -797,7 +824,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addAfterSetHookFunc = function(pScIntName, pFunc) {
-        funcParams = {
+        var funcParams = {
             pScIntName: pScIntName,
             pFunc: pFunc
         };
@@ -806,7 +833,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand to which Super Characteristic you wished to apply a function.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSetHookFunc",
                 {params: funcParams});
         }
 
@@ -814,7 +841,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSetHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSetHookFunc",
                 {params: funcParams});
         }
 
@@ -822,7 +849,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addBeforeSaveHookFunc = function(pFunc) {
-        funcParams = {
+        var funcParams = {
             pFunc: pFunc
         };
 
@@ -830,7 +857,7 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addBeforeSaveHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSaveHookFunc",
                 {params: funcParams});
         }
 
@@ -838,7 +865,7 @@ if(!this.MuseUtils) {
     };
 
     pPublicApi.addAfterSaveHookFunc = function(pFunc) {
-        funcParams = {
+        var funcParams = {
             pFunc: pFunc
         };
 
@@ -846,11 +873,38 @@ if(!this.MuseUtils) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not find a function to add to the event processing sequence.",
-                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + "pPublicApi.addAfterSaveHookFunc",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSaveHookFunc",
                 {params: funcParams});
         }
 
         addAfterSaveHookFunc(pFunc);
+    };
+
+    pPublicApi.setParentRecId = function(pDataRecId, pParentRecId) {
+        var funcParams = {
+            pDataRecId: pDataRecId,
+            pParentRecId: pParentRecId
+        }
+
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We must have a valid entity data record identifier.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setParentRecId",
+                {params: funcParams});
+        }
+
+        if(!MuseUtils.isValidId(pParentRecId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We must have a feasible parent record id.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setParentRecId",
+                {params: funcParams});
+        }
+
+        setParentRecId(pDataRecId, pParentRecId);
     };
 })(this.MuseSuperChar.Data.%5$s);
 
