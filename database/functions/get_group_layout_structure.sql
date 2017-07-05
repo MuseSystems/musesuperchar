@@ -140,7 +140,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                         FROM unnest(vRecords) arow 
                                         WHERE NOT arow.section_internal_name = 
                                                 ANY(vSeenSecs) LOOP
-                                    IF vCurrRestSecColCount <= vCurrRowCols THEN
+                                    IF vCurrRestSecColCount <= vCurrRowCols 
+                                        AND array_position(vSeenSecs, vCurrRestSecName) IS NULL THEN
                                         -- We have a winner. Add it and continue.
                                         vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrRestSecName) ->> 'section_display_name','section_internal_name',vCurrRestSecName,'section_columns',(vSecLayouts -> vCurrRestSecName) -> 'columns');
                                         vSeenSecs := vSeenSecs || vCurrRestSecName;
@@ -193,7 +194,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                         FROM unnest(vRecords) arow 
                                         WHERE NOT arow.section_internal_name = 
                                                 ANY(vSeenSecs) LOOP
-                                    IF vCurrRestSecColCount <= vCurrRowCols THEN
+                                    IF vCurrRestSecColCount <= vCurrRowCols 
+                                        AND array_position(vSeenSecs, vCurrRestSecName) IS NULL THEN
                                         -- We have a winner. Add it and continue.
                                         vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrRestSecName) ->> 'section_display_name','section_internal_name',vCurrRestSecName,'section_columns',(vSecLayouts -> vCurrRestSecName) -> 'columns');
                                         vSeenSecs := vSeenSecs || vCurrRestSecName;
