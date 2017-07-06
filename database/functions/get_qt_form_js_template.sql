@@ -85,7 +85,7 @@ if(typeof MuseUtils === 'undefined') {
     // Internal State
     var myEntityObjectName;
     var myEntityDataRecId;
-    var myMode;
+    var myMode = null;
     var myIsConnectsSet = false;
     var sections = {};
     var labels = {};
@@ -353,17 +353,31 @@ if(typeof MuseUtils === 'undefined') {
         return null;
     };
     
-    var resetForm = function(pMode, pDataRecId) {
+    var resetForm = function(pEntityObjName, pMode, pDataRecId) {
         // Capture function parameters for later exception references.
         var funcParams = {
+            pEntityObjName: pEntityObjName,
             pMode: pMode,
             pDataRecId: pDataRecId
         };
         
+        myEntityObjectName = pEntityObjName;
         myEntityDataRecId = pDataRecId;
         myMode = pMode;
 
+        context = {
+            myEntityObjectName: myEntityObjectName,
+            myEntityDataRecId: myEntityDataRecId,
+            myMode: myMode,
+            constants: {
+                SC_DEFS: SC_DEFS,
+                PREFIX: PREFIX,
+                FORM_OBJECT_NAME: FORM_OBJECT_NAME
+            }
+        };
+
         try {
+            populateComboboxes();
             setMode();
             updateAllValues();
         } catch(e) {
@@ -449,6 +463,10 @@ if(typeof MuseUtils === 'undefined') {
         }
     };
 
+    pPublicApi.getMode = function() {
+        return MuseUtils.realNull(myMode);
+    }
+
 
     /**
      * Form startup initialization.  Standard part of the xTuple ERP 
@@ -465,8 +483,9 @@ if(typeof MuseUtils === 'undefined') {
         
         var jsonParams = MuseUtils.parseParams(pParams);
 
-        if(!jsonParams.hasOwnProperty("mode") ||
-            !["new", "edit", "view", "preview"].includes(jsonParams.mode)) {
+        if((!jsonParams.hasOwnProperty("mode") ||
+            !["new", "edit", "view", "preview"].includes(jsonParams.mode)) &&
+            myMode === null) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand in which mode to open the form.",
@@ -474,10 +493,6 @@ if(typeof MuseUtils === 'undefined') {
                 {params: funcParams, context: {jsonParams: jsonParams}});
         }
         
-        // We always want to have comboboxes viewable so populate the lists 
-        // early.
-        populateComboboxes();
-
         if(jsonParams.mode == "preview") {
             // in preview mode we won't prcess logic, so just exit here.
             return;
@@ -501,22 +516,9 @@ if(typeof MuseUtils === 'undefined') {
                 {params: funcParams, context: {jsonParams: jsonParams}});
         }
         
-        myEntityObjectName = jsonParams.entity_object_name;
-        myEntityDataRecId = jsonParams.data_record_id;
-        myMode = jsonParams.mode;
-
-        context = {
-            myEntityObjectName: myEntityObjectName,
-            myEntityDataRecId: myEntityDataRecId,
-            myMode: myMode,
-            constants: {
-                SC_DEFS: SC_DEFS,
-                PREFIX: PREFIX,
-                FORM_OBJECT_NAME: FORM_OBJECT_NAME
-            }
-        };
-
-        resetForm(jsonParams.mode, jsonParams.data_record_id);
+        resetForm(jsonParams.entity_object_name, 
+            MuseUtils.coalesce(jsonParams.mode, myMode), 
+            jsonParams.data_record_id);
 
         //----------------------------------------------------------------
         //  Connects/Disconnects

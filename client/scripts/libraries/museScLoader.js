@@ -261,11 +261,21 @@ if(!this.MuseUtils) {
             return dataRecId;
         };
 
-        pGroupsWidget.save = function(pParentRecId) {
+        pGroupsWidget.save = function(pParentRecId, pModeAfterSave) {
             // Capture function parameters for later exception references.
             var funcParams = {
-                pParentRecId: pParentRecId
+                pParentRecId: pParentRecId,
+                pModeAfterSave: pModeAfterSave
             };
+
+            if(MuseUtils.realNull(pModeAfterSave) !== null && 
+                !["new", "edit", "view"].includes(pModeAfterSave)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We could not tell if the form was being opened in 'new', 'edit' or 'view' mode.",
+                    "MuseSuperChar.Loader.groupsWidget.save",
+                    {params: funcParams});
+            }
 
             try {
                 if(MuseUtils.isValidId(pParentRecId)) {
@@ -277,6 +287,27 @@ if(!this.MuseUtils) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to save the Super Characteristic data as requested.",
+                    "MuseSuperChar.Loader.groupsWidget.save",
+                    {params: funcParams, thrownError: e});
+            }
+
+            var widgetParams = {
+                entity_object_name: entityObjectName,
+                data_record_id: this.dataRecId
+            };
+
+            if(MuseUtils.realNull(pModeAfterSave) !== null) {
+                widgetParams.mode = pModeAfterSave;
+            }
+
+            try {
+                for(var i = 0; i < this.memberSetFuncs.length; i++) {
+                    this.memberSetFuncs[i](widgetParams);
+                }
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We failed to initialize the group forms.",
                     "MuseSuperChar.Loader.groupsWidget.save",
                     {params: funcParams, thrownError: e});
             }
