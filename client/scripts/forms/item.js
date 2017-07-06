@@ -75,7 +75,7 @@ if(!this.MuseSuperChar.Loader) {
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
-    var mySave = function(pItemId) {
+    var mySave = function(pRecId) {
         try {
             scWidget.save(mywindow.id());   
         } catch(e) {
