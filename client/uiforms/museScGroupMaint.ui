@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <comment>
+ /*************************************************************************
+ *************************************************************************
+ **
+ ** File:        museScGroupMaint.ui
+ ** Project:     Muse Systems Super Characteristics for xTuple ERP
+ ** Author:      Steven C. Buttgereit
+ **
+ ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ **
+ ** Contact:
+ ** muse.information@musesystems.com  :: https://muse.systems
+ ** 
+ ** License: MIT License. See LICENSE.md for complete licensing details.
+ **
+ *************************************************************************
+ ************************************************************************/</comment>
+ <class>museScGroupMaint</class>
+ <widget class="QWidget" name="museScGroupMaint">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1404</width>
+    <height>857</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Muse Systems Super Characteristics</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="groupsEntitiesHBoxLayout">
+     <item>
+      <widget class="QGroupBox" name="groupsGroupBox">
+       <property name="title">
+        <string>Super Characteristic Groups</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="XTreeWidget" name="groupListXTreeWidget"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="groupsButtonsHBoxLayout">
+          <item>
+           <spacer name="groupsButtonsLeftSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="groupAddPushButton">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="groupEditPushButton">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="groupDeletePushButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="groupsButtonsRightSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="entitiesGroupBox">
+       <property name="title">
+        <string>Known Record Types</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="XTreeWidget" name="entityListXTreeWidget"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="entitiesButtonsHBoxLayout">
+          <item>
+           <spacer name="entitiesButtonsLeftSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="entityAddPushButton">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="entityEditPushButton">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="entityDeletePushButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="entitiesButtonsRightSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupLayoutGroupBox">
+     <property name="title">
+      <string>&lt;GROUP&gt; Super Characteristic &amp; Layout</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="XTreeWidget" name="groupLayoutXTreeWidget"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="groupLayoutButtonsHBoxLayout">
+        <item>
+         <spacer name="groupLayoutButtonsLeftSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutAddPushButton">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutEditPushButton">
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutDeletePushButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="groupLayoutButtonsCenterSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutMoveUpPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>41</width>
+            <height>41</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>^</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutMoveDownPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>41</width>
+            <height>41</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>v</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="groupLayoutButtonsCenterRightSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="groupLayoutPreviewPushButton">
+          <property name="text">
+           <string>Preview</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="groupLayoutButtonsRightSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XTreeWidget</class>
+   <extends></extends>
+   <header>xtreewidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

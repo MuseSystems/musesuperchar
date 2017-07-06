@@ -1,0 +1,187 @@
+<package id="musesuperchar"
+         name="musesuperchar"
+         developer="Muse Systems"
+         descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
+         version="0.1.0"
+         updater="2.4.0">
+
+    <pkgnotes>
+        A package to provide an enhanced, more broadly functional user defined field functionality.
+    </pkgnotes>
+    <prerequisite type="Query"
+                name="xTuple ERP version">
+        <query>
+            WITH version AS (
+            SELECT 
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^([[:digit:]]+)\..*'))::integer as major_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
+             )
+             SELECT 
+                    (major_version = 4 AND minor_version = 10 AND patch_version >= 1)
+                OR  (major_version = 4 AND minor_version > 10)
+                OR  (major_version > 4)
+             FROM version;
+        </query>
+        <message>
+            This package must be installed against xTuple ERP version 4.10.1 or later.  This package has only been tested against version 4.10.1 and may not work in later version without updating.
+        </message>
+    </prerequisite>
+    <prerequisite type="Query"
+                   name="Muse Systems xTuple Utilities">
+         <query>
+                WITH version AS (
+                   SELECT 
+                       (SELECT substring(pkghead_version,E'^([[:digit:]]+)\..*'))::integer as major_version,
+                       (SELECT substring(pkghead_version,E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
+                       (SELECT substring(pkghead_version,E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as      patch_version
+                    FROM pkghead
+                    WHERE pkghead_name = 'musextputils'
+                )
+                SELECT 
+                       (major_version = 2 AND minor_version = 2 AND patch_version >= 0)
+                   OR  (major_version = 2 AND minor_version > 2)
+                   OR  (major_version > 2)
+                FROM version;
+         </query>    
+         <message>
+             This package requires that the Muse Systems xTuple Utilities version 2.2.0 or any higher version 1 series is installed prior to installation of this package.
+         </message>
+     </prerequisite>
+    <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
+        Grants the user the ability to create, remove, or modify super charateristics.  This permission is typically assigned to power users who are capable of managing user defined data. This permission does not confer the ability to create or remove super characteristic groups, but does allow for the management of super characteristic to group assignments.
+    </loadpriv>
+
+    <loadpriv name="maintainSuperCharListQuery" module="Muse Systems Super Characteristics">
+        Grants a user the ability to maintain combobox/select list queries.  This permission is highly security sensitive as it will allow entry of arbitrary SQL which will be executed in the context of the end user that is making use of such a super characteristic.  As such this permission should only ever be granted to those with a pre-existing high level of trust.  To use this privilege, a user must also have the maintainSuperCharacteristic privilege.
+    </loadpriv>
+    
+    <loadpriv name="maintainSuperCharSysLockRecsManually" module="Muse Systems Super Characteristics">
+        Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system. 
+    </loadpriv>
+
+    <loadpriv name="maintainSuperCharInternalNames" module="Muse Systems Super Characteristics">
+        Grants the user the ability to update "internal" names of Super Characteristic objects that have them.  This is sensitive because internal names may be used in external reporting or programmings and would be broken by ad hoc, ill-considered changes.  Normally, you really want to consider an internal name fixed once it is created (in other words, we recommend not granting this permission to anyone.)
+    </loadpriv>
+
+    <loadpriv name="maintainSuperCharEntities" module="Muse Systems Super Characteristics">
+        Grants a user the ability to add or remove "entities" as being valid for super characteristics.  An entity is another table within the system.  Note that this is a sensitive permission since removing an entity from recognition also deletes and super characteristic data for that entity.
+    </loadpriv>
+    
+    <loadpriv name="maintainSuperCharGroups" module="Muse Systems Super Characteristics">
+        Grants a user the ability to maintain super characteristic groups, specifically creating or deleting groups.
+    </loadpriv>
+    
+    
+    <initscript file="database/misc/early_create_musemetrics.sql" />
+    <initscript file="database/tables/datatype.init.sql" />
+    <initscript file="database/tables/valtype.init.sql" />
+    <initscript file="database/tables/entity.init.sql" />
+    <initscript file="database/tables/entitypkg.init.sql" />
+    <initscript file="database/tables/scdef.init.sql" />
+    <initscript file="database/tables/scgrp.init.sql" />
+    <initscript file="database/tables/scdef_scgrp_ass.init.sql" />
+    <initscript file="database/tables/entity_scgrp_ass.init.sql" />
+    <initscript file="database/tables/condvalrule.init.sql" />
+    <initscript file="database/views/v_superchar_entities.init.sql" />
+    <initscript file="database/views/v_form_builder_widgets.init.sql" />
+
+    <createfunction file="database/functions/get_sc_table_name.sql" name="get_sc_table_name" />
+    <createfunction file="database/functions/is_superchar_table_populated.sql" name="is_superchar_table_populated" />
+    <createfunction file="database/functions/create_entity.sql" name="create_entity" />
+    <createfunction file="database/functions/add_group_entity_association.sql" name="add_group_entity_association" />
+    <createfunction file="database/functions/delete_group_entity_association.sql" name="delete_group_entity_association" />
+    <createfunction file="database/functions/get_superchar_non_overlapping_entities.sql" name="get_superchar_non_overlapping_entities" />
+    <createfunction file="database/functions/get_superchar_group_add_violations.sql" name="get_superchar_group_add_violations" />
+    <createfunction file="database/functions/get_superchar_group_remove_violations.sql" name="get_superchar_group_remove_violations" />
+    <createfunction file="database/functions/get_group_entity_add_violations.sql" name="get_group_entity_add_violations" />
+    <createfunction file="database/functions/get_group_entity_remove_violations.sql" name="get_group_entity_remove_violations" />
+    <createfunction file="database/functions/get_superchar_delete_violations.sql" name="get_superchar_delete_violations" />
+    <createfunction file="database/functions/get_group_layout_item_next_sequence.sql" name="get_group_layout_item_next_sequence" />
+    <createfunction file="database/functions/get_group_layout_item_max_sequence.sql" name="get_group_layout_item_max_sequence" />
+    <createfunction file="database/functions/move_group_layout_item_up.sql" name="move_group_layout_item_up" />
+    <createfunction file="database/functions/move_group_layout_item_down.sql" name="move_group_layout_item_down" />
+    <createfunction file="database/functions/get_group_layout_structure.sql" name="get_group_layout_structure" />
+    <createfunction file="database/functions/get_qt_ui_xml.sql" name="get_qt_ui_xml" />
+    <createfunction file="database/functions/get_qt_ui_widget_for_datatype.sql" name="get_qt_ui_widget_for_datatype" />
+    <createfunction file="database/functions/get_qt_labels_from_ui_xml.sql" name="get_qt_labels_from_ui_xml" />
+    <createfunction file="database/functions/get_qt_widgets_from_ui_xml.sql" name="get_qt_widgets_from_ui_xml" />
+    <createfunction file="database/functions/get_qt_groupboxes_from_ui_xml.sql" name="get_qt_groupboxes_from_ui_xml" />
+    <createfunction file="database/functions/get_qt_insert_metasql.sql" name="get_qt_insert_metasql" />
+    <createfunction file="database/functions/get_qt_update_metasql.sql" name="get_qt_update_metasql" />
+    <createfunction file="database/functions/get_qt_delete_metasql.sql" name="get_qt_delete_metasql" />
+    <createfunction file="database/functions/get_qt_select_metasql.sql" name="get_qt_select_metasql" />
+    <createfunction file="database/functions/update_entity_data_structure.sql" name="update_entity_data_structure" />
+    <createfunction file="database/functions/update_scgrp_qt_ui_files.sql" name="update_scgrp_qt_ui_files" />
+    <createfunction file="database/functions/get_qt_data_js_template.sql" name="get_qt_data_js_template" />
+    <createfunction file="database/functions/get_qt_form_js_template.sql" name="get_qt_form_js_template" />
+    <createfunction file="database/functions/get_qt_data_js.sql" name="get_qt_data_js" />
+    <createfunction file="database/functions/get_qt_form_js.sql" name="get_qt_form_js" />
+    <createfunction file="database/functions/update_entity_qt_data_js_files.sql" name="update_entity_qt_data_js_files" />
+    <createfunction file="database/functions/update_entity_qt_data_metasql_files.sql" name="update_entity_qt_data_metasql_files" />
+    
+    <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
+    <createfunction file="database/triggers/trig_a_d_entitypkg_manage_entity_syslock.sql" name="trig_a_d_entitypkg_manage_entity_syslock" />
+    <createfunction file="database/triggers/trig_b_i_scdef_scgrp_ass_assign_next_sequence.sql" name="trig_b_i_scdef_scgrp_ass_assign_next_sequence" />
+    <createfunction file="database/triggers/trig_a_d_scdef_scgrp_ass_sequence_maint.sql" name="trig_a_d_scdef_scgrp_ass_sequence_maint" />
+    <createfunction file="database/triggers/trig_b_iu_condvalrule_violation_check.sql" name="trig_b_iu_condvalrule_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_scdef_scgrp_ass_violation_check.sql" name="trig_b_iud_scdef_scgrp_ass_violation_check" />
+    <createfunction file="database/triggers/trig_b_iud_entity_scgrp_ass_violation_check.sql" name="trig_b_iud_entity_scgrp_ass_violation_check" />
+    <createfunction file="database/triggers/trig_a_d_scgrp_delete_saved_layouts.sql" name="trig_a_d_scgrp_delete_saved_layouts" />
+    <createfunction file="database/triggers/trig_a_id_scdef_scgrp_ass_maintain_entity_structure.sql" name="trig_a_id_scdef_scgrp_ass_maintain_entity_structure" />
+    <createfunction file="database/triggers/trig_a_iud_scdef_scgrp_ass_qt_ui_maint.sql" name="trig_a_iud_scdef_scgrp_ass_qt_ui_maint" />
+    <createfunction file="database/triggers/trig_a_id_entity_scgrp_ass_maintain_entity_structure.sql" name="trig_a_id_entity_scgrp_ass_maintain_entity_structure" />
+    <createfunction file="database/triggers/trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs" />
+    <createfunction file="database/triggers/trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs" />
+    
+    <createtable file="database/tables/datatype.sql" name="datatype" />
+    <createtable file="database/tables/valtype.sql" name="valtype" />
+    <createtable file="database/tables/entity.sql" name="entity" />
+    <createtable file="database/tables/entitypkg.sql" name="entitypkg" />
+    <createtable file="database/tables/scdef.sql" name="scdef" />
+    <createtable file="database/tables/scgrp.sql" name="scgrp" />
+    <createtable file="database/tables/scdef_scgrp_ass.sql" name="scdef_scgrp_ass" />
+    <createtable file="database/tables/entity_scgrp_ass.sql" name="entity_scgrp_ass" />
+    <createtable file="database/tables/condvalrule.sql" name="condvalrule" />
+
+    <createview file="database/views/v_superchar_entities.sql" name="v_superchar_entities" />
+    <createview file="database/views/v_form_builder_widgets.sql" name="v_form_builder_widgets" />
+    
+    <loadappui file="client/uiforms/museScGroupMaint.ui" order="20">Muse Systems Super Characteristic Group/Entity Maintenance (setup subform).</loadappui>
+    <loadappui file="client/uiforms/museSuperCharMaint.ui" order="20">Muse Systems Super Characteristic Maintenance (setup subform).</loadappui>
+    <loadappui file="client/uiforms/museScCreateEntity.ui" order="20">Muse Systems Super Characteristic Create Entities Form</loadappui>
+    <loadappui file="client/uiforms/museScCreateGroup.ui" order="20">Muse Systems Super Characteristic Create Groups Form</loadappui>
+    <loadappui file="client/uiforms/museScViolationsDialog.ui" order="20">Muse Systems Super Characteristic Validator Violations Dialog</loadappui>
+    <loadappui file="client/uiforms/museScNewListValue.ui" order="20">Muse Systems Super Characteristic New List of Value Value form.</loadappui>
+    <loadappui file="client/uiforms/museScCreateCondValRule.ui" order="20">Muse Systems Super Characteristic Create Validation Rule form.</loadappui>
+    <loadappui file="client/uiforms/museScCreateGroupLayoutItem.ui" order="20">Muse Systems Super Characteristic Create Group Layout Item form.</loadappui>
+    <loadappui file="client/uiforms/museScUnifiedSetup.ui" order="20">Muse Systems Super Characteristic Setup Parent Form.</loadappui>
+    
+    <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="10">Muse Systems Super Characteristic Widget Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="10">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScLoader.js" name="museScLoader" order="10">Muse Systems Super Characteristics Widget Loader Script</loadappscript>
+    
+    <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/museScUnifiedSetup.js" name="museScUnifiedSetup" order="10">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
+    <loadappscript file="client/scripts/forms/item.js" name="item" order="10">Muse Super Characteristics Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/customer.js" name="customer" order="10">Muse Super Characteristics Customer Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/crmaccount.js" name="crmaccount" order="10">Muse Super Characteristics CRM Account Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/vendor.js" name="vendor" order="10">Muse Super Characteristics Vendor Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/salesOrder.js" name="salesOrder" order="10">Muse Super Characteristics Sales Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/salesOrderItem.js" name="salesOrderItem" order="10">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/purchaseOrder.js" name="purchaseOrder" order="10">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
+
+    <finalscript file="database/misc/datatypes_seed_data.sql" />
+    <finalscript file="database/misc/valtypes_seed_data.sql" />
+    <finalscript file="database/misc/entities_seed_data.sql" />
+    
+</package>
