@@ -93,7 +93,7 @@ if(!this.MuseUtils) {
 
     // Lower graded scripts should be loaded prior to our call and as such we 
     // should be able to intercept their set functions.
-    if(pGlobal.set === "function") {
+    if(typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
     } else {
         foreignSetFunc = function() {};
