@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.Item = this.MuseSuperChar.Item || {};
+this.MuseSuperChar.SalesOrder = this.MuseSuperChar.SalesOrder || {};
 
 //////////////////////////////////////////////////////////////////////////
 //  Imports
@@ -150,5 +150,5 @@ if(!this.MuseSuperChar.Loader) {
         
     };
 
-})(this.MuseSuperChar.Item, this);
+})(this.MuseSuperChar.SalesOrder, this);
 
