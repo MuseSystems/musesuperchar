@@ -173,6 +173,7 @@
     <loadappscript file="client/scripts/forms/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museScUnifiedSetup.js" name="museScUnifiedSetup" order="10">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
     <loadappscript file="client/scripts/forms/item.js" name="item" order="10">Muse Super Characteristics Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/customer.js" name="customer" order="10">Muse Super Characteristics Customer Form Loader.</loadappscript>
 
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
