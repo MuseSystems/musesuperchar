@@ -40,8 +40,8 @@ if(!this.MuseSuperChar.Loader) {
 
 (function(pPublicApi, pGlobal) {
     // Constants
-    var PARENT_TABWIDGET = "_salesOrderInformation";
-    var XTP_CHAR_TAB = "_characteristicsPage";
+    var PARENT_TABWIDGET = "_tabs";
+    var XTP_CHAR_TAB = "_itemCharacteristicsTab";
     
     // Mutable state
     var entityDataTable;
@@ -51,7 +51,7 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     var formTab = mywindow.findChild(PARENT_TABWIDGET);
     var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
-
+    var savePushButton = mywindow.findChild("_save");
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
@@ -91,7 +91,7 @@ if(!this.MuseSuperChar.Loader) {
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
-        mywindow["saved(int)"].connect(mySave);
+        savePushButton.clicked.connect(mySave);
     };
 
     //--------------------------------------------------------------------
@@ -111,10 +111,10 @@ if(!this.MuseSuperChar.Loader) {
 
             if(mywindow.modeType() == 2) {
                 // Sales Order
-                entityDataTable = "public_cohead";
+                entityDataTable = "public_coitem";
             } else {
                 // Quote
-                entityDataTable = "public_quhead";
+                entityDataTable = "public_quitem";
             }
 
             if(["new", "edit", "view"].includes(myMode) && 
