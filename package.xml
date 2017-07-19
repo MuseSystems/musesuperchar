@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="0.1.1"
+         version="0.1.2"
          updater="2.4.0">
 
     <pkgnotes>
@@ -12,12 +12,12 @@
                 name="xTuple ERP version">
         <query>
             WITH version AS (
-            SELECT 
+            SELECT
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^([[:digit:]]+)\..*'))::integer as major_version,
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
              )
-             SELECT 
+             SELECT
                     (major_version = 4 AND minor_version = 10 AND patch_version >= 1)
                 OR  (major_version = 4 AND minor_version > 10)
                 OR  (major_version > 4)
@@ -31,19 +31,19 @@
                    name="Muse Systems xTuple Utilities">
          <query>
                 WITH version AS (
-                   SELECT 
+                   SELECT
                        (SELECT substring(pkghead_version,E'^([[:digit:]]+)\..*'))::integer as major_version,
                        (SELECT substring(pkghead_version,E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
                        (SELECT substring(pkghead_version,E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as      patch_version
                     FROM pkghead
                     WHERE pkghead_name = 'musextputils'
                 )
-                SELECT 
+                SELECT
                        (major_version = 2 AND minor_version = 4 AND patch_version >= 0)
                    OR  (major_version = 2 AND minor_version > 4)
                    OR  (major_version > 2)
                 FROM version;
-         </query>    
+         </query>
          <message>
              This package requires that the Muse Systems xTuple Utilities version 2.2.0 or any higher version 1 series is installed prior to installation of this package.
          </message>
@@ -55,9 +55,9 @@
     <loadpriv name="maintainSuperCharListQuery" module="Muse Systems Super Characteristics">
         Grants a user the ability to maintain combobox/select list queries.  This permission is highly security sensitive as it will allow entry of arbitrary SQL which will be executed in the context of the end user that is making use of such a super characteristic.  As such this permission should only ever be granted to those with a pre-existing high level of trust.  To use this privilege, a user must also have the maintainSuperCharacteristic privilege.
     </loadpriv>
-    
+
     <loadpriv name="maintainSuperCharSysLockRecsManually" module="Muse Systems Super Characteristics">
-        Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system. 
+        Grants the user privileges to user the user interface to manipulate charateristics which are typically only managed via extension packages.  We stronly recommend that this permission not be regularly granted to any users.  The permission is granted only for the purposes of development convenience and emergency system fixes.  This privilege is best thought of as the privilege to break your system.
     </loadpriv>
 
     <loadpriv name="maintainSuperCharInternalNames" module="Muse Systems Super Characteristics">
@@ -67,12 +67,12 @@
     <loadpriv name="maintainSuperCharEntities" module="Muse Systems Super Characteristics">
         Grants a user the ability to add or remove "entities" as being valid for super characteristics.  An entity is another table within the system.  Note that this is a sensitive permission since removing an entity from recognition also deletes and super characteristic data for that entity.
     </loadpriv>
-    
+
     <loadpriv name="maintainSuperCharGroups" module="Muse Systems Super Characteristics">
         Grants a user the ability to maintain super characteristic groups, specifically creating or deleting groups.
     </loadpriv>
-    
-    
+
+
     <initscript file="database/misc/early_create_musemetrics.sql" />
     <initscript file="database/tables/datatype.init.sql" />
     <initscript file="database/tables/valtype.init.sql" />
@@ -119,7 +119,7 @@
     <createfunction file="database/functions/get_qt_form_js.sql" name="get_qt_form_js" />
     <createfunction file="database/functions/update_entity_qt_data_js_files.sql" name="update_entity_qt_data_js_files" />
     <createfunction file="database/functions/update_entity_qt_data_metasql_files.sql" name="update_entity_qt_data_metasql_files" />
-    
+
     <createfunction file="database/triggers/trig_a_id_manage_sc_entity_tables.sql" name="trig_a_id_manage_sc_entity_tables" />
     <createfunction file="database/triggers/trig_a_d_entitypkg_manage_entity_syslock.sql" name="trig_a_d_entitypkg_manage_entity_syslock" />
     <createfunction file="database/triggers/trig_b_i_scdef_scgrp_ass_assign_next_sequence.sql" name="trig_b_i_scdef_scgrp_ass_assign_next_sequence" />
@@ -133,7 +133,7 @@
     <createfunction file="database/triggers/trig_a_id_entity_scgrp_ass_maintain_entity_structure.sql" name="trig_a_id_entity_scgrp_ass_maintain_entity_structure" />
     <createfunction file="database/triggers/trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs" />
     <createfunction file="database/triggers/trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs" />
-    
+
     <createtable file="database/tables/datatype.sql" name="datatype" />
     <createtable file="database/tables/valtype.sql" name="valtype" />
     <createtable file="database/tables/entity.sql" name="entity" />
@@ -146,7 +146,7 @@
 
     <createview file="database/views/v_superchar_entities.sql" name="v_superchar_entities" />
     <createview file="database/views/v_form_builder_widgets.sql" name="v_form_builder_widgets" />
-    
+
     <loadappui file="client/uiforms/museScGroupMaint.ui" order="20">Muse Systems Super Characteristic Group/Entity Maintenance (setup subform).</loadappui>
     <loadappui file="client/uiforms/museSuperCharMaint.ui" order="20">Muse Systems Super Characteristic Maintenance (setup subform).</loadappui>
     <loadappui file="client/uiforms/museScCreateEntity.ui" order="20">Muse Systems Super Characteristic Create Entities Form</loadappui>
@@ -156,14 +156,14 @@
     <loadappui file="client/uiforms/museScCreateCondValRule.ui" order="20">Muse Systems Super Characteristic Create Validation Rule form.</loadappui>
     <loadappui file="client/uiforms/museScCreateGroupLayoutItem.ui" order="20">Muse Systems Super Characteristic Create Group Layout Item form.</loadappui>
     <loadappui file="client/uiforms/museScUnifiedSetup.ui" order="20">Muse Systems Super Characteristic Setup Parent Form.</loadappui>
-    
+
     <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
     <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="10">Muse Systems Super Characteristic Widget Library</loadappscript>
     <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="10">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
     <loadappscript file="client/scripts/libraries/museScLoader.js" name="museScLoader" order="10">Muse Systems Super Characteristics Widget Loader Script</loadappscript>
-    
+
     <loadappscript file="client/scripts/forms/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
     <loadappscript file="client/scripts/forms/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
     <loadappscript file="client/scripts/forms/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
@@ -183,5 +183,5 @@
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
-    
+
 </package>
