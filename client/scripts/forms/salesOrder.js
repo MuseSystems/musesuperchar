@@ -57,21 +57,7 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     var scWidget;
 
-    try {
-        scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
 
-        if(scWidget !== null) {
-            formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget,
-                MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
-        }
-
-        if(MuseUtils.getFlagMetric("musesuperchar",
-            "isXtupleCharacteristicsTabHidden")) {
-            formTab.removeTab(xtpCharTab);
-        }
-    } catch(e) {
-        MuseUtils.displayError(e, mywindow);
-    }
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
@@ -116,9 +102,24 @@ if(!this.MuseSuperChar.Loader) {
                 entityDataTable = "public_quhead";
             }
 
-            if(["new", "edit", "view"].includes(myMode) &&
-                scWidget !== null) {
+            if(["new", "edit", "view"].includes(myMode)) {
+
+                if(MuseUtils.getFlagMetric("musesuperchar",
+                    "isXtupleCharacteristicsTabHidden")) {
+                    formTab.removeTab(xtpCharTab);
+                }
+
+                scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
+
+                if(scWidget !== null) {
+                    formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget,
+                        MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
+                } else {
+                    return;
+                }
+
                 initSuperChar(myMode, mywindow.id());
+
             } else {
                 return;
             }
