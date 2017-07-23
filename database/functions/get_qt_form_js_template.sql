@@ -238,8 +238,10 @@ if(typeof MuseUtils === 'undefined') {
                     myEntityDataRecId);
                 break;
             case "textarea":
-                widgets[pScDefIntName].setPlainText(
-                    dataObj.getValue(pScDefIntName, myEntityDataRecId));
+                var newVal = dataObj.getValue(pScDefIntName, myEntityDataRecId);
+                if(widgets[pScDefIntName].document.toPlainText() != newVal) {
+                    widgets[pScDefIntName].setPlainText(newVal);
+                } 
                 break;
             case "datecluster":
                 widgets[pScDefIntName].date = dataObj.getValue(pScDefIntName, 
