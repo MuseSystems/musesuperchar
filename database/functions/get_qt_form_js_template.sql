@@ -288,7 +288,7 @@ if(typeof MuseUtils === 'undefined') {
                 "musesuperchar",
                 "We failed to update the requested form field's value.",
                 "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
-                {params: funcParams, context: context});   
+                {params: funcParams, thrownError: e, context: context});   
         }
     };
 
