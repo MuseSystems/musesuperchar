@@ -183,5 +183,6 @@
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
     <finalscript file="database/misc/entities_seed_data.sql" />
+    <finalscript file="database/misc/fix_perms.sql" />
 
 </package>
