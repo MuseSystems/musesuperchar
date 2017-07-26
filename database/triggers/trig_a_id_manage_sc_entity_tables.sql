@@ -42,7 +42,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                     EXECUTE format('CREATE TABLE musesuperchar.%1$I ( ' ||
                         ' %2$I bigserial PRIMARY KEY ' ||
-                        ',%3$I bigint NOT NULL REFERENCES %4$I.%5$I (%6$I) ' ||
+                        ',%3$I bigint NOT NULL REFERENCES %4$I.%5$I (%6$I) ON DELETE CASCADE ' ||
                         $q$,%7$I jsonb NOT NULL DEFAULT '{}'::jsonb) $q$,
                         NEW.entity_data_table,vEntityPkColmnName,vEntityFkColmnName,
                         NEW.entity_schema, NEW.entity_table, NEW.entity_pk_column,
