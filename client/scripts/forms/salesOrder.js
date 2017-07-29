@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -42,7 +42,7 @@ if(!this.MuseSuperChar.Loader) {
     // Constants
     var PARENT_TABWIDGET = "_salesOrderInformation";
     var XTP_CHAR_TAB = "_characteristicsPage";
-    
+
     // Mutable state
     var entityDataTable;
 
@@ -57,37 +57,22 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     var scWidget;
 
+
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
     var mySave = function() {
         try {
-            scWidget.save(mywindow.id());  
+            scWidget.save(mywindow.id());
         } catch(e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
 
     var initSuperChar = function(pMode, pParentId) {
-        try {
-            scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
-            
-            if(scWidget !== null) {
-                formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget, 
-                    MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
-            }
-    
-            if(MuseUtils.getFlagMetric("musesuperchar", 
-                "isXtupleCharacteristicsTabHidden")) {
-                formTab.removeTab(xtpCharTab);
-            }
-        } catch(e) {
-            MuseUtils.displayError(e, mywindow);
-        }
-
         scWidget.initWidget(pMode, pParentId);
-        
+
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
@@ -97,9 +82,9 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
-    
+
     /**
-     * Form startup initialization.  Standard part of the xTuple ERP 
+     * Form startup initialization.  Standard part of the xTuple ERP
      * startup process.
      * @param {Object} pParams An associative array of values passed from
      *                         the xTuple C++ forms which contain context
@@ -117,9 +102,24 @@ if(!this.MuseSuperChar.Loader) {
                 entityDataTable = "public_quhead";
             }
 
-            if(["new", "edit", "view"].includes(myMode) && 
-                scWidget !== null) {
+            if(["new", "edit", "view"].includes(myMode)) {
+
+                if(MuseUtils.getFlagMetric("musesuperchar",
+                    "isXtupleCharacteristicsTabHidden")) {
+                    formTab.removeTab(xtpCharTab);
+                }
+
+                scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
+
+                if(scWidget !== null) {
+                    formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget,
+                        MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
+                } else {
+                    return;
+                }
+
                 initSuperChar(myMode, mywindow.id());
+
             } else {
                 return;
             }
@@ -128,11 +128,11 @@ if(!this.MuseSuperChar.Loader) {
             MuseUtils.displayError(e, mywindow);
         }
     };
-    
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
-    
+
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
@@ -141,7 +141,7 @@ if(!this.MuseSuperChar.Loader) {
     // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
     var foreignSetFunc;
 
-    // Lower graded scripts should be loaded prior to our call and as such we 
+    // Lower graded scripts should be loaded prior to our call and as such we
     // should be able to intercept their set functions.
     if(typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
@@ -157,7 +157,7 @@ if(!this.MuseSuperChar.Loader) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
         }
-        
+
     };
 
 })(this.MuseSuperChar.SalesOrderItem, this);

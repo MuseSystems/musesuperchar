@@ -128,7 +128,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_form_js(pGroupId bigint, pQtUiXm
                                 (E'            widgets.' || vCurrScDefIntName || 
                                     E'["textChanged()"].connect(\n' ||
                                     E'                function() {\n' ||
-                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.toPlainText());\n' ||
+                                    E'                    setDataValue("'||vCurrScDefIntName||E'", widgets.'||vCurrScDefIntName||E'.document.toPlainText());\n' ||
                                     E'                });\n\n');
                         WHEN 'datecluster' THEN
                             vConnectList := vConnectList || 

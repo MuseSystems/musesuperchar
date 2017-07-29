@@ -238,8 +238,10 @@ if(typeof MuseUtils === 'undefined') {
                     myEntityDataRecId);
                 break;
             case "textarea":
-                widgets[pScDefIntName].setPlainText(
-                    dataObj.getValue(pScDefIntName, myEntityDataRecId));
+                var newVal = dataObj.getValue(pScDefIntName, myEntityDataRecId);
+                if(widgets[pScDefIntName].document.toPlainText() != newVal) {
+                    widgets[pScDefIntName].setPlainText(newVal);
+                } 
                 break;
             case "datecluster":
                 widgets[pScDefIntName].date = dataObj.getValue(pScDefIntName, 
@@ -288,7 +290,7 @@ if(typeof MuseUtils === 'undefined') {
                 "musesuperchar",
                 "We failed to update the requested form field's value.",
                 "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
-                {params: funcParams, context: context});   
+                {params: funcParams, thrownError: e, context: context});   
         }
     };
 
