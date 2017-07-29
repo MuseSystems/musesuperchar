@@ -96,7 +96,7 @@
                
             END;
         $BODY$
-    LANGUAGE plpgsql VOLATILE;
+    LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
 ALTER FUNCTION musesuperchar.update_entity_qt_data_js_files(pEntityId bigint)
     OWNER TO admin;
