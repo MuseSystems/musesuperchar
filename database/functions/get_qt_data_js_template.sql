@@ -86,6 +86,7 @@ if(!this.MuseUtils) {
     
     // Mutable Data
     var data = {};
+    var lovOverrides = {};
 
     // Hook Function Containers
     var onNewFuncs = [];
@@ -158,6 +159,37 @@ if(!this.MuseUtils) {
         return MuseUtils.realNull(returnText);
     };
 
+    var setLovQuery = function(pScIntName, pDataRecId, pXSqlQuery) {
+        var funcParams = {
+            pScIntName: pScIntName, 
+            pDataRecId: pDataRecId,
+            pXSqlQuery: pXSqlQuery
+        };
+
+        lovOverrides[SC_DATA_TABLE + "_" + pDataRecId][pScIntName] = pXSqlQuery;
+
+        try {
+            mainwindow.sEmitSignal(
+                "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
+                "lov_override");
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We received errors while signalling that we set a value.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setLovQuery",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    var getLovQuery = function(pScIntName, pDataRecId) {
+        var funcParams = {
+            pScIntName: pScIntName, 
+            pDataRecId: pDataRecId
+        };
+
+        return lovOverrides[SC_DATA_TABLE + "_" + pDataRecId][pScIntName];
+    };
+
     var loadFormData = function(pDataRecId) {
         // Capture function parameters for later exception references.
         var funcParams = {
@@ -182,6 +214,9 @@ if(!this.MuseUtils) {
                     database: {},
                     working: {},
                 };
+
+                lovOverrides[SC_DATA_TABLE + "_" + pDataRecId] = {};
+                
                 data[recObjName].database = entQry.firstJson();
                 Object.assign(data[recObjName].working, data[recObjName].database);
             } else {
@@ -379,6 +414,8 @@ if(!this.MuseUtils) {
         }
 
         var newDataRecId;
+        var lovCache = Object.assign(
+            lovOverrides[SC_DATA_TABLE + "_" + pDataRecId]);
 
         // If the pDataRecId parameter starts with "new" we insert,
         // otherwise it's an update.
@@ -407,6 +444,19 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }
         
+        try {
+            for(var currScLov in lovCache) {
+                pPublicApi.setLovQuery(currScLov, newDataRecId, 
+                    lovCache[currScLov]);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                 "musesuperchar",
+                 "We encountered errors restoring cached LOV overrides.",
+                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
+                 {params: funcParams, thrownError: e});
+        }
+
         try {
             // Run our After Save Hooks.  If we get a non-null result, we display 
             // the message to the user.
@@ -447,6 +497,8 @@ if(!this.MuseUtils) {
                 database: Object.assign({},DATA_STRUCT),
                 working: Object.assign({},DATA_STRUCT)
             };
+
+            lovOverrides[SC_DATA_TABLE + "_" + newRecHandle] = {};
 
             try {
                 // Run our On New Hooks.  If we get a non-null result, we 
@@ -673,7 +725,8 @@ if(!this.MuseUtils) {
         // Capture function parameters for later exception references.
         var funcParams = {
             pScIntName: pScIntName,
-            pDataRecId: pDataRecId
+            pDataRecId: pDataRecId,
+            pValue: pValue
         };
 
         if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
@@ -884,7 +937,7 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId,
             pParentRecId: pParentRecId
-        }
+        };
 
         if(MuseUtils.realNull(pDataRecId) === null ||
             (!MuseUtils.isValidId(pDataRecId) &&
@@ -905,6 +958,89 @@ if(!this.MuseUtils) {
         }
 
         setParentRecId(pDataRecId, pParentRecId);
+    };
+
+    pPublicApi.setLovQuery = function(pScIntName, pDataRecId, pXSqlQuery) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pScIntName: pScIntName,
+            pDataRecId: pDataRecId,
+            pXSqlQuery: pXSqlQuery
+        };
+
+        if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which Super Characteristic you wished to provide an pXSqlQuery.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
+                {params: funcParams});
+        }
+
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We must have a valid entity data record identifier.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
+                {params: funcParams});
+        }
+
+        if(!lovOverrides.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "The requested entity data record is not currently initialized.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
+                {params: funcParams});
+        }
+
+        if(typeof pXSqlQuery.lastError !== "function" || 
+            pXSqlQuery.lastError().type != QSqlError.NoError) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "The query object passed to us does not seem to be a valid query object.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
+                {params: funcParams});
+        }
+
+        return setLovQuery(pScIntName, pDataRecId, pXSqlQuery);
+    };
+
+    pPublicApi.getLovQuery = function(pScIntName, pDataRecId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pScIntName: pScIntName,
+            pDataRecId: pDataRecId
+        };
+
+        if(MuseUtils.realNull(pDataRecId) === null ||
+            (!MuseUtils.isValidId(pDataRecId) &&
+            pDataRecId.toString().match(/^new/) === null)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We must have a valid entity data record identifier.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
+                {params: funcParams});
+        }
+
+        if(!lovOverrides.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "The requested entity data record is not currently initialized.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
+                {params: funcParams});
+        }
+
+        if(!lovOverrides[SC_DATA_TABLE + "_" + pDataRecId].hasOwnProperty(
+            pScIntName)) {
+            throw new MuseUtils.ParameterException(
+                "musesuperchar",
+                "We did not understand for which Super Characteristic we should retrieve an LOV query.",
+                "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
+                {params: funcParams});
+        }
+
+        return getLovQuery(pScIntName, pDataRecId);
     };
 })(this.MuseSuperChar.Data.%5$s);
 
