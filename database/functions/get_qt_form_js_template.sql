@@ -310,6 +310,37 @@ if(typeof MuseUtils === 'undefined') {
         }
     };
 
+    var setLovOverride = function(pScDefIntName) {
+        var funcParams = {
+            pScDefIntName: pScDefIntName
+        };
+
+        try {
+            var dataObj = MuseSuperChar.Data[myEntityObjectName];
+            var cachedValue = dataObj.getValue(pScDefIntName, myEntityDataRecId);
+            switch(SC_DEFS[pScDefIntName]) {
+            case "combobox":
+                widgets[pScDefIntName].populate(
+                    dataObj.getLovQuery(pScDefIntName, myEntityDataRecId));
+
+                widgets[pScDefIntName].code = cachedValue;
+                break;
+            default:
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "We were asked to override the LOV values for a type that does not accept such overrides.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setLovOverride",
+                    {params: funcParams, context: context});
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musesuperchar",
+                "We failed to override the field's LOV list as requested.",
+                "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setLovOverride",
+                {params: funcParams, thrownError: e, context: context}); 
+        }
+    };
+
     var signalParser  = function(pSignal) {
         // Is it for us?  If not exit..
         var signal = pSignal.match(/^_@(.+?)@_$/);
@@ -349,6 +380,9 @@ if(typeof MuseUtils === 'undefined') {
         } else if(pType == "update" && 
             SC_DEFS.hasOwnProperty(signalData.signalScDef)) {
             return updateValue(signalData.signalScDef);
+        } else if(pType == "lov_override" && 
+            SC_DEFS.hasOwnProperty(signalData.signalScDef)) {
+            return setLovOverride(signalData.signalScDef);
         }
 
         // If we get here, silently fail. 
@@ -467,7 +501,7 @@ if(typeof MuseUtils === 'undefined') {
 
     pPublicApi.getMode = function() {
         return MuseUtils.realNull(myMode);
-    }
+    };
 
 
     /**
