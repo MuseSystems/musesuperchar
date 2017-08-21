@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -90,7 +90,7 @@ if(!this.MuseSuperChar.Widget) {
 
     var cancelPushButton = saveButtonBox.button(QDialogButtonBox.Cancel);
     var savePushButton = saveButtonBox.button(QDialogButtonBox.Save);
-    
+
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
@@ -126,7 +126,7 @@ if(!this.MuseSuperChar.Widget) {
         }
     };
 
-    var getValidatorValuesStructure = function(pPrefix, pValTypeIntName, 
+    var getValidatorValuesStructure = function(pPrefix, pValTypeIntName,
         pValTypeDispName, pSuperChar) {
         // Capture function parameters for later exception references.
         var funcParams = {
@@ -135,7 +135,7 @@ if(!this.MuseSuperChar.Widget) {
             pValTypeDispName: pValTypeDispName,
             pSuperChar: pSuperChar
         };
-        
+
         var group;
         var data = {};
 
@@ -157,7 +157,7 @@ if(!this.MuseSuperChar.Widget) {
             group = {
                 scgrp_id: null,
                 scgrp_internal_name: normPrefix + "_validator",
-                scgrp_display_name: 
+                scgrp_display_name:
                     pSuperChar.scdef_datatype_display_name + " Based Validator",
                 layout: [
                 {
@@ -169,9 +169,9 @@ if(!this.MuseSuperChar.Widget) {
                                 scdef_id: null,
                                 scdef_internal_name: testValName,
                                 scdef_display_name: pValTypeDispName + ":",
-                                datatype_internal_name: 
+                                datatype_internal_name:
                                     pSuperChar.scdef_datatype_internal_name,
-                                datatype_display_name: 
+                                datatype_display_name:
                                     pSuperChar.scdef_datatype_display_name,
                             }
                         ]
@@ -192,7 +192,7 @@ if(!this.MuseSuperChar.Widget) {
                             return null;
                         }
                     });
-                    
+
                     data[testValName]["editingFinished()"].connect(setButtons);
                 } else if(data[testValName].hasOwnProperty("newDate(QDate)")) {
                     data[testValName].MSSC.pushValidationFunction(function() {
@@ -214,7 +214,7 @@ if(!this.MuseSuperChar.Widget) {
                             return null;
                         } catch(e) {
                             return "The provided test value for " + pPrefix +
-                                " condition " + pValTypeDispName + " is not " + 
+                                " condition " + pValTypeDispName + " is not " +
                                 "a valid regular expression.";
                         }
                     });
@@ -237,7 +237,7 @@ if(!this.MuseSuperChar.Widget) {
                 scgrp_id: null,
                 scgrp_internal_name: MuseUtils.getNormalizedString(
                     pPrefix + "_validator"),
-                scgrp_display_name: 
+                scgrp_display_name:
                     pSuperChar.scdef_datatype_display_name + " Based Validator",
                 layout: [
                 {
@@ -249,9 +249,9 @@ if(!this.MuseSuperChar.Widget) {
                                 scdef_id: null,
                                 scdef_internal_name: lowValName,
                                 scdef_display_name: "Low Value:",
-                                datatype_internal_name: 
+                                datatype_internal_name:
                                     pSuperChar.scdef_datatype_internal_name,
-                                datatype_display_name: 
+                                datatype_display_name:
                                     pSuperChar.scdef_datatype_display_name,
                             }
                         ],
@@ -260,16 +260,16 @@ if(!this.MuseSuperChar.Widget) {
                                 scdef_id: null,
                                 scdef_internal_name: highValName,
                                 scdef_display_name: "High Value:",
-                                datatype_internal_name: 
+                                datatype_internal_name:
                                     pSuperChar.scdef_datatype_internal_name,
-                                datatype_display_name: 
+                                datatype_display_name:
                                     pSuperChar.scdef_datatype_display_name,
                             }
                         ]
                     ]
                 }]
             };
-    
+
 
             try {
                 data[lowValName] = MuseSuperChar.Widget.generateScWidget(
@@ -282,9 +282,9 @@ if(!this.MuseSuperChar.Widget) {
                         if(MuseUtils.coalesce(data[lowValName].text,"") === "") {
                             return "You must provide a test value for " + pPrefix +
                                 " condition " + pValTypeDispName + ".";
-                        } else if(data[lowValName].getNumericValue() >= 
+                        } else if(data[lowValName].getNumericValue() >=
                             data[highValName].getNumericValue()) {
-                            return "The " + pPrefix + " condition " + 
+                            return "The " + pPrefix + " condition " +
                                 pValTypeDispName + " requires that the low value " +
                                 "is lower than the high value.";
                         } else {
@@ -296,16 +296,16 @@ if(!this.MuseSuperChar.Widget) {
                         if(MuseUtils.coalesce(data[highValName].text,"") === "") {
                             return "You must provide a test value for " + pPrefix +
                                 " condition " + pValTypeDispName + ".";
-                        } else if(data[lowValName].getNumericValue() >= 
+                        } else if(data[lowValName].getNumericValue() >=
                             data[highValName].getNumericValue()) {
-                            return "The " + pPrefix + " condition " + 
+                            return "The " + pPrefix + " condition " +
                                 pValTypeDispName + " requires that the high value " +
                                 "is higher than the low value.";
                         } else {
                             return null;
                         }
                     });
-                    
+
                     data[lowValName]["editingFinished()"].connect(setButtons);
                     data[highValName]["editingFinished()"].connect(setButtons);
                 } else if(pValTypeIntName == "datebetweeninclusive") {
@@ -313,9 +313,9 @@ if(!this.MuseSuperChar.Widget) {
                         if(MuseUtils.coalesce(data[lowValName].date,"") === "") {
                             return "You must provide a test value for " + pPrefix +
                                 " condition " + pValTypeDispName + ".";
-                        } else if(data[lowValName].date >= 
+                        } else if(data[lowValName].date >=
                             data[highValName].date) {
-                            return "The " + pPrefix + " condition " + 
+                            return "The " + pPrefix + " condition " +
                                 pValTypeDispName + " requires that the low value " +
                                 "is lower than the high value.";
                         } else {
@@ -327,9 +327,9 @@ if(!this.MuseSuperChar.Widget) {
                         if(MuseUtils.coalesce(data[highValName].date,"") === "") {
                             return "You must provide a test value for " + pPrefix +
                                 " condition " + pValTypeDispName + ".";
-                        } else if(data[lowValName].date >= 
+                        } else if(data[lowValName].date >=
                             data[highValName].date) {
-                            return "The " + pPrefix + " condition " + 
+                            return "The " + pPrefix + " condition " +
                                 pValTypeDispName + " requires that the high value " +
                                 "is higher than the low value.";
                         } else {
@@ -362,7 +362,7 @@ if(!this.MuseSuperChar.Widget) {
         };
     };
 
-    var addValidatorWidget = function(pPrefix, pValTypeComboBox, 
+    var addValidatorWidget = function(pPrefix, pValTypeComboBox,
         pTargLayout, pSuperChar) {
         var widgetName = MuseUtils.getNormalizedString(
             pPrefix + "_validator_widget");
@@ -374,7 +374,7 @@ if(!this.MuseSuperChar.Widget) {
         }
 
         if(!MuseUtils.isValidId(pValTypeComboBox.id())) {
-            // If there's not a valid select, we want to clear things out, 
+            // If there's not a valid select, we want to clear things out,
             // but can't build anything else so we exit.
             return;
         }
@@ -389,8 +389,8 @@ if(!this.MuseSuperChar.Widget) {
                 pValTypeComboBox.code, pValTypeComboBox.text,
                 pSuperChar);
             var tmpEntityName = MuseUtils.getNormalizedString(pPrefix) + "_condvalrule";
-            fieldsWidget = MuseSuperChar.Widget.generateWidget(
-                MuseSuperChar.Data.Entities[tmpEntityName].scgrps, 
+            fieldsWidget = MuseSuperChar.Widget.generateLegacyWidget(
+                MuseSuperChar.Data.Entities[tmpEntityName].scgrps,
                 MuseSuperChar.Data.Entities[tmpEntityName].scdefs);
         }
 
@@ -480,20 +480,20 @@ if(!this.MuseSuperChar.Widget) {
     };
 
     var populateThenValTestFields = function() {
-        addValidatorWidget("Then", thenValidatorTypeComboBox, 
+        addValidatorWidget("Then", thenValidatorTypeComboBox,
             thenCondHBoxLayout, subSc);
 
         if(MuseUtils.isValidId(currCondValRule.condvalrule_id)) {
-            var thenTestVal = 
+            var thenTestVal =
                 MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_test_val;
-            var thenLowVal = 
+            var thenLowVal =
                 MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_low_val;
-            var thenHighVal = 
+            var thenHighVal =
                 MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_high_val;
 
             switch(currCondValRule.condvalrule_then_valtype_internal_name) {
             case "regexp":
-                thenTestVal.text = 
+                thenTestVal.text =
                     currCondValRule.condvalrule_thenval_regexp;
                 break;
             case "numericequal":
@@ -511,7 +511,7 @@ if(!this.MuseSuperChar.Widget) {
                     currCondValRule.condvalrule_thenval_numeric_lower);
                 break;
             case "dateequal":
-                thenTestVal.date = 
+                thenTestVal.date =
                     currCondValRule.condvalrule_thenval_date;
                 break;
             case "datelessthan":
@@ -531,9 +531,9 @@ if(!this.MuseSuperChar.Widget) {
                     currCondValRule.condvalrule_thenval_numeric_upper);
                 break;
             case "datebetweeninclusive":
-                thenLowVal.date = 
+                thenLowVal.date =
                     currCondValRule.condvalrule_thenval_date_lower;
-                thenHighVal.date = 
+                thenHighVal.date =
                     currCondValRule.condvalrule_thenval_date_upper;
                 break;
             }
@@ -541,20 +541,20 @@ if(!this.MuseSuperChar.Widget) {
     };
 
     var populateIfValTestFields = function() {
-        addValidatorWidget("If", ifValidatorTypeComboBox, 
+        addValidatorWidget("If", ifValidatorTypeComboBox,
             ifCondHBoxLayout, objSc);
 
         if(MuseUtils.isValidId(currCondValRule.condvalrule_id)) {
-            var ifTestVal = 
+            var ifTestVal =
                 MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_test_val;
-            var ifLowVal = 
+            var ifLowVal =
                 MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_low_val;
-            var ifHighVal = 
+            var ifHighVal =
                 MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_high_val;
 
             switch(currCondValRule.condvalrule_if_valtype_internal_name) {
             case "regexp":
-                ifTestVal.text = 
+                ifTestVal.text =
                     currCondValRule.condvalrule_ifval_regexp;
                 break;
             case "numericequal":
@@ -572,7 +572,7 @@ if(!this.MuseSuperChar.Widget) {
                     currCondValRule.condvalrule_ifval_numeric_lower);
                 break;
             case "dateequal":
-                ifTestVal.date = 
+                ifTestVal.date =
                     currCondValRule.condvalrule_ifval_date;
                 break;
             case "datelessthan":
@@ -592,9 +592,9 @@ if(!this.MuseSuperChar.Widget) {
                     currCondValRule.condvalrule_ifval_numeric_upper);
                 break;
             case "datebetweeninclusive":
-                ifLowVal.date = 
+                ifLowVal.date =
                     currCondValRule.condvalrule_ifval_date_lower;
-                ifHighVal.date = 
+                ifHighVal.date =
                     currCondValRule.condvalrule_ifval_date_upper;
                 break;
             }
@@ -617,7 +617,7 @@ if(!this.MuseSuperChar.Widget) {
                 "MuseSuperChar.CreateCondValRule.populateValidationRule",
                 {params: funcParams, thrownError: e});
         }
-        
+
         populateIfSuperCharComboBox(
             currCondValRule.condvalrule_object_scdef_id);
         populateThenSuperCharComboBox(
@@ -635,27 +635,27 @@ if(!this.MuseSuperChar.Widget) {
         populateIfValTestFields();
         populateThenValTestFields();
 
-        failXLineEdit.text = 
+        failXLineEdit.text =
             currCondValRule.condvalrule_fails_message_text;
     };
 
     var save = function() {
         var validatorData = {
-            condvalrule_subject_scdef_id: 
+            condvalrule_subject_scdef_id:
                 thenSuperCharComboBox.id(),
-            condvalrule_object_scdef_id: 
+            condvalrule_object_scdef_id:
                 ifSuperCharComboBox.id(),
-            condvalrule_if_valtype_id: 
+            condvalrule_if_valtype_id:
                 ifValidatorTypeComboBox.id(),
-            condvalrule_then_valtype_id: 
+            condvalrule_then_valtype_id:
                 thenValidatorTypeComboBox.id(),
-            condvalrule_fails_message_text: 
+            condvalrule_fails_message_text:
                 failXLineEdit.text
         };
 
         if(currCondValRule.hasOwnProperty("condvalrule_id") &&
             MuseUtils.isValidId(currCondValRule.condvalrule_id)) {
-            validatorData.condvalrule_id = 
+            validatorData.condvalrule_id =
                 currCondValRule.condvalrule_id;
         }
 
@@ -680,17 +680,17 @@ if(!this.MuseSuperChar.Widget) {
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_test_val.getNumericValue();
                 break;
             case "dateequal":
-                validatorData.condvalrule_ifval_date = 
+                validatorData.condvalrule_ifval_date =
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_test_val.date;
                 break;
             case "datelessthan":
             case "datelessthanorequalto":
-                validatorData.condvalrule_ifval_date_upper = 
+                validatorData.condvalrule_ifval_date_upper =
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_test_val.date;
                 break;
             case "dategreaterthan":
             case "dategreaterthanorequalto":
-                validatorData.condvalrule_ifval_date_lower = 
+                validatorData.condvalrule_ifval_date_lower =
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_test_val.date;
                 break;
             case "numericbetweeninclusive":
@@ -699,7 +699,7 @@ if(!this.MuseSuperChar.Widget) {
                 validatorData.condvalrule_ifval_numeric_upper =
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_high_val.getNumericValue();
                 break;
-            case "datebetweeninclusive": 
+            case "datebetweeninclusive":
                 validatorData.condvalrule_ifval_date_lower =
                     MuseSuperChar.Data.Entities.if_condvalrule.scdefs.if_low_val.date;
                 validatorData.condvalrule_ifval_date_upper =
@@ -728,17 +728,17 @@ if(!this.MuseSuperChar.Widget) {
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_test_val.getNumericValue();
                 break;
             case "dateequal":
-                validatorData.condvalrule_thenval_date = 
+                validatorData.condvalrule_thenval_date =
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_test_val.date;
                 break;
             case "datelessthan":
             case "datelessthanorequalto":
-                validatorData.condvalrule_thenval_date_upper = 
+                validatorData.condvalrule_thenval_date_upper =
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_test_val.date;
                 break;
             case "dategreaterthan":
             case "dategreaterthanorequalto":
-                validatorData.condvalrule_thenval_date_lower = 
+                validatorData.condvalrule_thenval_date_lower =
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_test_val.date;
                 break;
             case "numericbetweeninclusive":
@@ -747,7 +747,7 @@ if(!this.MuseSuperChar.Widget) {
                 validatorData.condvalrule_thenval_numeric_upper =
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_high_val.getNumericValue();
                 break;
-            case "datebetweeninclusive": 
+            case "datebetweeninclusive":
                 validatorData.condvalrule_thenval_date_lower =
                     MuseSuperChar.Data.Entities.then_condvalrule.scdefs.then_low_val.date;
                 validatorData.condvalrule_thenval_date_upper =
@@ -791,7 +791,7 @@ if(!this.MuseSuperChar.Widget) {
         var funcParams = {
             pParams: pParams
         };
-        
+
         mode = "edit";
 
         populateValidationRule(pParams.condvalrule_id);
@@ -876,9 +876,9 @@ if(!this.MuseSuperChar.Widget) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
-    
+
     /**
-     * Form startup initialization.  Standard part of the xTuple ERP 
+     * Form startup initialization.  Standard part of the xTuple ERP
      * startup process.
      * @param {Object} pParams An associative array of values passed from
      *                         the xTuple C++ forms which contain context
@@ -906,14 +906,14 @@ if(!this.MuseSuperChar.Widget) {
             setEditMode(parsedParams);
         } else if(parsedParams.mode == "view") {
             setViewMode(parsedParams);
-        } else {    
+        } else {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We did not understand which mode we were to open the form in.",
                 "MuseSuperChar.CreateCondValRule.pPublicApi.set",
                 {params: funcParams});
         }
-        
+
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
@@ -933,7 +933,7 @@ if(!this.MuseSuperChar.Widget) {
         cancelPushButton.clicked.connect(pPublicApi.sCancel);
         savePushButton.clicked.connect(pPublicApi.sSave);
     };
-    
+
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
@@ -942,7 +942,7 @@ if(!this.MuseSuperChar.Widget) {
     // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
     var foreignSetFunc;
 
-    // Lower graded scripts should be loaded prior to our call and as such we 
+    // Lower graded scripts should be loaded prior to our call and as such we
     // should be able to intercept their set functions.
     if(typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
@@ -958,7 +958,7 @@ if(!this.MuseSuperChar.Widget) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
         }
-        
+
     };
 
 })(this.MuseSuperChar.CreateCondValRule, this);
