@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,18 +20,18 @@
 -- are made.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure() 
+CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure()
     RETURNS trigger AS
         $BODY$
             DECLARE
-                
+
             BEGIN
 
                 PERFORM musesuperchar.update_entity_data_structure();
                 RETURN NULL;
             END;
         $BODY$
-    LANGUAGE plpgsql VOLATILE;
+    LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
 ALTER FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure()
     OWNER TO admin;
@@ -41,13 +41,13 @@ GRANT EXECUTE ON FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_enti
 GRANT EXECUTE ON FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure() TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure() 
+COMMENT ON FUNCTION musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure()
     IS $DOC$Maintains the entity data structure as changes in characteristic assignment are made.$DOC$;
 
 -- Add the trigger to the target table(s).
 DROP TRIGGER IF EXISTS d95_trig_a_id_entity_scgrp_ass_maintain_entity_structure ON musesuperchar.entity_scgrp_ass;
 
 CREATE TRIGGER d95_trig_a_id_entity_scgrp_ass_maintain_entity_structure AFTER INSERT OR DELETE
-    ON musesuperchar.entity_scgrp_ass FOR EACH ROW 
+    ON musesuperchar.entity_scgrp_ass FOR EACH ROW
     EXECUTE PROCEDURE musesuperchar.trig_a_id_entity_scgrp_ass_maintain_entity_structure();
 
