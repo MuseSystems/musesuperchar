@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,7 +20,7 @@
 -- entity tables are in sync with the user definition.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure() 
+CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
     RETURNS void AS
         $BODY$
             DECLARE
@@ -32,27 +32,27 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
 
                 -- First drop columns which need dropping.
                 <<delcols>>
-                FOR vTargetTable, vTargetColumn IN 
+                FOR vTargetTable, vTargetColumn IN
                     SELECT   DISTINCT vbc.table_name
                             ,vbc.column_name
-                    FROM    musextputils.v_basic_catalog vbc 
-                        LEFT OUTER JOIN musesuperchar.v_superchar_entities vse 
-                            ON  vse.entity_data_table = vbc.table_name 
+                    FROM    musextputils.v_basic_catalog vbc
+                        LEFT OUTER JOIN musesuperchar.v_superchar_entities vse
+                            ON  vse.entity_data_table = vbc.table_name
                                 AND vse.scdef_internal_name = vbc.column_name
-                    WHERE vse.scdef_id IS NULL 
+                    WHERE vse.scdef_id IS NULL
                         AND vbc.table_schema_name = 'musesuperchar'
                         AND vbc.table_kind = 'TABLE'
                         AND vbc.table_persistence = 'PERMANENT'
                         AND vbc.column_ordinal > 0
-                        AND NOT vbc.column_name ~* (E'^'||vbc.table_name||E'_.+') 
+                        AND NOT vbc.column_name ~* (E'^'||vbc.table_name||E'_.+')
                         AND NOT vbc.table_name ~ E'^pkg.+' LOOP
 
-                    IF EXISTS(SELECT true 
+                    IF EXISTS(SELECT true
                               FROM musextputils.v_catalog_triggers
                               WHERE     table_schema_name = 'musesuperchar'
                                     AND table_name = vTargetTable
                                     AND function_schema_name = 'musextputils'
-                                    AND function_name = 'trig_a_iud_record_audit_logging') THEN 
+                                    AND function_name = 'trig_a_iud_record_audit_logging') THEN
 
                         EXECUTE format('UPDATE musesuperchar.%1$I ' ||
                                             'SET %2$I = null',
@@ -68,22 +68,22 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
 
                 -- Next add columns which need adding.
                 <<addcols>>
-                FOR vTargetTable, vTargetColumn, vDataType, vColumnComment IN 
+                FOR vTargetTable, vTargetColumn, vDataType, vColumnComment IN
                     SELECT   DISTINCT vse.entity_data_table
                             ,vse.scdef_internal_name
                             ,d.datatype_internal_name
                             ,s.scdef_display_name||E' -- '||s.scdef_description
-                    FROM    musesuperchar.v_superchar_entities vse 
+                    FROM    musesuperchar.v_superchar_entities vse
                         JOIN musesuperchar.scdef s
                             ON vse.scdef_id = s.scdef_id
-                        JOIN musesuperchar.datatype d 
-                            ON s.scdef_datatype_id = d.datatype_id 
-                        LEFT OUTER JOIN musextputils.v_basic_catalog vbc 
+                        JOIN musesuperchar.datatype d
+                            ON s.scdef_datatype_id = d.datatype_id
+                        LEFT OUTER JOIN musextputils.v_basic_catalog vbc
                             ON  vbc.table_schema_name = 'musesuperchar'
                                 AND vbc.table_kind = 'TABLE'
                                 AND vbc.table_persistence = 'PERMANENT'
                                 AND vbc.column_ordinal > 0
-                                AND vse.entity_data_table = vbc.table_name 
+                                AND vse.entity_data_table = vbc.table_name
                                 AND vse.scdef_internal_name = vbc.column_name
                     WHERE vbc.column_name IS NULL
                     ORDER BY vse.entity_data_table
@@ -177,5 +177,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.update_entity_data_structure() TO admin;
 GRANT EXECUTE ON FUNCTION musesuperchar.update_entity_data_structure() TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.update_entity_data_structure() 
+COMMENT ON FUNCTION musesuperchar.update_entity_data_structure()
     IS $DOC$Compares the scdef/scgrp/entity associations and ensures that the associated entity tables are in sync with the user definition.$DOC$;
