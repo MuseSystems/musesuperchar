@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="1.0.0"
+         version="1.0.1"
          updater="2.4.0">
 
     <pkgnotes>
