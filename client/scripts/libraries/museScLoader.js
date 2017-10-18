@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -26,7 +26,7 @@ this.MuseSuperChar.Loader = this.MuseSuperChar.Loader || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!this.MuseUtils) {
+if (!this.MuseUtils) {
     include("museUtils");
 }
 
@@ -35,7 +35,6 @@ if(!this.MuseUtils) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi) {
-
     var PREFIX = MuseUtils.getTextMetric("musesuperchar", "widgetPrefix");
 
     var entityObjectName;
@@ -51,21 +50,23 @@ if(!this.MuseUtils) {
         try {
             var groupsWidget = toolbox.loadUi(PREFIX + "_" + pScGrpIntName);
 
-            if(MuseUtils.realNull(groupsWidget) === null) {
+            if (MuseUtils.realNull(groupsWidget) === null) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
                     "We did not find the requested group form.",
                     "MuseSuperChar.Loader.getGroupWidget",
-                    {params: funcParams});
+                    { params: funcParams }
+                );
             }
 
             return groupsWidget;
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We could not create the requested group widget.",
                 "MuseSuperChar.Loader.getGroupWidget",
-                {params: funcParams, thrownError: e});
+                { params: funcParams, thrownError: e }
+            );
         }
     };
 
@@ -76,52 +77,61 @@ if(!this.MuseUtils) {
 
         try {
             groupsWidget = new QWidget();
-            groupsWidget.setObjectName(PREFIX+"ScGrpWidget");
+            groupsWidget.setObjectName(PREFIX + "ScGrpWidget");
             groupsVBoxLayout = new QBoxLayout(QBoxLayout.TopToBottom);
-            groupsVBoxLayout.objectName = PREFIX+"ScGrpWidgetVBoxLayout";
+            groupsVBoxLayout.objectName = PREFIX + "ScGrpWidgetVBoxLayout";
             groupsWidget.setLayout(groupsVBoxLayout);
             groupsTabWidget = new QTabWidget();
             groupsVBoxLayout.addWidget(groupsTabWidget);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We failed to create a container widget for the desired " +
-                "entity/group(s).",
+                    "entity/group(s).",
                 "MuseSuperChar.Loader.getSuperCharWidget",
-                {thrownError: e});
+                { thrownError: e }
+            );
         }
 
         groupsWidget.memberSetFuncs = [];
 
         groupsWidget.initGroupForms = function() {
-            try { 
-                for(var i = 0; i < pGroupForms.length; i++) {
+            try {
+                for (var i = 0; i < pGroupForms.length; i++) {
                     var currScGrpIntName = pGroupForms[i].scgrp_internal_name;
                     var currScGrpDispName = pGroupForms[i].scgrp_display_name;
                     // Load the Group Widget UI
-                    groupsTabWidget.addTab(getGroupWidget(currScGrpIntName), 
-                        currScGrpDispName);
-                    var formObjectName = currScGrpIntName.split("_")
+                    groupsTabWidget.addTab(
+                        getGroupWidget(currScGrpIntName),
+                        currScGrpDispName
+                    );
+                    var formObjectName = currScGrpIntName
+                        .split("_")
                         .map(function(w) {
-                                var ret = w[0].toUpperCase() + w.substr(1).toLowerCase(); 
-                                return ret;
-                            })
+                            var ret =
+                                w[0].toUpperCase() + w.substr(1).toLowerCase();
+                            return ret;
+                        })
                         .join("");
 
-                    if(!MuseSuperChar.Groups || !MuseSuperChar.Groups[formObjectName]) {
+                    if (
+                        !MuseSuperChar.Groups ||
+                        !MuseSuperChar.Groups[formObjectName]
+                    ) {
                         include(PREFIX + "_" + currScGrpIntName);
                     }
 
                     this.memberSetFuncs.push(
-                        MuseSuperChar.Groups[formObjectName].set);
+                        MuseSuperChar.Groups[formObjectName].set
+                    );
                 }
-                
-            } catch(e) {
+            } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We found errors while calling an API function.",
                     "MuseSuperChar.Loader.groupsWidget.addGroup",
-                    {thrownError: e});
+                    { thrownError: e }
+                );
             }
         };
 
@@ -129,28 +139,28 @@ if(!this.MuseUtils) {
     };
 
     var getScGrpData = function(pEntityDataTable, pScGrpIntName) {
-        var scGrpParams = {pEntityDataTable: pEntityDataTable};
+        var scGrpParams = { pEntityDataTable: pEntityDataTable };
 
-        if(pScGrpIntName !== null) {
-            // We need to load all valid groups for the entity and put each 
+        if (pScGrpIntName !== null) {
+            // We need to load all valid groups for the entity and put each
             // on a separate tab in the groups widget.
             scGrpParams.pScGrpIntName = pScGrpIntName;
         }
 
         var scGrpQry;
 
-        try {  
+        try {
             scGrpQry = MuseUtils.executeQuery(
                 "SELECT   DISTINCT scgrp_internal_name " +
-                        ",scgrp_display_name " +
-                "FROM musesuperchar.entity_scgrp_ass " +
+                    ",scgrp_display_name " +
+                    "FROM musesuperchar.entity_scgrp_ass " +
                     "JOIN musesuperchar.entity " +
-                        "ON entity_scgrp_ass_entity_id = entity_id " +
+                    "ON entity_scgrp_ass_entity_id = entity_id " +
                     "JOIN musesuperchar.scgrp " +
-                        "ON entity_scgrp_ass_scgrp_id = scgrp_id " +
+                    "ON entity_scgrp_ass_scgrp_id = scgrp_id " +
                     "JOIN musesuperchar.scdef_scgrp_ass " +
-                        "ON scdef_scgrp_ass_scgrp_id = scgrp_id " +
-                "WHERE entity_data_table = <? value('pEntityDataTable') ?> " +
+                    "ON scdef_scgrp_ass_scgrp_id = scgrp_id " +
+                    "WHERE entity_data_table = <? value('pEntityDataTable') ?> " +
                     "<? if exists('pScGrpIntName') ?> " +
                     "AND scgrp_internal_name = <? value('pScGrpIntName') ?> " +
                     "<? endif ?> " +
@@ -158,17 +168,20 @@ if(!this.MuseUtils) {
                     "AND entity_is_active " +
                     "AND entity_scgrp_ass_is_active " +
                     "AND scdef_scgrp_ass_is_active " +
-                "ORDER BY scgrp_display_name ", scGrpParams);
-        } catch(e) {
+                    "ORDER BY scgrp_display_name ",
+                scGrpParams
+            );
+        } catch (e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
                 "We encountered problems trying to retrieve the Super Characteristic group data associated with the requested entity.",
-                "MuseSuperChar.Loader.getScGrpData",    
-                {params: funcParams, thrownError: e});
+                "MuseSuperChar.Loader.getScGrpData",
+                { params: funcParams, thrownError: e }
+            );
         }
 
         // We wanted to return only if we had rows... but the ability to reset
-        // to before the first record has been denied us.  So just return 
+        // to before the first record has been denied us.  So just return
         // whatever.
         return scGrpQry;
     };
@@ -179,12 +192,12 @@ if(!this.MuseUtils) {
             pGroupsWidget: pGroupsWidget,
             pEntityObject: pEntityObject
         };
-        
-        // first we extend with the data related functions. 
+
+        // first we extend with the data related functions.
         var keys = Object.keys(pEntityObject);
 
-        for(var i = 0; i < keys.length; i++) {
-            if(typeof pEntityObject[keys[i]] == "function") {
+        for (var i = 0; i < keys.length; i++) {
+            if (typeof pEntityObject[keys[i]] == "function") {
                 pGroupsWidget[keys[i]] = pEntityObject[keys[i]];
             }
         }
@@ -198,22 +211,26 @@ if(!this.MuseUtils) {
                 pFormMode: pFormMode,
                 pParentRecId: pParentRecId
             };
-            
-            if(!["new", "edit", "view"].includes(pFormMode)) {
+
+            if (!["new", "edit", "view"].includes(pFormMode)) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "We could not tell if the form was being opened in 'new', 'edit' or 'view' mode.",
                     "MuseSuperChar.Loader.groupsWidget.initWidget",
-                    {params: funcParams});
+                    { params: funcParams }
+                );
             }
 
-            if(MuseUtils.realNull(pParentRecId) !== null && 
-                !MuseUtils.isValidId(pParentRecId)) {
+            if (
+                MuseUtils.realNull(pParentRecId) !== null &&
+                !MuseUtils.isValidId(pParentRecId)
+            ) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "We did not understand the parent record id you passed to us.",
                     "MuseSuperChar.Loader.groupsWidget.initWidget",
-                    {params: funcParams});
+                    { params: funcParams }
+                );
             }
 
             // Load the widget forms since we should be attached to "mywindow"
@@ -224,18 +241,20 @@ if(!this.MuseUtils) {
             var dataRecId;
 
             try {
-                if(pParentRecId !== null) {
+                if (pParentRecId !== null) {
                     dataRecId = pEntityObject.initFormData(
-                        pEntityObject.getDataRecIdByParentId(pParentRecId));
+                        pEntityObject.getDataRecIdByParentId(pParentRecId)
+                    );
                 } else {
                     dataRecId = pEntityObject.initFormData();
                 }
-            } catch(e) {
+            } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to load the requested form data object.",
                     "MuseSuperChar.Loader.groupsWidget.initWidget",
-                    {params: funcParams, thrownError: e});
+                    { params: funcParams, thrownError: e }
+                );
             }
 
             var widgetParams = {
@@ -245,15 +264,16 @@ if(!this.MuseUtils) {
             };
 
             try {
-                for(var i = 0; i < this.memberSetFuncs.length; i++) {
+                for (var i = 0; i < this.memberSetFuncs.length; i++) {
                     this.memberSetFuncs[i](widgetParams);
                 }
-            } catch(e) {
+            } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to initialize the group forms.",
                     "MuseSuperChar.Loader.groupsWidget.initWidget",
-                    {params: funcParams, thrownError: e});
+                    { params: funcParams, thrownError: e }
+                );
             }
 
             this.dataRecId = dataRecId;
@@ -268,27 +288,31 @@ if(!this.MuseUtils) {
                 pModeAfterSave: pModeAfterSave
             };
 
-            if(MuseUtils.realNull(pModeAfterSave) !== null && 
-                !["new", "edit", "view"].includes(pModeAfterSave)) {
+            if (
+                MuseUtils.realNull(pModeAfterSave) !== null &&
+                !["new", "edit", "view"].includes(pModeAfterSave)
+            ) {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "We could not tell if the form was being opened in 'new', 'edit' or 'view' mode.",
                     "MuseSuperChar.Loader.groupsWidget.save",
-                    {params: funcParams});
+                    { params: funcParams }
+                );
             }
 
             try {
-                if(MuseUtils.isValidId(pParentRecId)) {
+                if (MuseUtils.isValidId(pParentRecId)) {
                     pEntityObject.setParentRecId(this.dataRecId, pParentRecId);
                 }
 
                 this.dataRecId = pEntityObject.saveFormData(this.dataRecId);
-            } catch(e) {
+            } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to save the Super Characteristic data as requested.",
                     "MuseSuperChar.Loader.groupsWidget.save",
-                    {params: funcParams, thrownError: e});
+                    { params: funcParams, thrownError: e }
+                );
             }
 
             var widgetParams = {
@@ -296,20 +320,21 @@ if(!this.MuseUtils) {
                 data_record_id: this.dataRecId
             };
 
-            if(MuseUtils.realNull(pModeAfterSave) !== null) {
+            if (MuseUtils.realNull(pModeAfterSave) !== null) {
                 widgetParams.mode = pModeAfterSave;
             }
 
             try {
-                for(var i = 0; i < this.memberSetFuncs.length; i++) {
+                for (var i = 0; i < this.memberSetFuncs.length; i++) {
                     this.memberSetFuncs[i](widgetParams);
                 }
-            } catch(e) {
+            } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to initialize the group forms.",
                     "MuseSuperChar.Loader.groupsWidget.save",
-                    {params: funcParams, thrownError: e});
+                    { params: funcParams, thrownError: e }
+                );
             }
 
             return this.dataRecId;
@@ -332,7 +357,7 @@ if(!this.MuseUtils) {
         // Create a widget which will be what we will ultimately return to the
         // caller.
         var groupsWidget;
-        
+
         try {
             // We have to lazily load our group forms since the widget container
             // must be added to "mywindow" prior to loading the group form
@@ -342,53 +367,57 @@ if(!this.MuseUtils) {
             // build the forms.
             var groupForms = [];
 
-            while(scGrpQry.next()) {
+            while (scGrpQry.next()) {
                 groupForms.push({
-                        scgrp_internal_name: scGrpQry.value("scgrp_internal_name"),
-                        scgrp_display_name: scGrpQry.value("scgrp_display_name")
-                    });
+                    scgrp_internal_name: scGrpQry.value("scgrp_internal_name"),
+                    scgrp_display_name: scGrpQry.value("scgrp_display_name")
+                });
             }
 
-            if(groupForms.length === 0) {
+            if (groupForms.length === 0) {
                 return null;
             }
 
             groupsWidget = getWidgetContainer(groupForms);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "We failed to generate the groups widget.",
                 "MuseSuperChar.Loader.getSuperCharWidget",
-                {params: funcParams, thrownError: e});
+                { params: funcParams, thrownError: e }
+            );
         }
-        
-        entityObjectName = 
-            pEntityDataTable.split("_")
-                .map(function(w) {
-                        var ret = w[0].toUpperCase() + w.substr(1).toLowerCase(); 
-                        return ret;
-                    })
-                .join("");
+
+        entityObjectName = pEntityDataTable
+            .split("_")
+            .map(function(w) {
+                var ret = w[0].toUpperCase() + w.substr(1).toLowerCase();
+                return ret;
+            })
+            .join("");
 
         // Now load the correct data object
-        if(!MuseSuperChar.Data || !MuseSuperChar.Data[entityObjectName]) {
+        if (!MuseSuperChar.Data || !MuseSuperChar.Data[entityObjectName]) {
             include(PREFIX + "_" + pEntityDataTable);
         }
 
-        if(!MuseSuperChar.Data[entityObjectName]) {
+        if (!MuseSuperChar.Data[entityObjectName]) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
                 "We failed to verify that the entity data script was successfully loaded.",
                 "MuseSuperChar.Loader.getSuperCharWidget",
-                {params: funcParams});
+                { params: funcParams }
+            );
         }
-
 
         // Add standard slots for signal connections, most of these will just
         // be restating the entity data script functions for convenience.
-        addExtendFuncsToWidget(groupsWidget, MuseSuperChar.Data[entityObjectName]);
+        addExtendFuncsToWidget(
+            groupsWidget,
+            MuseSuperChar.Data[entityObjectName]
+        );
 
-        // Return an Object to the caller that includes a reference to the 
+        // Return an Object to the caller that includes a reference to the
         // data object and the widget.
         return groupsWidget;
     };
@@ -403,25 +432,27 @@ if(!this.MuseUtils) {
             pScGrpIntName: pScGrpIntName
         };
 
-        if(MuseUtils.realNull(pEntityDataTable) === null) {
+        if (MuseUtils.realNull(pEntityDataTable) === null) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
                 "We did not understand which entity you wished to load into a form.",
                 "MuseSuperChar.Loader.pPublicApi.getSuperCharWidget",
-                {params: funcParams});
+                { params: funcParams }
+            );
         }
 
         try {
-            return getSuperCharWidget(pEntityDataTable, 
-                MuseUtils.realNull(pScGrpIntName));
-        } catch(e) {
+            return getSuperCharWidget(
+                pEntityDataTable,
+                MuseUtils.realNull(pScGrpIntName)
+            );
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
                 "There were problems retrieving the requested entity Super Characteristic widget.",
                 "MuseSuperChar.Loader.pPublicApi.getSuperCharWidget",
-                {params: funcParams, thrownError: e});
+                { params: funcParams, thrownError: e }
+            );
         }
-
     };
-    
 })(this.MuseSuperChar.Loader);
