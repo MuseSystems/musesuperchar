@@ -26,11 +26,11 @@ this.MuseSuperChar.SalesOrderItem = this.MuseSuperChar.SalesOrderItem || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!this.MuseUtils) {
+if (!this.MuseUtils) {
     include("museUtils");
 }
 
-if(!this.MuseSuperChar.Loader) {
+if (!this.MuseSuperChar.Loader) {
     include("museScLoader");
 }
 
@@ -45,38 +45,55 @@ if(!this.MuseSuperChar.Loader) {
 
     // Mutable state
     var entityDataTable;
+    var preSaveCoItemId = -1;
+    var currentMode = null;
 
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
     var formTab = mywindow.findChild(PARENT_TABWIDGET);
     var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
-    var savePushButton = mywindow.findChild("_save");
+
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    var scWidget;
+    var scWidget = null;
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
-    var mySave = function() {
+    var myPreSave = function() {
+        preSaveCoItemId = mywindow.id();
+    };
+    var myPostSave = function() {
         try {
-            scWidget.save(mywindow.id());
-        } catch(e) {
+            if (
+                !MuseUtils.isValidId(preSaveCoItemId) ||
+                MuseUtils.realNull(scWidget) === null
+            ) {
+                return;
+            }
+
+            scWidget.save(preSaveCoItemId);
+            preSaveCoItemId = -1;
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
 
     var initSuperChar = function(pMode, pParentId) {
+        if (MuseUtils.realNull(scWidget) === null) {
+            return;
+        }
         scWidget.initWidget(pMode, pParentId);
-
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
-        savePushButton.clicked.connect(mySave);
     };
+
+    //----------------------------------------------------------------
+    //  Connects/Disconnects
+    //----------------------------------------------------------------
+    MuseUtils.SalesOrderItem.addPreSaveHookFunc(myPreSave);
+    MuseUtils.SalesOrderItem.addPostSaveHookFunc(myPostSave);
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
@@ -93,7 +110,7 @@ if(!this.MuseSuperChar.Loader) {
         try {
             var myMode = pParams.mode.toString();
 
-            if(mywindow.modeType() == 2) {
+            if (mywindow.modeType() == 2) {
                 // Sales Order
                 entityDataTable = "public_coitem";
             } else {
@@ -101,28 +118,43 @@ if(!this.MuseSuperChar.Loader) {
                 entityDataTable = "public_quitem";
             }
 
-            if(["new", "edit", "view"].includes(myMode)) {
-
-                if(MuseUtils.getFlagMetric("musesuperchar",
-                    "isXtupleCharacteristicsTabHidden")) {
+            if (["new", "edit", "view"].includes(myMode)) {
+                if (
+                    MuseUtils.getFlagMetric(
+                        "musesuperchar",
+                        "isXtupleCharacteristicsTabHidden"
+                    )
+                ) {
                     formTab.removeTab(xtpCharTab);
                 }
 
-                scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
-
-                if(scWidget !== null) {
-                    formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget,
-                        MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
-                } else {
-                    return;
+                // We need to be sure that the set function is re-entrant since
+                // the native form calls set for each next/prev button press.
+                // Hopefully, we release the memory when we kill the reference
+                // here, but I expect we don't until we close the form.
+                if (scWidget === null) {
+                    scWidget = MuseSuperChar.Loader.getSuperCharWidget(
+                        entityDataTable
+                    );
                 }
 
+                if (scWidget !== null && formTab.indexOf(scWidget) == -1) {
+                    formTab.insertTab(
+                        formTab.indexOf(xtpCharTab),
+                        scWidget,
+                        MuseUtils.getTextMetric(
+                            "musesuperchar",
+                            "superCharTabName"
+                        )
+                    );
+                }
+
+                currentMode = myMode;
                 initSuperChar(myMode, mywindow.id());
             } else {
                 return;
             }
-
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
@@ -130,7 +162,6 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
@@ -141,7 +172,7 @@ if(!this.MuseSuperChar.Loader) {
 
     // Lower graded scripts should be loaded prior to our call and as such we
     // should be able to intercept their set functions.
-    if(typeof pGlobal.set === "function") {
+    if (typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
     } else {
         foreignSetFunc = function() {};
@@ -151,12 +182,9 @@ if(!this.MuseSuperChar.Loader) {
         try {
             foreignSetFunc(pParams);
             pPublicApi.set(pParams);
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
         }
-
     };
-
 })(this.MuseSuperChar.SalesOrderItem, this);
-
