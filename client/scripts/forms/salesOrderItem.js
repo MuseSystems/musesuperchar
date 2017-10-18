@@ -45,38 +45,55 @@ if (!this.MuseSuperChar.Loader) {
 
     // Mutable state
     var entityDataTable;
+    var preSaveCoItemId = -1;
+    var currentMode = null;
 
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
     var formTab = mywindow.findChild(PARENT_TABWIDGET);
     var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
-    var savePushButton = mywindow.findChild("_save");
+
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    var scWidget;
+    var scWidget = null;
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
-    var mySave = function() {
+    var myPreSave = function() {
+        preSaveCoItemId = mywindow.id();
+    };
+    var myPostSave = function() {
         try {
-            scWidget.save(mywindow.id());
+            if (
+                !MuseUtils.isValidId(preSaveCoItemId) ||
+                MuseUtils.realNull(scWidget) === null
+            ) {
+                return;
+            }
+
+            scWidget.save(preSaveCoItemId);
+            preSaveCoItemId = -1;
         } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
 
     var initSuperChar = function(pMode, pParentId) {
+        if (MuseUtils.realNull(scWidget) === null) {
+            return;
+        }
         scWidget.initWidget(pMode, pParentId);
-
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
-        savePushButton.clicked.connect(mySave);
     };
+
+    //----------------------------------------------------------------
+    //  Connects/Disconnects
+    //----------------------------------------------------------------
+    MuseUtils.SalesOrderItem.addPreSaveHookFunc(myPreSave);
+    MuseUtils.SalesOrderItem.addPostSaveHookFunc(myPostSave);
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
@@ -111,11 +128,17 @@ if (!this.MuseSuperChar.Loader) {
                     formTab.removeTab(xtpCharTab);
                 }
 
-                scWidget = MuseSuperChar.Loader.getSuperCharWidget(
-                    entityDataTable
-                );
+                // We need to be sure that the set function is re-entrant since
+                // the native form calls set for each next/prev button press.
+                // Hopefully, we release the memory when we kill the reference
+                // here, but I expect we don't until we close the form.
+                if (scWidget === null) {
+                    scWidget = MuseSuperChar.Loader.getSuperCharWidget(
+                        entityDataTable
+                    );
+                }
 
-                if (scWidget !== null) {
+                if (scWidget !== null && formTab.indexOf(scWidget) == -1) {
                     formTab.insertTab(
                         formTab.indexOf(xtpCharTab),
                         scWidget,
@@ -124,10 +147,9 @@ if (!this.MuseSuperChar.Loader) {
                             "superCharTabName"
                         )
                     );
-                } else {
-                    return;
                 }
 
+                currentMode = myMode;
                 initSuperChar(myMode, mywindow.id());
             } else {
                 return;
