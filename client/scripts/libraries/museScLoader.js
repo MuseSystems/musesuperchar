@@ -94,9 +94,14 @@ if (!this.MuseUtils) {
         }
 
         groupsWidget.memberSetFuncs = [];
+        groupsWidget.isInitialized = false;
 
         groupsWidget.initGroupForms = function() {
             try {
+                if (this.isInitialized) {
+                    return;
+                }
+
                 for (var i = 0; i < pGroupForms.length; i++) {
                     var currScGrpIntName = pGroupForms[i].scgrp_internal_name;
                     var currScGrpDispName = pGroupForms[i].scgrp_display_name;
@@ -125,6 +130,8 @@ if (!this.MuseUtils) {
                         MuseSuperChar.Groups[formObjectName].set
                     );
                 }
+
+                this.isInitialized = true;
             } catch (e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
