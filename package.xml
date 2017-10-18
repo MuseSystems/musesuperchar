@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="1.0.0"
+         version="1.0.1"
          updater="2.4.0">
 
     <pkgnotes>
@@ -39,8 +39,8 @@
                     WHERE pkghead_name = 'musextputils'
                 )
                 SELECT
-                       (major_version = 2 AND minor_version = 4 AND patch_version >= 0)
-                   OR  (major_version = 2 AND minor_version > 4)
+                       (major_version = 2 AND minor_version = 6 AND patch_version >= 0)
+                   OR  (major_version = 2 AND minor_version > 6)
                    OR  (major_version > 2)
                 FROM version;
          </query>
