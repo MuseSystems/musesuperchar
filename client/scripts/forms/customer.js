@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -26,11 +26,11 @@ this.MuseSuperChar.Customer = this.MuseSuperChar.Customer || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!this.MuseUtils) {
+if (!this.MuseUtils) {
     include("museUtils");
 }
 
-if(!this.MuseSuperChar.Loader) {
+if (!this.MuseSuperChar.Loader) {
     include("museScLoader");
 }
 
@@ -48,7 +48,7 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     var formTab = mywindow.findChild(PARENT_TABWIDGET);
     var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
-    
+
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
@@ -56,20 +56,26 @@ if(!this.MuseSuperChar.Loader) {
 
     try {
         scWidget = MuseSuperChar.Loader.getSuperCharWidget(ENTITY_DATA_TABLE);
-        
-        if(scWidget !== null) {
-            formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget, 
-                MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
+
+        if (scWidget !== null) {
+            formTab.insertTab(
+                formTab.indexOf(xtpCharTab),
+                scWidget,
+                MuseUtils.getTextMetric("musesuperchar", "superCharTabName")
+            );
         }
 
-        if(MuseUtils.getFlagMetric("musesuperchar", 
-            "isXtupleCharacteristicsTabHidden")) {
+        if (
+            MuseUtils.getFlagMetric(
+                "musesuperchar",
+                "isXtupleCharacteristicsTabHidden"
+            )
+        ) {
             formTab.removeTab(xtpCharTab);
         }
-    } catch(e) {
+    } catch (e) {
         MuseUtils.displayError(e, mywindow);
     }
-
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
@@ -77,15 +83,15 @@ if(!this.MuseSuperChar.Loader) {
 
     var mySave = function(pRecId) {
         try {
-            scWidget.save(mywindow.id());   
-        } catch(e) {
+            scWidget.save(mywindow.id());
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
 
     var initSuperChar = function(pMode, pParentId) {
         scWidget.initWidget(pMode, pParentId);
-        
+
         //----------------------------------------------------------------
         //  Connects/Disconnects
         //----------------------------------------------------------------
@@ -95,9 +101,9 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
-    
+
     /**
-     * Form startup initialization.  Standard part of the xTuple ERP 
+     * Form startup initialization.  Standard part of the xTuple ERP
      * startup process.
      * @param {Object} pParams An associative array of values passed from
      *                         the xTuple C++ forms which contain context
@@ -107,22 +113,19 @@ if(!this.MuseSuperChar.Loader) {
         try {
             var myMode = pParams.mode.toString();
 
-            if(["new", "edit", "view"].includes(myMode) && 
-                scWidget !== null) {
+            if (["new", "edit", "view"].includes(myMode) && scWidget !== null) {
                 initSuperChar(myMode, mywindow.id());
             } else {
                 return;
             }
-
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
-    
+
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
-    
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
@@ -131,9 +134,9 @@ if(!this.MuseSuperChar.Loader) {
     // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
     var foreignSetFunc;
 
-    // Lower graded scripts should be loaded prior to our call and as such we 
+    // Lower graded scripts should be loaded prior to our call and as such we
     // should be able to intercept their set functions.
-    if(typeof pGlobal.set === "function") {
+    if (typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
     } else {
         foreignSetFunc = function() {};
@@ -143,12 +146,9 @@ if(!this.MuseSuperChar.Loader) {
         try {
             foreignSetFunc(pParams);
             pPublicApi.set(pParams);
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
         }
-        
     };
-
 })(this.MuseSuperChar.Customer, this);
-
