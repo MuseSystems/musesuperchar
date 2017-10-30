@@ -26,11 +26,11 @@ this.MuseSuperChar.SalesOrderItem = this.MuseSuperChar.SalesOrderItem || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!this.MuseUtils) {
+if (!this.MuseUtils) {
     include("museUtils");
 }
 
-if(!this.MuseSuperChar.Loader) {
+if (!this.MuseSuperChar.Loader) {
     include("museScLoader");
 }
 
@@ -57,7 +57,6 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     var scWidget;
 
-
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
@@ -65,7 +64,7 @@ if(!this.MuseSuperChar.Loader) {
     var mySave = function() {
         try {
             scWidget.save(mywindow.id());
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
@@ -94,7 +93,7 @@ if(!this.MuseSuperChar.Loader) {
         try {
             var myMode = pParams.mode.toString();
 
-            if(mywindow.modeType() == 2) {
+            if (mywindow.modeType() == 2) {
                 // Sales Order
                 entityDataTable = "public_cohead";
             } else {
@@ -102,29 +101,38 @@ if(!this.MuseSuperChar.Loader) {
                 entityDataTable = "public_quhead";
             }
 
-            if(["new", "edit", "view"].includes(myMode)) {
-
-                if(MuseUtils.getFlagMetric("musesuperchar",
-                    "isXtupleCharacteristicsTabHidden")) {
+            if (["new", "edit", "view"].includes(myMode)) {
+                if (
+                    MuseUtils.getFlagMetric(
+                        "musesuperchar",
+                        "isXtupleCharacteristicsTabHidden"
+                    )
+                ) {
                     formTab.removeTab(xtpCharTab);
                 }
 
-                scWidget = MuseSuperChar.Loader.getSuperCharWidget(entityDataTable);
+                scWidget = MuseSuperChar.Loader.getSuperCharWidget(
+                    entityDataTable
+                );
 
-                if(scWidget !== null) {
-                    formTab.insertTab(formTab.indexOf(xtpCharTab), scWidget,
-                        MuseUtils.getTextMetric("musesuperchar", "superCharTabName"));
+                if (scWidget !== null) {
+                    formTab.insertTab(
+                        formTab.indexOf(xtpCharTab),
+                        scWidget,
+                        MuseUtils.getTextMetric(
+                            "musesuperchar",
+                            "superCharTabName"
+                        )
+                    );
                 } else {
                     return;
                 }
 
                 initSuperChar(myMode, mywindow.id());
-
             } else {
                 return;
             }
-
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
@@ -132,7 +140,6 @@ if(!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Slots
     //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
@@ -143,7 +150,7 @@ if(!this.MuseSuperChar.Loader) {
 
     // Lower graded scripts should be loaded prior to our call and as such we
     // should be able to intercept their set functions.
-    if(typeof pGlobal.set === "function") {
+    if (typeof pGlobal.set === "function") {
         foreignSetFunc = pGlobal.set;
     } else {
         foreignSetFunc = function() {};
@@ -153,12 +160,9 @@ if(!this.MuseSuperChar.Loader) {
         try {
             foreignSetFunc(pParams);
             pPublicApi.set(pParams);
-        } catch(e) {
+        } catch (e) {
             MuseUtils.displayError(e, mywindow);
             mywindow.close();
         }
-
     };
-
 })(this.MuseSuperChar.SalesOrderItem, this);
-
