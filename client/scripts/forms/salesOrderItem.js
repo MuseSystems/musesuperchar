@@ -47,6 +47,7 @@ if (!this.MuseSuperChar.Loader) {
     var entityDataTable;
     var preSaveCoItemId = -1;
     var currentMode = null;
+    var scWidget = null;
 
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
@@ -57,7 +58,6 @@ if (!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    var scWidget = null;
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
@@ -98,6 +98,9 @@ if (!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
+    pPublicApi.getCurrentScWidget = function() {
+        return scWidget;
+    };
 
     /**
      * Form startup initialization.  Standard part of the xTuple ERP
