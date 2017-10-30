@@ -43,6 +43,10 @@ if (!this.MuseSuperChar.Loader) {
     var PARENT_TABWIDGET = "_tab";
     var XTP_CHAR_TAB = "_characteristicsTab";
     var ENTITY_DATA_TABLE = "public_custinfo";
+
+    // Mutable state
+    var scWidget = null;
+
     //--------------------------------------------------------------------
     //  Get Object References From Screen Definitions
     //--------------------------------------------------------------------
@@ -52,8 +56,6 @@ if (!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
-    var scWidget;
-
     try {
         scWidget = MuseSuperChar.Loader.getSuperCharWidget(ENTITY_DATA_TABLE);
 
@@ -101,6 +103,9 @@ if (!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
+    pPublicApi.getCurrentScWidget = function() {
+        return scWidget;
+    };
 
     /**
      * Form startup initialization.  Standard part of the xTuple ERP

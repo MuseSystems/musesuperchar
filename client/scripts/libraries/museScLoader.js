@@ -347,6 +347,10 @@ if (!this.MuseUtils) {
             return this.dataRecId;
         };
 
+        pGroupsWidget.getCurrentDataRecId = function() {
+            return this.dataRecId;
+        };
+
         // This function exists purely for side effects and as such there is
         // no return.
     };
