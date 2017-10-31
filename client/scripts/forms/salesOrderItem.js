@@ -66,6 +66,7 @@ if (!this.MuseSuperChar.Loader) {
     var myPreSave = function() {
         preSaveCoItemId = mywindow.id();
     };
+
     var myPostSave = function() {
         try {
             if (
