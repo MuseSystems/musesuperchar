@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:        salesOrderItem.js
+ ** File:        shipTo.js
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.SalesOrderItem = this.MuseSuperChar.SalesOrderItem || {};
+this.MuseSuperChar.ShipTo = this.MuseSuperChar.ShipTo || {};
 
 //////////////////////////////////////////////////////////////////////////
 //  Imports
@@ -40,12 +40,13 @@ if (!this.MuseSuperChar.Loader) {
 
 (function(pPublicApi, pGlobal) {
     // Constants
-    var PARENT_TABWIDGET = "_tabs";
-    var XTP_CHAR_TAB = "_itemCharacteristicsTab";
+    var PARENT_TABWIDGET = "_commentsTab";
+    var XTP_CHAR_TAB = "_documentsTab";
+    var ENTITY_DATA_TABLE = "public_shiptoinfo";
 
     // Mutable state
     var entityDataTable;
-    var preSaveCoItemId = -1;
+    var preSaveShipToId = -1;
     var currentMode = null;
     var scWidget = null;
 
@@ -58,43 +59,53 @@ if (!this.MuseSuperChar.Loader) {
     //--------------------------------------------------------------------
     //  Custom Screen Objects and Starting GUI Manipulation
     //--------------------------------------------------------------------
+    try {
+        scWidget = MuseSuperChar.Loader.getSuperCharWidget(ENTITY_DATA_TABLE);
+
+        if (scWidget !== null) {
+            formTab.insertTab(
+                formTab.indexOf(xtpCharTab),
+                scWidget,
+                MuseUtils.getTextMetric("musesuperchar", "superCharTabName")
+            );
+        }
+    } catch (e) {
+        MuseUtils.displayError(e, mywindow);
+    }
 
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
 
     var myPreSave = function() {
-        preSaveCoItemId = mywindow.id();
+        preSaveShipToId = mywindow.id();
     };
 
     var myPostSave = function() {
         try {
             if (
-                !MuseUtils.isValidId(preSaveCoItemId) ||
+                !MuseUtils.isValidId(preSaveShipToId) ||
                 MuseUtils.realNull(scWidget) === null
             ) {
                 return;
             }
 
-            scWidget.save(preSaveCoItemId);
-            preSaveCoItemId = -1;
+            scWidget.save(preSaveShipToId);
+            preSaveShipToId = -1;
         } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
     };
 
     var initSuperChar = function(pMode, pParentId) {
-        if (MuseUtils.realNull(scWidget) === null) {
-            return;
-        }
         scWidget.initWidget(pMode, pParentId);
     };
 
     //----------------------------------------------------------------
     //  Connects/Disconnects
     //----------------------------------------------------------------
-    MuseUtils.SalesOrderItem.addPreSaveHookFunc(myPreSave);
-    MuseUtils.SalesOrderItem.addPostSaveHookFunc(myPostSave);
+    MuseUtils.ShipTo.addPreSaveHookFunc(myPreSave);
+    MuseUtils.ShipTo.addPostSaveHookFunc(myPostSave);
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
@@ -114,46 +125,7 @@ if (!this.MuseSuperChar.Loader) {
         try {
             var myMode = pParams.mode.toString();
 
-            if (mywindow.modeType() == 2) {
-                // Sales Order
-                entityDataTable = "public_coitem";
-            } else {
-                // Quote
-                entityDataTable = "public_quitem";
-            }
-
-            if (["new", "edit", "view"].includes(myMode)) {
-                if (
-                    MuseUtils.getFlagMetric(
-                        "musesuperchar",
-                        "isXtupleCharacteristicsTabHidden"
-                    )
-                ) {
-                    formTab.removeTab(xtpCharTab);
-                }
-
-                // We need to be sure that the set function is re-entrant since
-                // the native form calls set for each next/prev button press.
-                // Hopefully, we release the memory when we kill the reference
-                // here, but I expect we don't until we close the form.
-                if (scWidget === null) {
-                    scWidget = MuseSuperChar.Loader.getSuperCharWidget(
-                        entityDataTable
-                    );
-                }
-
-                if (scWidget !== null && formTab.indexOf(scWidget) == -1) {
-                    formTab.insertTab(
-                        formTab.indexOf(xtpCharTab),
-                        scWidget,
-                        MuseUtils.getTextMetric(
-                            "musesuperchar",
-                            "superCharTabName"
-                        )
-                    );
-                }
-
-                currentMode = myMode;
+            if (["new", "edit", "view"].includes(myMode) && scWidget !== null) {
                 initSuperChar(myMode, mywindow.id());
             } else {
                 return;
@@ -191,4 +163,4 @@ if (!this.MuseSuperChar.Loader) {
             mywindow.close();
         }
     };
-})(this.MuseSuperChar.SalesOrderItem, this);
+})(this.MuseSuperChar.ShipTo, this);
