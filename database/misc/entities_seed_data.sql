@@ -40,6 +40,7 @@
             --,('public','invchead','invchead_id','Customer Invoice',true)
             ,('public','vendinfo','vend_id','Vendor',true)
             ,('public','pohead','pohead_id','Purchase Order',true)
+            ,('public','shiptoinfo','shipto_id','Customer Ship-To',true)
             --,('public','vohead','vohead_id','Voucher',true)
             --,('public','prj','prj_id','Project',true)
             --,('public','prjtask','prjtask_id','Project Task',true)

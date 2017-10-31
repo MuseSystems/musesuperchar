@@ -179,6 +179,8 @@
     <loadappscript file="client/scripts/forms/salesOrder.js" name="salesOrder" order="10">Muse Super Characteristics Sales Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/salesOrderItem.js" name="salesOrderItem" order="10">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/purchaseOrder.js" name="purchaseOrder" order="10">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/shipTo.js" name="shipTo" order="10">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
+
 
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
