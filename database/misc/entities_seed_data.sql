@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -21,9 +21,9 @@
                 ,entity_display_name
                 ,entity_pk_column
                 ,'musesuperchar'
-                ,entity_is_system_locked)   
-             
-    FROM (VALUES 
+                ,entity_is_system_locked)
+
+    FROM (VALUES
              ('public','item','item_id','Item',true)
             --,('public','ls','ls_id','Lot/Serial',true)
             ,('public','custinfo','cust_id','Customer',true)
@@ -40,6 +40,7 @@
             --,('public','invchead','invchead_id','Customer Invoice',true)
             ,('public','vendinfo','vend_id','Vendor',true)
             ,('public','pohead','pohead_id','Purchase Order',true)
+            ,('public','shiptoinfo','shipto_id','Customer Ship-To',true)
             --,('public','vohead','vohead_id','Voucher',true)
             --,('public','prj','prj_id','Project',true)
             --,('public','prjtask','prjtask_id','Project Task',true)
@@ -48,8 +49,8 @@
                 ,entity_table
                 ,entity_pk_column
                 ,entity_display_name
-                ,entity_is_system_locked ) 
-    WHERE NOT EXISTS(SELECT true 
-                     FROM   musesuperchar.entity 
+                ,entity_is_system_locked )
+    WHERE NOT EXISTS(SELECT true
+                     FROM   musesuperchar.entity
                      WHERE  entity_schema = q.entity_schema
                         AND entity_table = q.entity_table);
