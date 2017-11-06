@@ -85,7 +85,7 @@ if (!this.MuseSuperChar.Loader) {
 
     var mySave = function(pRecId) {
         try {
-            scWidget.save(mywindow.id());
+            scWidget.save(pRecId);
         } catch (e) {
             MuseUtils.displayError(e, mywindow);
         }
