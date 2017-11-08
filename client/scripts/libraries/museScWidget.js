@@ -883,7 +883,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -923,7 +925,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -963,7 +967,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1003,7 +1009,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1043,7 +1051,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1083,7 +1093,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1123,7 +1135,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1163,7 +1177,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
@@ -1203,7 +1219,9 @@ if (!this.MuseUtils) {
                     );
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.setFormattedText(pValue);
+                        returnWidget.setFormattedText(
+                            MuseUtils.coalesce(pValue, 0)
+                        );
                     };
 
                     returnWidget.getDataValue = function() {
