@@ -805,11 +805,11 @@ if (!this.MuseUtils) {
                     returnWidget.objectName = pScInternalName;
 
                     returnWidget.setDataValue = function(pValue) {
-                        returnWidget.cheacked = pValue;
+                        returnWidget.checked = pValue;
                     };
 
                     returnWidget.getDataValue = function() {
-                        return returnWidget.cheacked;
+                        return returnWidget.checked;
                     };
 
                     returnWidget.setOnChangeFunc = function(pFunc) {
