@@ -9,19 +9,19 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
- 
+
 --
 -- Returns the standard Super Characteristic Data Library JS Template.  We keep
 -- it here since it just clutters the code where the specialization logic
 -- resides.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_data_js_template() 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_data_js_template()
     RETURNS text AS
         $BODY$
             SELECT
@@ -37,7 +37,7 @@ $JS$
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -68,7 +68,7 @@ if(!this.MuseUtils) {
     //  "Private" Constants & Data Structures
     //--------------------------------------------------------------------
     // Constants
-    var DATA_STRUCT = 
+    var DATA_STRUCT =
         {
 %1$s        };
     var PREFIX = MuseUtils.getTextMetric("musesuperchar", "widgetPrefix");
@@ -83,7 +83,7 @@ if(!this.MuseUtils) {
     var METASQL_UPDATE = PREFIX + "_" + SC_DATA_TABLE + "_update";
     var METASQL_DELETE = PREFIX + "_" + SC_DATA_TABLE + "_delete";
     var METASQL_SELECT = PREFIX + "_" + SC_DATA_TABLE + "_select";
-    
+
     // Mutable Data
     var data = {};
     var lovOverrides = {};
@@ -99,7 +99,7 @@ if(!this.MuseUtils) {
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
-    
+
     var addOnNewHookFunc = function(pFunc) {
         onNewFuncs.push(pFunc);
     };
@@ -133,12 +133,12 @@ if(!this.MuseUtils) {
         };
 
         var wrkObjCopy = {};
-        Object.assign(wrkObjCopy, data[SC_DATA_TABLE + "_" + pDataRecId].working); 
+        Object.assign(wrkObjCopy, data[SC_DATA_TABLE + "_" + pDataRecId].working);
         var returnText = "";
 
         for(var i = 0; i < pHookFuncArray.length; i++) {
             var hookReturn = "";
-            
+
             if(typeof pHookFuncArray[i] === "function") {
                 try {
                     hookReturn = pHookFuncArray[i](wrkObjCopy, pNewValue);
@@ -153,7 +153,7 @@ if(!this.MuseUtils) {
 
             if(MuseUtils.realNull(hookReturn) !== null) {
                 returnText += (hookReturn + "\n\n");
-            } 
+            }
         }
 
         return MuseUtils.realNull(returnText);
@@ -161,7 +161,7 @@ if(!this.MuseUtils) {
 
     var setLovQuery = function(pScIntName, pDataRecId, pXSqlQuery) {
         var funcParams = {
-            pScIntName: pScIntName, 
+            pScIntName: pScIntName,
             pDataRecId: pDataRecId,
             pXSqlQuery: pXSqlQuery
         };
@@ -183,7 +183,7 @@ if(!this.MuseUtils) {
 
     var getLovQuery = function(pScIntName, pDataRecId) {
         var funcParams = {
-            pScIntName: pScIntName, 
+            pScIntName: pScIntName,
             pDataRecId: pDataRecId
         };
 
@@ -197,12 +197,12 @@ if(!this.MuseUtils) {
         };
 
         var recObjName = SC_DATA_TABLE + "_" + pDataRecId;
-        
+
         try {
             var qryParams = Object.keys(DATA_STRUCT).reduce(
                 function(acc, val) {
                     acc["select_" + val] = true;
-                    return acc; 
+                    return acc;
                 }, {});
 
             qryParams["where_" + SC_DATA_TABLE + "_id"] = pDataRecId;
@@ -216,13 +216,13 @@ if(!this.MuseUtils) {
                 };
 
                 lovOverrides[SC_DATA_TABLE + "_" + pDataRecId] = {};
-                
+
                 data[recObjName].database = entQry.firstJson();
                 Object.assign(data[recObjName].working, data[recObjName].database);
             } else {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
-                    "We failed to find the requested " + ENTITY_DISPLAY_NAME + 
+                    "We failed to find the requested " + ENTITY_DISPLAY_NAME +
                     " Super Characteristic data record.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
                     {params: funcParams});
@@ -236,12 +236,12 @@ if(!this.MuseUtils) {
         }
 
         try {
-            // Run our On Load Hooks.  If we get a non-null result, we display 
+            // Run our On Load Hooks.  If we get a non-null result, we display
             // the message to the user.
             var onLoadResultMsg = hookRunner(onLoadFuncs, pDataRecId);
 
             if(onLoadResultMsg !== null) {
-                QMessageBox.information(mywindow, "On " + 
+                QMessageBox.information(mywindow, "On " +
                     ENTITY_DISPLAY_NAME + " Load Notices", onLoadResultMsg);
             }
         } catch(e) {
@@ -270,7 +270,7 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId
         };
-        
+
         var recObjName = SC_DATA_TABLE + "_" + pDataRecId;
 
         if(!data.hasOwnProperty(recObjName)) {
@@ -284,7 +284,7 @@ if(!this.MuseUtils) {
         if(!MuseUtils.isValidId(data[recObjName].working[SC_DATA_TABLE_FK])) {
             throw new MuseUtils.NotFoundException(
                 "musesuperchar",
-                "A new Super Characteristic Entity record must have a valid " + 
+                "A new Super Characteristic Entity record must have a valid " +
                 SC_DATA_TABLE_FK + " value set in order to save it.",
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
                 {params: funcParams});
@@ -294,9 +294,9 @@ if(!this.MuseUtils) {
         var fields = Object.keys(DATA_STRUCT);
 
         for(var ins = 0; ins < fields.length; ins++) {
-            if(data[recObjName].database[fields[ins]] != 
+            if(data[recObjName].database[fields[ins]] !=
                 data[recObjName].working[fields[ins]]) {
-                insertParams[fields[ins]] = 
+                insertParams[fields[ins]] =
                     data[recObjName].working[fields[ins]];
             }
         }
@@ -305,7 +305,7 @@ if(!this.MuseUtils) {
             var entQry = MuseUtils.executeDbQuery("musesuperchar",METASQL_INSERT,
                 insertParams);
 
-            if(!entQry.first() || 
+            if(!entQry.first() ||
                 !MuseUtils.isValidId(entQry.value(SC_DATA_TABLE_PK))) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -320,7 +320,7 @@ if(!this.MuseUtils) {
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
-                "We encountered a database problem trying to save " + 
+                "We encountered a database problem trying to save " +
                 recObjName,
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
                 {params: funcParams, thrownError: e, context: {data: data}});
@@ -332,7 +332,7 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId
         };
-        
+
         var recObjName = SC_DATA_TABLE + "_" + pDataRecId;
 
         if(!data.hasOwnProperty(recObjName)) {
@@ -353,13 +353,13 @@ if(!this.MuseUtils) {
         }
 
         var updateParams = {};
-        updateParams["where_"+SC_DATA_TABLE_PK] = 
+        updateParams["where_"+SC_DATA_TABLE_PK] =
             data[recObjName].working[SC_DATA_TABLE_PK];
         fields = Object.keys(DATA_STRUCT);
         for(var ups = 0; ups < fields.length; ups++) {
-            if(data[recObjName].database[fields[ups]] != 
+            if(data[recObjName].database[fields[ups]] !=
                 data[recObjName].working[fields[ups]]) {
-                updateParams["update_" + fields[ups]] = 
+                updateParams["update_" + fields[ups]] =
                     data[recObjName].working[fields[ups]];
             }
         }
@@ -367,7 +367,7 @@ if(!this.MuseUtils) {
         try {
             entQry = MuseUtils.executeDbQuery("musesuperchar",METASQL_UPDATE,
                 updateParams);
-            if(!entQry.first() || 
+            if(!entQry.first() ||
                 !MuseUtils.isValidId(entQry.value(SC_DATA_TABLE_PK))) {
                 throw new MuseUtils.NotFoundException(
                     "musesuperchar",
@@ -381,7 +381,7 @@ if(!this.MuseUtils) {
         } catch(e) {
             throw new MuseUtils.DatabaseException(
                 "musesuperchar",
-                "We encountered a database problem trying to save " + 
+                "We encountered a database problem trying to save " +
                 recObjName,
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".updateEntityData",
                 {params: funcParams, thrownError: e, context: {data: data}});
@@ -393,14 +393,14 @@ if(!this.MuseUtils) {
         var funcParams = {
             pDataRecId: pDataRecId
         };
-        
+
         try {
-            // Run our Before Save Hooks.  If we get a non-null result, we  
+            // Run our Before Save Hooks.  If we get a non-null result, we
             // display the message to the user and abort the save.
             var beforeSaveHookResultMsg = hookRunner(beforeSaveFuncs, pDataRecId);
 
             if(beforeSaveHookResultMsg !== null) {
-                QMessageBox.critical(mywindow, "Cannot Save " + 
+                QMessageBox.critical(mywindow, "Cannot Save " +
                     ENTITY_DISPLAY_NAME + " Data", beforeSaveHookResultMsg);
 
                 return pDataRecId;
@@ -419,7 +419,7 @@ if(!this.MuseUtils) {
 
         // If the pDataRecId parameter starts with "new" we insert,
         // otherwise it's an update.
-        try { 
+        try {
             if(pDataRecId.toString().match(/^new/) !== null) {
                 newDataRecId = insertEntityData(pDataRecId);
             } else {
@@ -432,21 +432,21 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
                 {params: funcParams, thrownError: e});
         }
-        
+
         try {
             loadFormData(newDataRecId);
         } catch(e) {
             throw new MuseUtils.ApiException(
                 "musesuperchar",
-                "We failed to load Entity data record " + SC_DATA_TABLE + 
+                "We failed to load Entity data record " + SC_DATA_TABLE +
                 "_" + newDataRecId + "(" + pDataRecId + ") after saving.",
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
                 {params: funcParams, thrownError: e});
         }
-        
+
         try {
             for(var currScLov in lovCache) {
-                pPublicApi.setLovQuery(currScLov, newDataRecId, 
+                pPublicApi.setLovQuery(currScLov, newDataRecId,
                     lovCache[currScLov]);
             }
         } catch(e) {
@@ -458,12 +458,12 @@ if(!this.MuseUtils) {
         }
 
         try {
-            // Run our After Save Hooks.  If we get a non-null result, we display 
+            // Run our After Save Hooks.  If we get a non-null result, we display
             // the message to the user.
             var afterSaveHookResultMsg = hookRunner(afterSaveFuncs, newDataRecId);
 
             if(afterSaveHookResultMsg !== null) {
-                QMessageBox.information(mywindow, "After Save " + 
+                QMessageBox.information(mywindow, "After Save " +
                     ENTITY_DISPLAY_NAME + " Notices", afterSaveHookResultMsg);
             }
         } catch(e) {
@@ -489,10 +489,10 @@ if(!this.MuseUtils) {
             beforeSetFuncs[keys[i]] = [];
             afterSetFuncs[keys[i]] = [];
         }
-        
+
         if(MuseUtils.realNull(pDataRecId) === null) {
             var newRecHandle = "new" + Date.now();
-            
+
             data[SC_DATA_TABLE + "_" + newRecHandle] = {
                 database: Object.assign({},DATA_STRUCT),
                 working: Object.assign({},DATA_STRUCT)
@@ -501,13 +501,13 @@ if(!this.MuseUtils) {
             lovOverrides[SC_DATA_TABLE + "_" + newRecHandle] = {};
 
             try {
-                // Run our On New Hooks.  If we get a non-null result, we 
+                // Run our On New Hooks.  If we get a non-null result, we
                 // display the message to the user.
                 var onNewHookMsg = hookRunner(onNewFuncs, newRecHandle);
 
                 if(onNewHookMsg !== null) {
-                    QMessageBox.information(mywindow, "New " + 
-                        ENTITY_DISPLAY_NAME + " Notices", 
+                    QMessageBox.information(mywindow, "New " +
+                        ENTITY_DISPLAY_NAME + " Notices",
                         onNewHookMsg);
                 }
             } catch(e) {
@@ -529,7 +529,7 @@ if(!this.MuseUtils) {
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".initFormData",
                     {params: funcParams, thrownError: e});
             }
-            
+
 
             return pDataRecId;
         }
@@ -548,19 +548,19 @@ if(!this.MuseUtils) {
         };
 
         if(data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] == pValue) {
-            // Nothing changed. Don't do anything else.  We need this to help 
+            // Nothing changed. Don't do anything else.  We need this to help
             // stop recursive set/signal loops, especially with XTextEdit.
             return;
         }
 
         try {
-            // Run our Before Set Hooks.  If we get a non-null result, we  
+            // Run our Before Set Hooks.  If we get a non-null result, we
             // display the message to the user and abort the save.
-            var beforeSetValueHookMsg = hookRunner(beforeSetFuncs, pDataRecId, 
+            var beforeSetValueHookMsg = hookRunner(beforeSetFuncs[pScIntName], pDataRecId,
                 pValue);
 
             if(beforeSetValueHookMsg !== null) {
-                QMessageBox.critical(mywindow, "Value Not Set", 
+                QMessageBox.critical(mywindow, "Value Not Set",
                     beforeSetValueHookMsg);
 
                 return;
@@ -574,15 +574,15 @@ if(!this.MuseUtils) {
         }
 
         data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] = pValue;
-        
+
         try {
-            // Run our After Set Hooks.  If we get a non-null result, we display 
+            // Run our After Set Hooks.  If we get a non-null result, we display
             // the message to the user.
-            var afterSetValueHookMsg = hookRunner(afterSetFuncs, pDataRecId,
+            var afterSetValueHookMsg = hookRunner(afterSetFuncs[pScIntName], pDataRecId,
                 pValue);
 
             if(afterSetValueHookMsg !== null) {
-                QMessageBox.information(mywindow, "After Set Value Notices", 
+                QMessageBox.information(mywindow, "After Set Value Notices",
                     afterSetValueHookMsg);
             }
         } catch(e) {
@@ -631,7 +631,7 @@ if(!this.MuseUtils) {
                 "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".getDataRecIdByParentId",
                 {params: funcParams, thrownError: e});
         }
-        
+
     };
 
     var getDataStructure = function() {
@@ -657,7 +657,7 @@ if(!this.MuseUtils) {
                 {params: funcParams, thrownError: e});
         }
     };
-    
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -763,7 +763,7 @@ if(!this.MuseUtils) {
         var funcParams = {
             pEntityFkId: pEntityFkId
         };
-        
+
         if(!MuseUtils.isValidId(pEntityFkId)) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
@@ -994,7 +994,7 @@ if(!this.MuseUtils) {
                 {params: funcParams});
         }
 
-        if(typeof pXSqlQuery.lastError !== "function" || 
+        if(typeof pXSqlQuery.lastError !== "function" ||
             pXSqlQuery.lastError().type != QSqlError.NoError) {
             throw new MuseUtils.ParameterException(
                 "musesuperchar",
@@ -1056,5 +1056,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_data_js_template() TO admin;
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_data_js_template() TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_data_js_template() 
+COMMENT ON FUNCTION musesuperchar.get_qt_data_js_template()
     IS $DOC$Returns the standard Super Characteristic Data Library JS Template.  We keep it here since it just clutters the code where the specialization logic resides.$DOC$;
