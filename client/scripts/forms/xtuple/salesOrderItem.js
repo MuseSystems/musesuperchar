@@ -15,23 +15,58 @@
  *************************************************************************
  ************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//  Namespace Definition
-//////////////////////////////////////////////////////////////////////////
+try {
+    //////////////////////////////////////////////////////////////////////////
+    //  Namespace Definition
+    //////////////////////////////////////////////////////////////////////////
 
-this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.SalesOrderItem = this.MuseSuperChar.SalesOrderItem || {};
+    if (typeof MuseSuperChar === "undefined") {
+        MuseSuperChar = {};
+    }
 
-//////////////////////////////////////////////////////////////////////////
-//  Imports
-//////////////////////////////////////////////////////////////////////////
+    if (typeof MuseSuperChar.SalesOrderItem === "undefined") {
+        MuseSuperChar.SalesOrderItem = {};
+    }
 
-if (!this.MuseUtils) {
-    include("museUtils");
-}
+    //////////////////////////////////////////////////////////////////////////
+    //  Imports
+    //////////////////////////////////////////////////////////////////////////
 
-if (!this.MuseSuperChar.Loader) {
-    include("museScLoader");
+    if (typeof MuseUtils === "undefined") {
+        include("museUtils");
+    }
+
+    MuseUtils.loadMuseUtils([
+        MuseUtils.MOD_EXCEPTION,
+        MuseUtils.MOD_JSPOLYFILL,
+        MuseUtils.MOD_JS,
+        MuseUtils.MOD_CONFIG
+    ]);
+
+    if (typeof MuseSuperChar.Loader === "undefined") {
+        include("museScLoader");
+    }
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musesuperchar",
+            "We encountered a script level issue while processing MuseSuperChar.SalesOrderItem.",
+            "MuseSuperChar.SalesOrderItem",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseSuperChar.SalesOrderItem Script Error",
+            "We encountered a script level issue while processing MuseSuperChar.SalesOrderItem."
+        );
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,79 +74,80 @@ if (!this.MuseSuperChar.Loader) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi, pGlobal) {
-    // Constants
-    var PARENT_TABWIDGET = "_tabs";
-    var XTP_CHAR_TAB = "_itemCharacteristicsTab";
+    try {
+        //--------------------------------------------------------------------
+        //  Constants and Module State
+        //--------------------------------------------------------------------
+        // Constants
+        var PARENT_TABWIDGET = "_tabs";
+        var XTP_CHAR_TAB = "_itemCharacteristicsTab";
 
-    // Mutable state
-    var entityDataTable;
-    var preSaveCoItemId = -1;
-    var currentMode = null;
-    var scWidget = null;
+        // Mutable state
+        var entityDataTable;
+        var preSaveCoItemId = -1;
+        var currentMode = null;
+        var scWidget = null;
 
-    //--------------------------------------------------------------------
-    //  Get Object References From Screen Definitions
-    //--------------------------------------------------------------------
-    var formTab = mywindow.findChild(PARENT_TABWIDGET);
-    var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
+        //--------------------------------------------------------------------
+        //  Get Object References From Screen Definitions
+        //--------------------------------------------------------------------
+        var formTab = mywindow.findChild(PARENT_TABWIDGET);
+        var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
 
-    //--------------------------------------------------------------------
-    //  Custom Screen Objects and Starting GUI Manipulation
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Custom Screen Objects and Starting GUI Manipulation
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  "Private" Functional Logic
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Private Functional Logic
+        //--------------------------------------------------------------------
+        var myPreSave = function() {
+            preSaveCoItemId = mywindow.id();
+        };
 
-    var myPreSave = function() {
-        preSaveCoItemId = mywindow.id();
-    };
+        var myPostSave = function() {
+            try {
+                if (
+                    !MuseUtils.isValidId(preSaveCoItemId) ||
+                    MuseUtils.realNull(scWidget) === null
+                ) {
+                    return;
+                }
 
-    var myPostSave = function() {
-        try {
-            if (
-                !MuseUtils.isValidId(preSaveCoItemId) ||
-                MuseUtils.realNull(scWidget) === null
-            ) {
+                scWidget.save(preSaveCoItemId);
+                preSaveCoItemId = -1;
+            } catch (e) {
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We found problems while trying to save Super Characteristic data.",
+                    "MuseSuperChar.SalesOrderItem.myPostSave",
+                    { thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+                MuseUtils.displayError(error, mywindow);
+            }
+        };
+
+        var initSuperChar = function(pMode, pParentId) {
+            if (MuseUtils.realNull(scWidget) === null) {
                 return;
             }
+            scWidget.initWidget(pMode, pParentId);
+        };
 
-            scWidget.save(preSaveCoItemId);
-            preSaveCoItemId = -1;
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-        }
-    };
+        //--------------------------------------------------------------------
+        //  Public Interface -- Slots
+        //--------------------------------------------------------------------
 
-    var initSuperChar = function(pMode, pParentId) {
-        if (MuseUtils.realNull(scWidget) === null) {
-            return;
-        }
-        scWidget.initWidget(pMode, pParentId);
-    };
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
 
-    //----------------------------------------------------------------
-    //  Connects/Disconnects
-    //----------------------------------------------------------------
-    MuseUtils.SalesOrderItem.addPreSaveHookFunc(myPreSave);
-    MuseUtils.SalesOrderItem.addPostSaveHookFunc(myPostSave);
+        pPublicApi.getCurrentScWidget = function() {
+            return scWidget;
+        };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Functions
-    //--------------------------------------------------------------------
-    pPublicApi.getCurrentScWidget = function() {
-        return scWidget;
-    };
-
-    /**
-     * Form startup initialization.  Standard part of the xTuple ERP
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
-    pPublicApi.set = function(pParams) {
-        try {
+        pPublicApi.set = function(pParams) {
             var myMode = pParams.mode.toString();
 
             if (mywindow.modeType() == 2) {
@@ -158,37 +194,62 @@ if (!this.MuseSuperChar.Loader) {
             } else {
                 return;
             }
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
+        };
+        //--------------------------------------------------------------------
+        //  Definition Timed Connects/Disconnects
+        //--------------------------------------------------------------------
+        MuseUtils.SalesOrderItem.addPreSaveHookFunc(myPreSave);
+        MuseUtils.SalesOrderItem.addPostSaveHookFunc(myPostSave);
+
+        //--------------------------------------------------------------------
+        //  Foreign Script "Set" Handling
+        //--------------------------------------------------------------------
+
+        // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
+        var foreignSetFunc;
+
+        // Lower graded scripts should be loaded prior to our call and as such we
+        // should be able to intercept their set functions.
+        if (typeof pGlobal.set === "function") {
+            foreignSetFunc = pGlobal.set;
+        } else {
+            foreignSetFunc = function() {};
         }
-    };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Slots
-    //--------------------------------------------------------------------
+        pGlobal.set = function(pParams) {
+            var funcParams = { pParams: pParams };
 
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
+            var myParams = MuseUtils.parseParams(pParams || {});
 
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
-
-    // Lower graded scripts should be loaded prior to our call and as such we
-    // should be able to intercept their set functions.
-    if (typeof pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
+            try {
+                foreignSetFunc(myParams);
+                pPublicApi.set(myParams);
+            } catch (e) {
+                var error = new MuseUtils.ModuleException(
+                    "musesuperchar",
+                    "We enountered an error while initializing the form.",
+                    "global.set",
+                    {
+                        params: funcParams,
+                        thrownError: e,
+                        context: {
+                            parsedParams: myParams
+                        }
+                    },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
+                mywindow.close();
+            }
+        };
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musesuperchar",
+            "We enountered a MuseSuperChar.SalesOrderItem module error that wasn't otherwise caught and handled.",
+            "MuseSuperChar.SalesOrderItem",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
     }
-
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
-})(this.MuseSuperChar.SalesOrderItem, this);
+})(MuseSuperChar.SalesOrderItem, this);

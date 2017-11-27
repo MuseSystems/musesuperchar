@@ -9,25 +9,55 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//  Namespace Definition
-//////////////////////////////////////////////////////////////////////////
+try {
+    //////////////////////////////////////////////////////////////////////////
+    //  Namespace Definition
+    //////////////////////////////////////////////////////////////////////////
 
-this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.Setup = this.MuseSuperChar.Setup || {};
+    if (typeof MuseSuperChar === "undefined") {
+        MuseSuperChar = {};
+    }
 
-//////////////////////////////////////////////////////////////////////////
-//  Imports
-//////////////////////////////////////////////////////////////////////////
+    if (typeof MuseSuperChar.Setup === "undefined") {
+        MuseSuperChar.Setup = {};
+    }
 
-if(!this.MuseUtils) {
-    include("museUtils");
+    //////////////////////////////////////////////////////////////////////////
+    //  Imports
+    //////////////////////////////////////////////////////////////////////////
+
+    if (typeof MuseUtils === "undefined") {
+        include("museUtils");
+    }
+
+    MuseUtils.loadMuseUtils([MuseUtils.MOD_JS, MuseUtils.MOD_EXCEPTION]);
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musesuperchar",
+            "We encountered a script level issue while processing MuseSuperChar.Setup.",
+            "MuseSuperChar.Setup",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseSuperChar.Setup Script Error",
+            "We encountered a script level issue while processing MuseSuperChar.Setup."
+        );
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -35,80 +65,110 @@ if(!this.MuseUtils) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi, pGlobal) {
+    try {
+        //--------------------------------------------------------------------
+        //  Constants and Module State
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  Get Object References From Screen Definitions
-    //--------------------------------------------------------------------
-    
-    
-    //--------------------------------------------------------------------
-    //  Custom Screen Objects and Starting GUI Manipulation
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Get Object References From Screen Definitions
+        //--------------------------------------------------------------------
 
-    // Add the Unified Maintenance Form
-    var unifiedName = qsTr("Super Characteristics");
-    var unifiedUiName = "museScUnifiedSetup";
-    var unifiedModeVal = mywindow.mode("maintainSuperCharateristics", "maintainSuperCharateristics");
-    
-    mywindow.insert( unifiedName, unifiedUiName, setup.MasterInformation, 
-        Xt.ProductsModule | Xt.InventoryModule | Xt.CRMModule | Xt.SalesModule | 
-        Xt.AccountingModule, unifiedModeVal, unifiedModeVal);
+        //--------------------------------------------------------------------
+        //  Custom Screen Objects and Starting GUI Manipulation
+        //--------------------------------------------------------------------
+        // Add the Unified Maintenance Form
+        var unifiedName = qsTr("Super Characteristics");
+        var unifiedUiName = "museScUnifiedSetup";
+        var unifiedModeVal = mywindow.mode(
+            "maintainSuperCharateristics",
+            "maintainSuperCharateristics"
+        );
 
-    //--------------------------------------------------------------------
-    //  "Private" Functional Logic
-    //--------------------------------------------------------------------
-    
+        mywindow.insert(
+            unifiedName,
+            unifiedUiName,
+            setup.MasterInformation,
+            Xt.ProductsModule |
+                Xt.InventoryModule |
+                Xt.CRMModule |
+                Xt.SalesModule |
+                Xt.AccountingModule,
+            unifiedModeVal,
+            unifiedModeVal
+        );
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Functions
-    //--------------------------------------------------------------------
-    
-    /**
-     * Form startup initialization.  Standard part of the xTuple ERP 
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
-    pPublicApi.set = function(pParams) {
+        //--------------------------------------------------------------------
+        //  Private Functional Logic
+        //--------------------------------------------------------------------
 
-        
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Public Interface -- Slots
+        //--------------------------------------------------------------------
 
-    };
-    
-    //--------------------------------------------------------------------
-    //  Public Interface -- Slots
-    //--------------------------------------------------------------------
-    
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
+        pPublicApi.set = function(pParams) {
+            //----------------------------------------------------------------
+            //  Set Timed Connects/Disconnects
+            //----------------------------------------------------------------
+        };
 
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
+        //--------------------------------------------------------------------
+        //  Definition Timed Connects/Disconnects
+        //--------------------------------------------------------------------
 
-    // Lower graded scripts should be loaded prior to our call and as such we 
-    // should be able to intercept their set functions.
-    if(typeof pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
-    }
+        //--------------------------------------------------------------------
+        //  Foreign Script "Set" Handling
+        //--------------------------------------------------------------------
 
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch(e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
+        // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
+        var foreignSetFunc;
+
+        // Lower graded scripts should be loaded prior to our call and as such we
+        // should be able to intercept their set functions.
+        if (typeof pGlobal.set === "function") {
+            foreignSetFunc = pGlobal.set;
+        } else {
+            foreignSetFunc = function() {};
         }
-        
-    };
 
-})(this.MuseSuperChar.Setup, this);
+        pGlobal.set = function(pParams) {
+            var funcParams = { pParams: pParams };
 
+            var myParams = MuseUtils.parseParams(pParams || {});
+
+            try {
+                foreignSetFunc(myParams);
+                pPublicApi.set(myParams);
+            } catch (e) {
+                var error = new MuseUtils.ModuleException(
+                    "musesuperchar",
+                    "We enountered an error while initializing the form.",
+                    "global.set",
+                    {
+                        params: funcParams,
+                        thrownError: e,
+                        context: {
+                            parsedParams: myParams
+                        }
+                    },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
+                mywindow.close();
+            }
+        };
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musesuperchar",
+            "We enountered a MuseSuperChar.Setup module error that wasn't otherwise caught and handled.",
+            "MuseSuperChar.Setup",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseSuperChar.Setup, this);

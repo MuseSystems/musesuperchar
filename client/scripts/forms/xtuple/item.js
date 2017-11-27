@@ -15,23 +15,58 @@
  *************************************************************************
  ************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//  Namespace Definition
-//////////////////////////////////////////////////////////////////////////
+try {
+    //////////////////////////////////////////////////////////////////////////
+    //  Namespace Definition
+    //////////////////////////////////////////////////////////////////////////
 
-this.MuseSuperChar = this.MuseSuperChar || {};
-this.MuseSuperChar.Item = this.MuseSuperChar.Item || {};
+    if (typeof MuseSuperChar === "undefined") {
+        MuseSuperChar = {};
+    }
 
-//////////////////////////////////////////////////////////////////////////
-//  Imports
-//////////////////////////////////////////////////////////////////////////
+    if (typeof MuseSuperChar.Item === "undefined") {
+        MuseSuperChar.Item = {};
+    }
 
-if (!this.MuseUtils) {
-    include("museUtils");
-}
+    //////////////////////////////////////////////////////////////////////////
+    //  Imports
+    //////////////////////////////////////////////////////////////////////////
 
-if (!this.MuseSuperChar.Loader) {
-    include("museScLoader");
+    if (typeof MuseUtils === "undefined") {
+        include("museUtils");
+    }
+
+    MuseUtils.loadMuseUtils([
+        MuseUtils.MOD_EXCEPTION,
+        MuseUtils.MOD_JSPOLYFILL,
+        MuseUtils.MOD_JS,
+        MuseUtils.MOD_CONFIG
+    ]);
+
+    if (typeof MuseSuperChar.Loader === "undefined") {
+        include("museScLoader");
+    }
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musesuperchar",
+            "We encountered a script level issue while processing MuseSuperChar.Item.",
+            "MuseSuperChar.Item",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseSuperChar.Item Script Error",
+            "We encountered a script level issue while processing MuseSuperChar.Item."
+        );
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,24 +74,27 @@ if (!this.MuseSuperChar.Loader) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi, pGlobal) {
-    // Constants
-    var PARENT_TABWIDGET = "_tab";
-    var XTP_CHAR_TAB = "_characteristicsTab";
-    var ENTITY_DATA_TABLE = "public_item";
-
-    // Mutable state
-    var scWidget = null;
-
-    //--------------------------------------------------------------------
-    //  Get Object References From Screen Definitions
-    //--------------------------------------------------------------------
-    var formTab = mywindow.findChild(PARENT_TABWIDGET);
-    var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
-
-    //--------------------------------------------------------------------
-    //  Custom Screen Objects and Starting GUI Manipulation
-    //--------------------------------------------------------------------
     try {
+        //--------------------------------------------------------------------
+        //  Constants and Module State
+        //--------------------------------------------------------------------
+        var PARENT_TABWIDGET = "_tab";
+        var XTP_CHAR_TAB = "_characteristicsTab";
+        var ENTITY_DATA_TABLE = "public_item";
+
+        // Mutable state
+        var scWidget = null;
+
+        //--------------------------------------------------------------------
+        //  Get Object References From Screen Definitions
+        //--------------------------------------------------------------------
+        var formTab = mywindow.findChild(PARENT_TABWIDGET);
+        var xtpCharTab = mywindow.findChild(XTP_CHAR_TAB);
+
+        //--------------------------------------------------------------------
+        //  Custom Screen Objects and Starting GUI Manipulation
+        //--------------------------------------------------------------------
+
         scWidget = MuseSuperChar.Loader.getSuperCharWidget(ENTITY_DATA_TABLE);
 
         if (scWidget !== null) {
@@ -75,85 +113,113 @@ if (!this.MuseSuperChar.Loader) {
         ) {
             formTab.removeTab(xtpCharTab);
         }
-    } catch (e) {
-        MuseUtils.displayError(e, mywindow);
-    }
 
-    //--------------------------------------------------------------------
-    //  "Private" Functional Logic
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Private Functional Logic
+        //--------------------------------------------------------------------
+        var mySave = function(pRecId) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pRecId: pRecId
+            };
 
-    var mySave = function(pRecId) {
-        try {
-            scWidget.save(mywindow.id());
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-        }
-    };
+            try {
+                scWidget.save(pRecId);
+            } catch (e) {
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We found problems while trying to save Super Characteristic data.",
+                    "MuseSuperChar.Item.mySave",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+                MuseUtils.displayError(error, mywindow);
+            }
+        };
 
-    var initSuperChar = function(pMode, pParentId) {
-        scWidget.initWidget(pMode, pParentId);
+        var initSuperChar = function(pMode, pParentId) {
+            scWidget.initWidget(pMode, pParentId);
 
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
-        mywindow["saved(int)"].connect(mySave);
-    };
+            //----------------------------------------------------------------
+            //  Connects/Disconnects
+            //----------------------------------------------------------------
+            mywindow["saved(int)"].connect(mySave);
+        };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Functions
-    //--------------------------------------------------------------------
-    pPublicApi.getCurrentScWidget = function() {
-        return scWidget;
-    };
+        //--------------------------------------------------------------------
+        //  Public Interface -- Slots
+        //--------------------------------------------------------------------
 
-    /**
-     * Form startup initialization.  Standard part of the xTuple ERP
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
-    pPublicApi.set = function(pParams) {
-        try {
-            var myMode = pParams.mode.toString();
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
+        pPublicApi.getCurrentScWidget = function() {
+            return scWidget;
+        };
+
+        pPublicApi.set = function(pParams) {
+            var myMode = pParams.mode;
 
             if (["new", "edit", "view"].includes(myMode) && scWidget !== null) {
                 initSuperChar(myMode, mywindow.id());
             } else {
                 return;
             }
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
+        };
+
+        //--------------------------------------------------------------------
+        //  Definition Timed Connects/Disconnects
+        //--------------------------------------------------------------------
+
+        //--------------------------------------------------------------------
+        //  Foreign Script "Set" Handling
+        //--------------------------------------------------------------------
+
+        // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
+        var foreignSetFunc;
+
+        // Lower graded scripts should be loaded prior to our call and as such we
+        // should be able to intercept their set functions.
+        if (typeof pGlobal.set === "function") {
+            foreignSetFunc = pGlobal.set;
+        } else {
+            foreignSetFunc = function() {};
         }
-    };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Slots
-    //--------------------------------------------------------------------
+        pGlobal.set = function(pParams) {
+            var funcParams = { pParams: pParams };
 
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
+            var myParams = MuseUtils.parseParams(pParams || {});
 
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
-
-    // Lower graded scripts should be loaded prior to our call and as such we
-    // should be able to intercept their set functions.
-    if (typeof pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
+            try {
+                foreignSetFunc(myParams);
+                pPublicApi.set(myParams);
+            } catch (e) {
+                var error = new MuseUtils.ModuleException(
+                    "musesuperchar",
+                    "We enountered an error while initializing the form.",
+                    "global.set",
+                    {
+                        params: funcParams,
+                        thrownError: e,
+                        context: {
+                            parsedParams: myParams
+                        }
+                    },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
+                mywindow.close();
+            }
+        };
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musesuperchar",
+            "We enountered a MuseSuperChar.Item module error that wasn't otherwise caught and handled.",
+            "MuseSuperChar.Item",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
     }
-
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
-})(this.MuseSuperChar.Item, this);
+})(MuseSuperChar.Item, this);
