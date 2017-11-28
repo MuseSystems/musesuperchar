@@ -175,7 +175,8 @@ try {
                     "musesuperchar",
                     "We encountered a database problem looking up a Super Characteristic.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".populateScDefLov",
-                    {params: funcParams, thrownError: e, context: context});
+                    {params: funcParams, thrownError: e, context: context}
+                    MuseUtils.LOG_WARNING;
             }
 
             if(!lovQry.first()) {
@@ -183,7 +184,8 @@ try {
                     "musesuperchar",
                     "We failed to find the requested Super Characteristic.",
                     "Fully Qualified Function Name",
-                    {params: funcParams, context: context});
+                    {params: funcParams, context: context}
+                    MuseUtils.LOG_WARNING;
             }
 
             if(MuseUtils.realNull(lovQry.value("scdef_list_query")) !== null) {
@@ -203,7 +205,8 @@ try {
                         "musesuperchar",
                         "We encountered a database problem retrieving a Super Characteristic list of values.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".populateScDefLov",
-                        {params: funcParams, thrownError: e, context: context});
+                        {params: funcParams, thrownError: e, context: context}
+                        MuseUtils.LOG_WARNING;
                 }
 
             }
@@ -314,14 +317,16 @@ try {
                         "musesuperchar",
                         "We were asked to update a widget for an unknown Super Characteristic data type.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
             } catch(e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to update the requested form field's value.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateValue",
-                    {params: funcParams, thrownError: e, context: context});
+                    {params: funcParams, thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -337,7 +342,8 @@ try {
                     "musesuperchar",
                     "We encountered problems updating the Super Characteristic Group's widgets.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".updateAllValues",
-                    {thrownError: e, context: context});
+                    {thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -361,14 +367,16 @@ try {
                         "musesuperchar",
                         "We were asked to override the LOV values for a type that does not accept such overrides.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setLovOverride",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
             } catch(e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
                     "We failed to override the field's LOV list as requested.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setLovOverride",
-                    {params: funcParams, thrownError: e, context: context});
+                    {params: funcParams, thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -452,7 +460,8 @@ try {
                     "musesuperchar",
                     "We failed to reset a Super Characteristic form.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -472,12 +481,19 @@ try {
                         "musesuperchar",
                         "The form is not yet properly initialized and cannot accept signals.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 return stringSignalHandler(pString, pType);
             } catch(e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We found errors while attempting to process a signal.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_CRITICAL)
+                MuseUtils.displayError(error, mywindow);
             }
         };
 
@@ -497,7 +513,8 @@ try {
                         "musesuperchar",
                         "The form is not yet properly initialized and cannot be updated.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 if(!SC_DEFS.hasOwnProperty(pScDefIntName)) {
@@ -505,12 +522,19 @@ try {
                         "musesuperchar",
                         "We did not understand which Super Characteristic we should update with current data.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 return updateValue(pScDefIntName);
             } catch(e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We found errors while attempting to cause a value to update from our associated data object.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_CRITICAL)
+                MuseUtils.displayError(error, mywindow);
             }
         };
 
@@ -521,12 +545,19 @@ try {
                         "musesuperchar",
                         "The form is not yet properly initialized and cannot be updated",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateAllValues",
-                        {params: funcParams, context: context});
+                        {params: funcParams, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 return updateAllValues();
             } catch(e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We found errors while attempting to update all form values from our associated data object.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateAllValues",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_CRITICAL)
+                MuseUtils.displayError(error, mywindow);
             }
         };
 
@@ -549,7 +580,8 @@ try {
                     "musesuperchar",
                     "We did not understand in which mode to open the form.",
                     "MuseSuperChar." + FORM_OBJECT_NAME + ".pPublicApi.set",
-                    {params: funcParams, context: {jsonParams: jsonParams}});
+                    {params: funcParams, context: {jsonParams: jsonParams}},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(jsonParams.mode == "preview") {
@@ -562,7 +594,8 @@ try {
                     "musesuperchar",
                     "We did not understand to which entity we should be associated.",
                     "MuseSuperChar." + FORM_OBJECT_NAME + ".pPublicApi.set",
-                    {params: funcParams, context: {jsonParams: jsonParams}});
+                    {params: funcParams, context: {jsonParams: jsonParams}},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!jsonParams.hasOwnProperty("data_record_id") ||
@@ -572,7 +605,8 @@ try {
                     "musesuperchar",
                     "We did not understand which record we were being initialized as.",
                     "MuseSuperChar." + FORM_OBJECT_NAME + ".pPublicApi.set",
-                    {params: funcParams, context: {jsonParams: jsonParams}});
+                    {params: funcParams, context: {jsonParams: jsonParams}},
+                    MuseUtils.LOG_WARNING);
             }
 
             resetForm(jsonParams.entity_object_name,

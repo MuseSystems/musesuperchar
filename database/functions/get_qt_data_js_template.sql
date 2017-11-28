@@ -186,7 +186,8 @@ try {
                             "musesuperchar",
                             "We encountered a problem while running a 'hook' function.",
                             "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".hookRunner",
-                            {params: funcParams, thrownError: e});
+                            {params: funcParams, thrownError: e},
+                            MuseUtils.LOG_WARNING);
                     }
                 }
 
@@ -216,7 +217,8 @@ try {
                     "musesuperchar",
                     "We received errors while signalling that we set a value.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setLovQuery",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -264,14 +266,16 @@ try {
                         "We failed to find the requested " + ENTITY_DISPLAY_NAME +
                         " Super Characteristic data record.",
                         "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
-                        {params: funcParams});
+                        {params: funcParams},
+                        MuseUtils.LOG_WARNING);
                 }
             } catch(e) {
                 throw new MuseUtils.DatabaseException(
                     "musesuperchar",
                     "We encountered a problem loading " + ENTITY_DISPLAY_NAME + " form data.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -288,7 +292,8 @@ try {
                     "musesuperchar",
                     "We received errors from on load hook function execution.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -300,7 +305,8 @@ try {
                     "musesuperchar",
                     "We received errors while signalling that we loaded data.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -317,7 +323,8 @@ try {
                     "musesuperchar",
                     "The Super Characteristic Entity record you are trying to save has not been initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!MuseUtils.isValidId(data[recObjName].working[SC_DATA_TABLE_FK])) {
@@ -326,7 +333,8 @@ try {
                     "A new Super Characteristic Entity record must have a valid " +
                     SC_DATA_TABLE_FK + " value set in order to save it.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             var insertParams = {};
@@ -351,7 +359,8 @@ try {
                         "We failed to verify that we created entity data record " +
                         recObjName,
                         "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
-                        {params: funcParams, context: {insertParams: insertParams}});
+                        {params: funcParams, context: {insertParams: insertParams}},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 delete data[recObjName];
@@ -362,7 +371,8 @@ try {
                     "We encountered a database problem trying to save " +
                     recObjName,
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".insertEntityData",
-                    {params: funcParams, thrownError: e, context: {data: data}});
+                    {params: funcParams, thrownError: e, context: {data: data}},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -379,7 +389,8 @@ try {
                     "musesuperchar",
                     "The Super Characteristic Entity record you are trying to save has not been initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".updateEntityData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!MuseUtils.isValidId(data[recObjName].working[SC_DATA_TABLE_PK])) {
@@ -388,7 +399,8 @@ try {
                     "An updated Super Characteristic Entity record must have a " +
                     " valid " + SC_DATA_TABLE_PK + " value set in order to save it.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".updateEntityData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             var updateParams = {};
@@ -413,7 +425,8 @@ try {
                         "We failed to verify that we updated entity data record " +
                         recObjName,
                         "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".updateEntityData",
-                        {params: funcParams, context: {updateParams: updateParams}});
+                        {params: funcParams, context: {updateParams: updateParams}},
+                        MuseUtils.LOG_WARNING);
                 }
 
                 return entQry.value(SC_DATA_TABLE_PK);
@@ -423,7 +436,8 @@ try {
                     "We encountered a database problem trying to save " +
                     recObjName,
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".updateEntityData",
-                    {params: funcParams, thrownError: e, context: {data: data}});
+                    {params: funcParams, thrownError: e, context: {data: data}},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -449,7 +463,8 @@ try {
                      "musesuperchar",
                      "We encountered errors running 'Before Save' hook functions.",
                      "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                     {params: funcParams, thrownError: e});
+                     {params: funcParams, thrownError: e},
+                     MuseUtils.LOG_WARNING);
             }
 
             var newDataRecId;
@@ -469,7 +484,8 @@ try {
                     "musesuperchar",
                     "We failed to save entity record data.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -480,7 +496,8 @@ try {
                     "We failed to load Entity data record " + SC_DATA_TABLE +
                     "_" + newDataRecId + "(" + pDataRecId + ") after saving.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -493,7 +510,8 @@ try {
                      "musesuperchar",
                      "We encountered errors restoring cached LOV overrides.",
                      "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                     {params: funcParams, thrownError: e});
+                     {params: funcParams, thrownError: e},
+                     MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -510,7 +528,8 @@ try {
                      "musesuperchar",
                      "We encountered errors running 'After Save' hook functions.",
                      "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".saveFormData",
-                     {params: funcParams, thrownError: e});
+                     {params: funcParams, thrownError: e},
+                     MuseUtils.LOG_WARNING);
             }
 
             return newDataRecId;
@@ -554,7 +573,8 @@ try {
                          "musesuperchar",
                          "We encountered errors running 'On New' hook functions.",
                          "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".initFormData",
-                         {params: funcParams, thrownError: e});
+                         {params: funcParams, thrownError: e},
+                         MuseUtils.LOG_WARNING);
                 }
 
                 return newRecHandle;
@@ -566,7 +586,8 @@ try {
                         "musesuperchar",
                         "We failed to initialize an existing Super Characteristic data record.",
                         "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".initFormData",
-                        {params: funcParams, thrownError: e});
+                        {params: funcParams, thrownError: e},
+                        MuseUtils.LOG_WARNING);
                 }
 
 
@@ -609,7 +630,8 @@ try {
                      "musesuperchar",
                      "We encountered errors running 'Before Set Value' hook functions.",
                      "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
-                     {params: funcParams, thrownError: e});
+                     {params: funcParams, thrownError: e},
+                     MuseUtils.LOG_WARNING);
             }
 
             data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName] = pValue;
@@ -629,7 +651,8 @@ try {
                      "musesuperchar",
                      "We encountered errors running 'After Set Value' hook functions.",
                      "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
-                     {params: funcParams, thrownError: e});
+                     {params: funcParams, thrownError: e},
+                     MuseUtils.LOG_WARNING);
             }
 
             try {
@@ -641,7 +664,8 @@ try {
                     "musesuperchar",
                     "We received errors while signalling that we set a value.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -668,7 +692,8 @@ try {
                     "musesuperchar",
                     "We encountered a database problem trying to retrieve the entity data record primary key id based on the foreign key id.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".getDataRecIdByParentId",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
 
         };
@@ -693,7 +718,8 @@ try {
                     "musesuperchar",
                     "We failed to properly set the parent record id.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setParentRecId",
-                    {params: funcParams, thrownError: e});
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
             }
         };
 
@@ -736,7 +762,8 @@ try {
                     "musesuperchar",
                     "We did not understand for which Super Characteristic we should retrieve a value.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(MuseUtils.realNull(pDataRecId) === null ||
@@ -746,7 +773,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!data.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
@@ -754,7 +782,8 @@ try {
                     "musesuperchar",
                     "The requested entity data record is not currently initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return getValue(pScIntName, pDataRecId);
@@ -773,7 +802,8 @@ try {
                     "musesuperchar",
                     "We did not understand for which Super Characteristic you wished to set a value.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(MuseUtils.realNull(pDataRecId) === null ||
@@ -783,7 +813,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!data.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
@@ -791,7 +822,8 @@ try {
                     "musesuperchar",
                     "The requested entity data record is not currently initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValue",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return setValue(pScIntName, pDataRecId, pValue);
@@ -808,7 +840,8 @@ try {
                     "musesuperchar",
                     "We did not understand for which parent record id you wished to retrieve its child entity data record id.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getDataRecIdByParentId",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return getDataRecIdByParentId(pEntityFkId);
@@ -834,7 +867,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.saveFormData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return saveFormData(pDataRecId);
@@ -852,7 +886,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.saveFormData",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return loadFormData(pDataRecId);
@@ -868,7 +903,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addOnNewHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addOnNewHookFunc(pFunc);
@@ -884,7 +920,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addOnLoadHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addOnLoadHookFunc(pFunc);
@@ -901,7 +938,8 @@ try {
                     "musesuperchar",
                     "We did not understand to which Super Characteristic you wished to apply a function.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSetHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(typeof pFunc !== "function") {
@@ -909,7 +947,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSetHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addBeforeSetHookFunc(pScIntName, pFunc);
@@ -926,7 +965,8 @@ try {
                     "musesuperchar",
                     "We did not understand to which Super Characteristic you wished to apply a function.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSetHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(typeof pFunc !== "function") {
@@ -934,7 +974,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSetHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addAfterSetHookFunc(pScIntName, pFunc);
@@ -950,7 +991,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addBeforeSaveHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addBeforeSaveHookFunc(pFunc);
@@ -966,7 +1008,8 @@ try {
                     "musesuperchar",
                     "We did not find a function to add to the event processing sequence.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.addAfterSaveHookFunc",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             addAfterSaveHookFunc(pFunc);
@@ -985,7 +1028,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setParentRecId",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!MuseUtils.isValidId(pParentRecId)) {
@@ -993,7 +1037,8 @@ try {
                     "musesuperchar",
                     "We must have a feasible parent record id.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setParentRecId",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             setParentRecId(pDataRecId, pParentRecId);
@@ -1012,7 +1057,8 @@ try {
                     "musesuperchar",
                     "We did not understand for which Super Characteristic you wished to provide an pXSqlQuery.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(MuseUtils.realNull(pDataRecId) === null ||
@@ -1022,7 +1068,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!lovOverrides.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
@@ -1030,7 +1077,8 @@ try {
                     "musesuperchar",
                     "The requested entity data record is not currently initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(typeof pXSqlQuery.lastError !== "function" ||
@@ -1039,7 +1087,8 @@ try {
                     "musesuperchar",
                     "The query object passed to us does not seem to be a valid query object.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return setLovQuery(pScIntName, pDataRecId, pXSqlQuery);
@@ -1059,7 +1108,8 @@ try {
                     "musesuperchar",
                     "We must have a valid entity data record identifier.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!lovOverrides.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
@@ -1067,7 +1117,8 @@ try {
                     "musesuperchar",
                     "The requested entity data record is not currently initialized.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!lovOverrides[SC_DATA_TABLE + "_" + pDataRecId].hasOwnProperty(
@@ -1076,7 +1127,8 @@ try {
                     "musesuperchar",
                     "We did not understand for which Super Characteristic we should retrieve an LOV query.",
                     "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.getLovQuery",
-                    {params: funcParams});
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
             }
 
             return getLovQuery(pScIntName, pDataRecId);
