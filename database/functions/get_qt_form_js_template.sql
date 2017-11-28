@@ -175,8 +175,8 @@ try {
                     "musesuperchar",
                     "We encountered a database problem looking up a Super Characteristic.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".populateScDefLov",
-                    {params: funcParams, thrownError: e, context: context}
-                    MuseUtils.LOG_WARNING;
+                    {params: funcParams, thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(!lovQry.first()) {
@@ -184,8 +184,8 @@ try {
                     "musesuperchar",
                     "We failed to find the requested Super Characteristic.",
                     "Fully Qualified Function Name",
-                    {params: funcParams, context: context}
-                    MuseUtils.LOG_WARNING;
+                    {params: funcParams, context: context},
+                    MuseUtils.LOG_WARNING);
             }
 
             if(MuseUtils.realNull(lovQry.value("scdef_list_query")) !== null) {
@@ -205,8 +205,8 @@ try {
                         "musesuperchar",
                         "We encountered a database problem retrieving a Super Characteristic list of values.",
                         "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".populateScDefLov",
-                        {params: funcParams, thrownError: e, context: context}
-                        MuseUtils.LOG_WARNING;
+                        {params: funcParams, thrownError: e, context: context},
+                        MuseUtils.LOG_WARNING);
                 }
 
             }
