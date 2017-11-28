@@ -448,7 +448,7 @@ try {
                 updateInternalName();
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an updated field.",
                     "MuseSuperChar.CreateGroup.pPublicApi.sFieldsUpdated",
@@ -464,7 +464,7 @@ try {
             try {
                 mydialog.accept();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to close form request.",
                     "MuseSuperChar.CreateGroup.pPublicApi.sClose",
@@ -480,7 +480,7 @@ try {
             try {
                 save();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to save record request.",
                     "MuseSuperChar.CreateGroup.pPublicApi.sSave",
@@ -496,7 +496,7 @@ try {
             try {
                 assignSelectedEntities();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a group to an entity.",
                     "MuseSuperChar.CreateGroup.pPublicApi.sAssignEntities",
@@ -512,7 +512,7 @@ try {
             try {
                 unassignSelectedEntities();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the removal of a group/entity assignment.",
                     "MuseSuperChar.CreateGroup.pPublicApi.sUnassignEntities",

@@ -274,7 +274,7 @@ try {
                 saveEntity();
                 mywindow.close();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to save a record.",
                     "MuseSuperChar.CreateEntity.pPublicApi.sSave",
@@ -296,7 +296,7 @@ try {
                 populateKeys();
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an update to the schema field.",
                     "MuseSuperChar.CreateEntity.pPublicApi.sSchemaUpdated",
@@ -317,7 +317,7 @@ try {
                 populateKeys();
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an update to the table field.",
                     "MuseSuperChar.CreateEntity.pPublicApi.sTableUpdated",
@@ -337,7 +337,7 @@ try {
             try {
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an updated key column field.",
                     "MuseSuperChar.CreateEntity.pPublicApi.sKeyUpdated",
@@ -352,7 +352,7 @@ try {
             try {
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an update to the display name field.",
                     "MuseSuperChar.CreateEntity.pPublicApi.sDisplayNameUpdated",

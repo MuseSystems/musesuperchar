@@ -117,7 +117,7 @@ try {
                 scWidget.save(preSaveCoItemId);
                 preSaveCoItemId = -1;
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while trying to save Super Characteristic data.",
                     "MuseSuperChar.SalesOrderItem.myPostSave",

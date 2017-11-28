@@ -487,7 +487,7 @@ try {
 
                 return stringSignalHandler(pString, pType);
             } catch(e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found errors while attempting to process a signal.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
@@ -528,7 +528,7 @@ try {
 
                 return updateValue(pScDefIntName);
             } catch(e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found errors while attempting to cause a value to update from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
@@ -551,7 +551,7 @@ try {
 
                 return updateAllValues();
             } catch(e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found errors while attempting to update all form values from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateAllValues",

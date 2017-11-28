@@ -799,7 +799,7 @@ try {
         pPublicApi.sPopulate = function() {
             try {
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to populate the group maintenance form.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sPopulate",
@@ -814,7 +814,7 @@ try {
             try {
                 return addEntity();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to add a new entity.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sAddEntity",
@@ -829,7 +829,7 @@ try {
             try {
                 return editEntity();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to edit an entity entry.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sEditEntity",
@@ -853,7 +853,7 @@ try {
                     );
                 }
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to request to delete an entity entry.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sDeleteEntity",
@@ -868,7 +868,7 @@ try {
             try {
                 addGroup();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to add a group.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sAddGroup",
@@ -883,7 +883,7 @@ try {
             try {
                 editGroup();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request edit a group.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sEditGroup",
@@ -898,7 +898,7 @@ try {
             try {
                 deleteGroup();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to delete a group.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sDeleteGroup",
@@ -913,7 +913,7 @@ try {
             try {
                 addGroupLayoutItem();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to add a Super Characteristic to a group's layout.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sAddSuperCharToLayout",
@@ -928,7 +928,7 @@ try {
             try {
                 editGroupLayoutItem();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to edit a group layout item.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sEditSuperCharInLayout",
@@ -943,7 +943,7 @@ try {
             try {
                 deleteGroupLayoutItem();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to remove a Super Characteristic from a group layout.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sDeleteSuperCharFromLayout",
@@ -958,7 +958,7 @@ try {
             try {
                 moveGroupLayoutItemUp();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to move an item up in the group layout sort order.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sMoveSuperCharUpInLayout",
@@ -973,7 +973,7 @@ try {
             try {
                 moveGroupLayoutItemDown();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to move an item down in the the group layout sort order.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sMoveSuperCharDownInLayout",
@@ -994,7 +994,7 @@ try {
             try {
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of an entity item.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sEntitySelected",
@@ -1015,7 +1015,7 @@ try {
             try {
                 groupSelected();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of a group item.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sGroupSelected",
@@ -1030,7 +1030,7 @@ try {
             try {
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of a group layout item.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sGroupLayoutSelected",
@@ -1045,7 +1045,7 @@ try {
             try {
                 previewGroupUiForm();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to preview the group's UI form.",
                     "MuseSuperChar.GroupMaint.pPublicApi.sPreviewGroupUiForm",

@@ -1057,7 +1057,7 @@ try {
             try {
                 mydialog.reject();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a cancellation request.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sCancel",
@@ -1079,7 +1079,7 @@ try {
                 populateThenValTestFields();
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a 'then' validator being selected.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sThenValidatorSelected",
@@ -1101,7 +1101,7 @@ try {
                 populateIfValTestFields();
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an 'if' validator being selected.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sIfValidatorSelected",
@@ -1122,7 +1122,7 @@ try {
             try {
                 populateThenScDependents();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a 'then' Super Characteristic being selected.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sThenSuperCharSelected",
@@ -1143,7 +1143,7 @@ try {
             try {
                 populateIfScDependents();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an 'if' Super Characteristic being selected.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sIfSuperCharSelected",
@@ -1159,7 +1159,7 @@ try {
             try {
                 setButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to an updated failure message.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sFailureMsgUpdated",
@@ -1175,7 +1175,7 @@ try {
             try {
                 save();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to save the conditional validation rule.",
                     "MuseSuperChar.CreateCondValRule.pPublicApi.sSave",

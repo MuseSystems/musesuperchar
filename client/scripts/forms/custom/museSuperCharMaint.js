@@ -1057,7 +1057,7 @@ try {
             try {
                 superCharSelected();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of a Super Characteristic.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sSuperCharSelected",
@@ -1078,7 +1078,7 @@ try {
             try {
                 setListOfValuesButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of a list of values item.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sLovValueSelected",
@@ -1093,7 +1093,7 @@ try {
             try {
                 setNewState();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to add a Super Characteristic.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sAddSc",
@@ -1121,7 +1121,7 @@ try {
                     setSelectState();
                 }
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the cancel or deletion of a Super Characteristic.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sCancelSc",
@@ -1136,7 +1136,7 @@ try {
             try {
                 setEditedState();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a field update action.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sFieldsUpdated",
@@ -1151,7 +1151,7 @@ try {
             try {
                 saveSuperChar();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to save a Super Characteristic.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sSaveSc",
@@ -1166,7 +1166,7 @@ try {
             try {
                 addLov();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to add a list of values item.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sAddLov",
@@ -1181,7 +1181,7 @@ try {
             try {
                 deleteLov();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to delete a list of values item.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sDeleteLov",
@@ -1196,7 +1196,7 @@ try {
             try {
                 moveLovValue(DOWN);
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to move the current list of values item down in the sort order.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sMoveDownLovValue",
@@ -1211,7 +1211,7 @@ try {
             try {
                 moveLovValue(UP);
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to move the current list of values item up in the sort order.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sMoveUpLovValue",
@@ -1226,7 +1226,7 @@ try {
             try {
                 addValRule();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a request to add a validation rule.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sAddValRule",
@@ -1241,7 +1241,7 @@ try {
             try {
                 editValRule();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to edit a validation rule.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sEditValRule",
@@ -1256,7 +1256,7 @@ try {
             try {
                 deleteValRule();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to delete a vaidation rule.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sDeleteValRule",
@@ -1271,7 +1271,7 @@ try {
             try {
                 setCondValButtons();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to the selection of a validation rule item.",
                     "MuseSuperChar.SuperCharMaint.pPublicApi.sCondValRuleSelected",

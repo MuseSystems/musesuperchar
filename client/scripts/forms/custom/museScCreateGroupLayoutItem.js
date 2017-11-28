@@ -407,7 +407,7 @@ try {
             try {
                 groupUpdated();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a group field update.",
                     "MuseSuperChar.CreateGroupLayout.pPublicApi.sGroupUpdated",
@@ -423,7 +423,7 @@ try {
             try {
                 superCharUpdated();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a Super Characteristic field update.",
                     "MuseSuperChar.CreateGroupLayout.pPublicApi.sSuperCharUpdated",
@@ -439,7 +439,7 @@ try {
             try {
                 save();
             } catch (e) {
-                var error = new MuseUtils.ApiException(
+                var error = new MuseUtils.FormException(
                     "musesuperchar",
                     "We found problems while responding to a save request.",
                     "MuseSuperChar.CreateGroupLayout.pPublicApi.sSave",
