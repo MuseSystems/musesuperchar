@@ -600,6 +600,27 @@ try {
             return data[SC_DATA_TABLE + "_" + pDataRecId].working[pScIntName];
         };
 
+        var sendUpdateSignal = function(pScIntName, pDataRecId) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pScIntName: pScIntName,
+                pDataRecId: pDataRecId
+            };
+
+            try {
+                mainwindow.sEmitSignal(
+                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
+                    "update");
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We received errors while signalling that we set a value.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".sendUpdateSignal",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
+            }
+        };
+
         var setValue = function(pScIntName, pDataRecId, pValue) {
             // Capture function parameters for later exception references.
             var funcParams = {
@@ -624,6 +645,7 @@ try {
                     QMessageBox.critical(mywindow, "Value Not Set",
                         beforeSetValueHookMsg);
 
+                    sendUpdateSignal(pScIntName, pDataRecId);
                     return;
                 }
             } catch(e) {
@@ -656,18 +678,7 @@ try {
                      MuseUtils.LOG_WARNING);
             }
 
-            try {
-                mainwindow.sEmitSignal(
-                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
-                    "update");
-            } catch(e) {
-                throw new MuseUtils.ApiException(
-                    "musesuperchar",
-                    "We received errors while signalling that we set a value.",
-                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setValue",
-                    {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_WARNING);
-            }
+            sendUpdateSignal(pScIntName, pDataRecId);
         };
 
         var getDataRecIdByParentId = function(pEntityFkId) {
