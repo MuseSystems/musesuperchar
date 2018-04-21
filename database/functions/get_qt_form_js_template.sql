@@ -70,7 +70,8 @@ try {
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_JS,
         MuseUtils.MOD_JSPOLYFILL,
-        MuseUtils.MOD_QT
+        MuseUtils.MOD_QT,
+        MuseUtils.MOD_CONFIG
     ]);
 
 } catch (e) {

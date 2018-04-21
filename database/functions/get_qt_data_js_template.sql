@@ -72,7 +72,8 @@ try {
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_DB,
         MuseUtils.MOD_JS,
-        MuseUtils.MOD_JSPOLYFILL
+        MuseUtils.MOD_JSPOLYFILL,
+        MuseUtils.MOD_CONFIG
     ]);
 } catch (e) {
     if (
