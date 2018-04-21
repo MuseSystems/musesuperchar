@@ -200,6 +200,21 @@ try {
             return MuseUtils.realNull(returnText);
         };
 
+        var sendLovOverrideSignal = function(pScIntName, pDataRecId) {
+            try {
+                mainwindow.sEmitSignal(
+                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
+                    "lov_override");
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We received errors while signalling that we set a value.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".sendLovOverrideSignal",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
+            }
+        };
+
         var setLovQuery = function(pScIntName, pDataRecId, pXSqlQuery) {
             var funcParams = {
                 pScIntName: pScIntName,
@@ -209,18 +224,7 @@ try {
 
             lovOverrides[SC_DATA_TABLE + "_" + pDataRecId][pScIntName] = pXSqlQuery;
 
-            try {
-                mainwindow.sEmitSignal(
-                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
-                    "lov_override");
-            } catch(e) {
-                throw new MuseUtils.ApiException(
-                    "musesuperchar",
-                    "We received errors while signalling that we set a value.",
-                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".setLovQuery",
-                    {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_WARNING);
-            }
+            sendLovOverrideSignal(pScIntName, pDataRecId);
         };
 
         var getLovQuery = function(pScIntName, pDataRecId) {
@@ -230,6 +234,21 @@ try {
             };
 
             return lovOverrides[SC_DATA_TABLE + "_" + pDataRecId][pScIntName];
+        };
+
+        var sendUpdateAllSignal = function(pDataRecId) {
+            try {
+                mainwindow.sEmitSignal(
+                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@_",
+                    "update_all");
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We received errors while signalling that we loaded data.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".sendUpdateAllSignal",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
+            }
         };
 
         var loadFormData = function(pDataRecId) {
@@ -297,18 +316,7 @@ try {
                     MuseUtils.LOG_WARNING);
             }
 
-            try {
-                mainwindow.sEmitSignal(
-                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@_",
-                    "update_all");
-            } catch(e) {
-                throw new MuseUtils.ApiException(
-                    "musesuperchar",
-                    "We received errors while signalling that we loaded data.",
-                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".loadFormData",
-                    {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_WARNING);
-            }
+            sendUpdateAllSignal(pDataRecId);
         };
 
         var insertEntityData = function(pDataRecId) {
