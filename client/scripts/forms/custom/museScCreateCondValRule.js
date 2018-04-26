@@ -248,26 +248,26 @@ try {
                                 "editingFinished()"
                             )
                         ) {
-                            data[
-                                testValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[testValName].text,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else {
-                                    return null;
+                            data[testValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[testValName].text,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
                             data[testValName]["editingFinished()"].connect(
                                 setButtons
@@ -275,26 +275,26 @@ try {
                         } else if (
                             data[testValName].hasOwnProperty("newDate(QDate)")
                         ) {
-                            data[
-                                testValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[testValName].date,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else {
-                                    return null;
+                            data[testValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[testValName].date,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
                             data[testValName]["newDate(QDate)"].connect(
                                 setButtons
@@ -302,23 +302,23 @@ try {
                         }
 
                         if (pValTypeIntName == "regexp") {
-                            data[
-                                testValName
-                            ].MSSC.pushValidationFunction(function() {
-                                try {
-                                    new RegExp(data[testValName].text);
-                                    return null;
-                                } catch (e) {
-                                    return (
-                                        "The provided test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        " is not " +
-                                        "a valid regular expression."
-                                    );
+                            data[testValName].MSSC.pushValidationFunction(
+                                function() {
+                                    try {
+                                        new RegExp(data[testValName].text);
+                                        return null;
+                                    } catch (e) {
+                                        return (
+                                            "The provided test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            " is not " +
+                                            "a valid regular expression."
+                                        );
+                                    }
                                 }
-                            });
+                            );
                         }
                     } catch (e) {
                         throw new MuseUtils.ApiException(
@@ -391,71 +391,71 @@ try {
                         );
 
                         if (pValTypeIntName == "numericbetweeninclusive") {
-                            data[
-                                lowValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[lowValName].text,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else if (
-                                    data[lowValName].getNumericValue() >=
-                                    data[highValName].getNumericValue()
-                                ) {
-                                    return (
-                                        "The " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        " requires that the low value " +
-                                        "is lower than the high value."
-                                    );
-                                } else {
-                                    return null;
+                            data[lowValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[lowValName].text,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else if (
+                                        data[lowValName].getNumericValue() >=
+                                        data[highValName].getNumericValue()
+                                    ) {
+                                        return (
+                                            "The " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            " requires that the low value " +
+                                            "is lower than the high value."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
-                            data[
-                                highValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[highValName].text,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else if (
-                                    data[lowValName].getNumericValue() >=
-                                    data[highValName].getNumericValue()
-                                ) {
-                                    return (
-                                        "The " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        " requires that the high value " +
-                                        "is higher than the low value."
-                                    );
-                                } else {
-                                    return null;
+                            data[highValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[highValName].text,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else if (
+                                        data[lowValName].getNumericValue() >=
+                                        data[highValName].getNumericValue()
+                                    ) {
+                                        return (
+                                            "The " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            " requires that the high value " +
+                                            "is higher than the low value."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
                             data[lowValName]["editingFinished()"].connect(
                                 setButtons
@@ -464,71 +464,71 @@ try {
                                 setButtons
                             );
                         } else if (pValTypeIntName == "datebetweeninclusive") {
-                            data[
-                                lowValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[lowValName].date,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else if (
-                                    data[lowValName].date >=
-                                    data[highValName].date
-                                ) {
-                                    return (
-                                        "The " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        " requires that the low value " +
-                                        "is lower than the high value."
-                                    );
-                                } else {
-                                    return null;
+                            data[lowValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[lowValName].date,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else if (
+                                        data[lowValName].date >=
+                                        data[highValName].date
+                                    ) {
+                                        return (
+                                            "The " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            " requires that the low value " +
+                                            "is lower than the high value."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
-                            data[
-                                highValName
-                            ].MSSC.pushValidationFunction(function() {
-                                if (
-                                    MuseUtils.coalesce(
-                                        data[highValName].date,
-                                        ""
-                                    ) === ""
-                                ) {
-                                    return (
-                                        "You must provide a test value for " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        "."
-                                    );
-                                } else if (
-                                    data[lowValName].date >=
-                                    data[highValName].date
-                                ) {
-                                    return (
-                                        "The " +
-                                        pPrefix +
-                                        " condition " +
-                                        pValTypeDispName +
-                                        " requires that the high value " +
-                                        "is higher than the low value."
-                                    );
-                                } else {
-                                    return null;
+                            data[highValName].MSSC.pushValidationFunction(
+                                function() {
+                                    if (
+                                        MuseUtils.coalesce(
+                                            data[highValName].date,
+                                            ""
+                                        ) === ""
+                                    ) {
+                                        return (
+                                            "You must provide a test value for " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            "."
+                                        );
+                                    } else if (
+                                        data[lowValName].date >=
+                                        data[highValName].date
+                                    ) {
+                                        return (
+                                            "The " +
+                                            pPrefix +
+                                            " condition " +
+                                            pValTypeDispName +
+                                            " requires that the high value " +
+                                            "is higher than the low value."
+                                        );
+                                    } else {
+                                        return null;
+                                    }
                                 }
-                            });
+                            );
 
                             data[lowValName]["newDate(QDate)"].connect(
                                 setButtons
@@ -1195,6 +1195,8 @@ try {
             var funcParams = {
                 pParams: pParams
             };
+
+            var parseParams = MuseUtils.parseParams(pParams || {});
 
             setButtons();
 
