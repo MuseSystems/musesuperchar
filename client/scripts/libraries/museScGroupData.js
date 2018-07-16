@@ -1237,7 +1237,9 @@ try {
             try {
                 return MuseUtils.executeQuery(
                     "SELECT   scdef_id " +
-                        ",scdef_display_name " +
+                        ",CASE WHEN nullif(regexp_replace(scdef_display_name,'[[:space:]]','','g'),'') IS NOT NULL THEN " +
+                        "scdef_display_name || ' (' || scdef_internal_name || ')' ELSE " +
+                        "'(' || scdef_internal_name || ')'  END AS scdef_list_name " +
                         ",scdef_internal_name " +
                         "FROM    musesuperchar.scdef " +
                         "LEFT OUTER JOIN musesuperchar.scdef_scgrp_ass  " +
@@ -1246,7 +1248,10 @@ try {
                         "AND scdef_scgrp_ass_scgrp_id =  " +
                         '<? value("pGroupId") ?> ' +
                         "WHERE   scdef_is_active " +
-                        "AND scdef_scgrp_ass_id IS NULL ",
+                        "AND scdef_scgrp_ass_id IS NULL " +
+                        "ORDER BY " +
+                        "coalesce(nullif(regexp_replace(scdef_display_name,'[[:space:]]','','g'),''), scdef_internal_name) " +
+                        ",scdef_internal_name",
                     { pGroupId: pGroupId }
                 );
             } catch (e) {
