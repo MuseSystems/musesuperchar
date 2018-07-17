@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -18,13 +18,13 @@
 DO
     $BODY$
         DECLARE
-            
+
         BEGIN
 
             -- Create the table if it does not exist.  Apply deltas if it does and it's needed.
-            IF NOT EXISTS(SELECT     true 
-                          FROM         musextputils.v_basic_catalog 
-                          WHERE     table_schema_name = 'musesuperchar' 
+            IF NOT EXISTS(SELECT     true
+                          FROM         musextputils.v_basic_catalog
+                          WHERE     table_schema_name = 'musesuperchar'
                                   AND table_name = 'scgrp') THEN
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.scgrp (
@@ -35,14 +35,14 @@ DO
                     ,scgrp_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,scgrp_is_system_locked boolean NOT NULL DEFAULT false
                 );
-                
+
                 ALTER TABLE  musesuperchar.scgrp OWNER TO admin;
 
                 REVOKE ALL ON TABLE musesuperchar.scgrp FROM public;
                 GRANT ALL ON TABLE musesuperchar.scgrp TO admin;
                 GRANT ALL ON TABLE musesuperchar.scgrp TO xtrole;
-                
-                COMMENT ON TABLE musesuperchar.scgrp 
+
+                COMMENT ON TABLE musesuperchar.scgrp
                     IS $DOC$A table to hold the defined groups to which super characteristics belong.  It is only through these groups that characteristics are made visible.  Note that all entities have a default group which is automatically created and assigned to themselves.$DOC$;
 
                 -- Column Comments
@@ -71,19 +71,19 @@ DO
                                                                 ,'scgrp_date_created'
                                                                 ,'scgrp_role_created'
                                                                 ,'scgrp_date_deactivated'
-                                                                ,'scgrp_role_deactivated' 
+                                                                ,'scgrp_role_deactivated'
                                                                 ,'scgrp_date_modified'
                                                                 ,'scgrp_wallclock_modified'
                                                                 ,'scgrp_role_modified'
                                                                 ,'scgrp_row_version_number'
                                                                 ,'scgrp_is_active');
-                
+
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 
             END IF;
-            
+
 
         END;
     $BODY$;
