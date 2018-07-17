@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -21,17 +21,17 @@
 -- each widget to be the lowercase name of the widget class.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer DEFAULT 0, pWidth integer DEFAULT 0) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer DEFAULT 0, pWidth integer DEFAULT 0)
     RETURNS xml[] AS
         $BODY$
-            SELECT 
+            SELECT
                 CASE
                     WHEN pDataTypeIntName = 'textfield' THEN
                         ARRAY[xmlelement(name widget, xmlattributes('XLineEdit' as class, pPrefix||'_'||pScDefIntName||'_xlineedit' AS name),
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -42,7 +42,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -54,7 +54,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -65,7 +65,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -77,7 +77,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -88,7 +88,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -100,7 +100,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -111,7 +111,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -122,7 +122,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -133,7 +133,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -145,7 +145,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -156,7 +156,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -168,7 +168,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -179,7 +179,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -191,7 +191,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -202,7 +202,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -214,7 +214,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -225,7 +225,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -237,7 +237,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -248,7 +248,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -260,7 +260,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -271,7 +271,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -283,7 +283,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -294,7 +294,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -306,7 +306,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -317,7 +317,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -329,7 +329,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -340,7 +340,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -352,7 +352,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -363,7 +363,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -375,7 +375,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             CASE
                                 WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('minimumSize' AS name),
-                                        xmlelement(name size, null, 
+                                        xmlelement(name size, null,
                                             CASE
                                                 WHEN coalesce(pWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pWidth)
@@ -386,7 +386,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                                 WHEN coalesce(pHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pHeight)
                                             ELSE
-                                                null 
+                                                null
                                             END))
                                 ELSE
                                     null
@@ -405,5 +405,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix te
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer, pWidth integer) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer, pWidth integer) 
+COMMENT ON FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix text, pScDefIntName text, pDataTypeIntName text, pHeight integer, pWidth integer)
     IS $DOC$A function which returns the UI XML for a standard Qt widget based on the datatype.$DOC$;
