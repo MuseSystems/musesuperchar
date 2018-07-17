@@ -769,24 +769,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -813,24 +813,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "textChanged()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["textChanged()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -857,24 +857,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "newDate(const QDate &)"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["newDate(const QDate &)"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
                         break;
@@ -897,24 +897,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "stateChanged(int)"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["stateChanged(int)"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -985,24 +985,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1031,24 +1031,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1077,24 +1077,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1123,24 +1123,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1169,24 +1169,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1215,24 +1215,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1261,24 +1261,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1307,24 +1307,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1353,24 +1353,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
@@ -1397,24 +1397,24 @@ try {
                             };
 
                             if (typeof pFunc === "function") {
-                                returnWidget[
-                                    "editingFinished()"
-                                ].connect(function() {
-                                    try {
-                                        pFunc(pScInternalName);
-                                    } catch (e) {
-                                        throw new MuseUtils.ApiException(
-                                            "musesuperchar",
-                                            "We received an error condition while trying to execute a user 'On Change' function.",
-                                            "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
-                                            {
-                                                params: funcParams,
-                                                thrownError: e
-                                            },
-                                            MuseUtils.LOG_WARNING
-                                        );
+                                returnWidget["editingFinished()"].connect(
+                                    function() {
+                                        try {
+                                            pFunc(pScInternalName);
+                                        } catch (e) {
+                                            throw new MuseUtils.ApiException(
+                                                "musesuperchar",
+                                                "We received an error condition while trying to execute a user 'On Change' function.",
+                                                "MuseSuperChar.Widget.generateScWidget.setOnChangeFunc",
+                                                {
+                                                    params: funcParams,
+                                                    thrownError: e
+                                                },
+                                                MuseUtils.LOG_WARNING
+                                            );
+                                        }
                                     }
-                                });
+                                );
                             }
                         };
 
