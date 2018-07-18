@@ -24,6 +24,8 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
             ,scgrp_id
             ,scgrp_internal_name
             ,scgrp_display_name
+            ,scgrp_min_columns
+            ,scgrp_is_space_conserved
             ,scdef_id
             ,scdef_internal_name
             ,scdef_display_name
@@ -45,6 +47,8 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
                     ,scgrp_id
                     ,scgrp_internal_name
                     ,scgrp_display_name
+                    ,scgrp_min_columns
+                    ,scgrp_is_space_conserved
                     ,scdef_id
                     ,scdef_internal_name
                     ,scdef_display_name
