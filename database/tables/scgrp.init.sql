@@ -68,10 +68,11 @@ DO
                 $DOC$If the group is not user managed directly by users, the value of this column should be true.$DOC$;
 
                 COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_min_columns IS
-                $DOC$Sets a lower bound on the number of columns the layout engine will look to fill.$DOC$
+                $DOC$Sets a lower bound on the number of columns the layout engine will look to fill.$DOC$;
 
                 COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_space_conserved IS
-                $DOC$When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the sections from those specified.  When false, each section may take the full screen width regardless whether it has sufficient columns to justify the space; the upside of this approach is that the sections will follow the user defined order.$DOC$
+                $DOC$When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the sections from those specified.  When false, each section may take the full screen width regardless whether it has sufficient columns to justify the space; the upside of this approach is that the sections will follow the user defined order.$DOC$;
+
                 COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_row_expansion_allowed IS
                 $DOC$If true (the default), the layout engine will allow the sections on any row to take all the available space they can, even if there is way too much space for an attractive display.  When false, we add spacers to push the columns in the row together; the sections will look reasonable, but there could be unattractive space at the end of the row.$DOC$;
 
