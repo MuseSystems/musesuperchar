@@ -34,6 +34,8 @@ DO
                     ,scgrp_description text NOT NULL
                     ,scgrp_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,scgrp_is_system_locked boolean NOT NULL DEFAULT false
+                    ,scgrp_min_columns integer NOT NULL DEFAULT 0
+                    ,scgrp_is_space_conserved boolean NOT NULL DEFAULT false
                 );
 
                 ALTER TABLE  musesuperchar.scgrp OWNER TO admin;
@@ -64,6 +66,11 @@ DO
                 COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_system_locked IS
                 $DOC$If the group is not user managed directly by users, the value of this column should be true.$DOC$;
 
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_min_columns IS
+                $DOC$Sets a lower bound on the number of columns the layout engine will look to fill.$DOC$
+
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_space_conserved IS
+                $DOC$When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the sections from those specified.  When false, each section may take the full screen width regardless whether it has sufficient columns to justify the space; the upside of this approach is that the sections will follow the user defined order.$DOC$
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
@@ -81,6 +88,64 @@ DO
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
+                -- Create scgrp_min_columns if needed
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scgrp'
+                                  AND column_name = 'scgrp_min_columns' ) THEN
+                    --
+                    -- Sets a lower bound on the number of columns the layout engine will look to fill.
+                    --
+
+                    ALTER TABLE musesuperchar.scgrp ADD COLUMN scgrp_min_columns integer;
+
+                    COMMENT ON COLUMN musesuperchar.scgrp.scgrp_min_columns
+                        IS $DOC$Sets a lower bound on the number of columns the layout engine will look to fill.$DOC$;
+
+                    UPDATE musesuperchar.scgrp SET scgrp_min_columns = 0;
+
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_min_columns SET NOT NULL;
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_min_columns SET DEFAULT 0;
+
+                END IF;
+
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scgrp'
+                                  AND column_name = 'scgrp_is_space_conserved' ) THEN
+                    --
+                    -- When true, this parameter instructs the group layout
+                    -- engine to adjust the layout to minimize the space taken
+                    -- in case there are sections with fewer columns than
+                    -- others.  The side effect of this is that it can cause
+                    -- reordering of the sections from those specified.  When
+                    -- false, each section may take the full screen width
+                    -- regardless whether it has sufficient columns to justify
+                    -- the space; the upside of this approach is that the
+                    -- sections will follow the user defined order.
+                    --
+
+                    ALTER TABLE musesuperchar.scgrp ADD COLUMN scgrp_is_space_conserved boolean;
+
+                    COMMENT ON COLUMN musesuperchar.scgrp.scgrp_is_space_conserved
+                        IS $DOC$When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the sections from those specified.  When false, each section may take the full screen width regardless whether it has sufficient columns to justify the space; the upside of this approach is that the sections will follow the user defined order.$DOC$;
+
+                    UPDATE musesuperchar.scgrp
+                        SET scgrp_is_space_conserved = coalesce(
+                            musextputils.get_musemetric(
+                                'musesuperchar', 'isLayoutSpaceConserved',
+                                    null::boolean),
+                            false);
+
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_is_space_conserved SET NOT NULL;
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_is_space_conserved SET DEFAULT false;
+
+                    DELETE FROM musextputils.musemetric
+                        WHERE musemetric_name = 'isLayoutSpaceConserved';
+
+                END IF;
 
             END IF;
 
