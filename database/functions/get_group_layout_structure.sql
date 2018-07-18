@@ -28,9 +28,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
     RETURNS jsonb AS
         $BODY$
             DECLARE
-                vIsConserved boolean := coalesce(musextputils.get_musemetric(
-                        'musesuperchar','isLayoutSpaceConserved', null::boolean),
-                        false);
+                vIsConserved boolean;
                 vRecords musesuperchar.v_form_builder_widgets[];
                 vMaxColumns integer;
                 vGroupIntName text;
@@ -56,15 +54,29 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                              'scgrp_id',r.scgrp_id
                             ,'scgrp_internal_name',r.scgrp_internal_name
                             ,'scgrp_display_name',r.scgrp_display_name
+                            ,'scgrp_min_columns',r.scgrp_min_columns
+                            ,'scgrp_is_space_conserved',r.scgrp_is_space_conserved
+                            ,'scgrp_is_row_expansion_allowed', r.scgrp_is_row_expansion_allowed
                             ,'group_rows','{}'::text[]))
                     INTO vReturnVal
                 FROM unnest(vRecords) r;
 
                 -- Get the maximum number of columns.
-                SELECT scgrp_internal_name, max(r.section_column_count)
-                    INTO vGroupIntName,vMaxColumns
+                SELECT   r.scgrp_internal_name
+                        ,CASE
+                            WHEN
+                                r.scgrp_min_columns < max(r.section_column_count)
+                            THEN
+                                max(r.section_column_count)
+                            ELSE
+                                r.scgrp_min_columns
+                         END
+                        ,r.scgrp_is_space_conserved
+                    INTO vGroupIntName, vMaxColumns, vIsConserved
                 FROM unnest(vRecords) r
-                GROUP BY scgrp_internal_name;
+                GROUP BY scgrp_internal_name
+                        ,scgrp_min_columns
+                        ,scgrp_is_space_conserved;
 
                 SELECT jsonb_object_agg(section_internal_name,
                     jsonb_build_object('section_display_name',
