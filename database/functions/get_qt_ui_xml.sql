@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,7 +20,7 @@
 -- given layout structure.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
     RETURNS xml AS
         $BODY$
             DECLARE
@@ -52,15 +52,15 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                             <<field>>
                             FOR vCurrField IN SELECT jsonb_array_elements(vCurrColumn -> 'column_fields') LOOP
                                 vCurrfieldWidget := musesuperchar.get_qt_ui_widget_for_datatype(
-                                                        vObjPfx, 
-                                                        vCurrField ->> 'scdef_internal_name', 
-                                                        vCurrField ->> 'datatype_internal_name', 
-                                                        (vCurrField ->> 'scdef_scgrp_ass_height')::integer, 
+                                                        vObjPfx,
+                                                        vCurrField ->> 'scdef_internal_name',
+                                                        vCurrField ->> 'datatype_internal_name',
+                                                        (vCurrField ->> 'scdef_scgrp_ass_height')::integer,
                                                         (vCurrField ->> 'scdef_scgrp_ass_width')::integer);
-                                vTabOrder := vTabOrder || 
+                                vTabOrder := vTabOrder ||
                                     (xpath('string(/widget/@name)',
                                         vCurrfieldWidget[1]))[1]::text;
-                                -- This is a bit of a hack, but should work 
+                                -- This is a bit of a hack, but should work
                                 -- since we're controlling generation in this
                                 -- process.
                                 IF vCurrfieldWidget[2] IS NOT NULL
@@ -97,11 +97,11 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                      WHEN array_length(vColumns,1) = 1 THEN
                                         vColumns[1]
                                     ELSE
-                                        null 
+                                        null
                                 END);
                     END LOOP section;
                     vGroupsRows := vGroupsRows ||
-                        CASE WHEN array_length(vSections,1) > 1 THEN 
+                        CASE WHEN array_length(vSections,1) > 1 THEN
                                 xmlelement(name layout, xmlattributes('QHBoxLayout' as class, vObjPfx||'_'||(vCurrRow->>'row_internal_name')||'_qhboxlayout' AS name),
                                     (SELECT xmlagg(xmlelement(name item,q)) FROM unnest(vSections) q))
                             WHEN array_length(vSections,1) = 1 THEN
@@ -125,7 +125,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                         xmlelement(name tabstops,
                             (SELECT xmlagg(xmlelement(name tabstop, q)) FROM unnest(vTabOrder) q)))
                     INTO vReturnVal;
-                
+
                 RETURN vReturnVal;
             END;
         $BODY$
@@ -139,5 +139,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) TO admin
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) 
+COMMENT ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
     IS $DOC$Generates a Qt UI XML document based on the Group Layout Items for the layout structure.$DOC$;
