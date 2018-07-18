@@ -36,6 +36,7 @@ DO
                     ,scgrp_is_system_locked boolean NOT NULL DEFAULT false
                     ,scgrp_min_columns integer NOT NULL DEFAULT 0
                     ,scgrp_is_space_conserved boolean NOT NULL DEFAULT false
+                    ,scgrp_is_row_expansion_allowed boolean NOT NULL DEFAULT true
                 );
 
                 ALTER TABLE  musesuperchar.scgrp OWNER TO admin;
@@ -71,6 +72,8 @@ DO
 
                 COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_space_conserved IS
                 $DOC$When true, this parameter instructs the group layout engine to adjust the layout to minimize the space taken in case there are sections with fewer columns than others.  The side effect of this is that it can cause reordering of the sections from those specified.  When false, each section may take the full screen width regardless whether it has sufficient columns to justify the space; the upside of this approach is that the sections will follow the user defined order.$DOC$
+                COMMENT ON COLUMN   musesuperchar.scgrp.scgrp_is_row_expansion_allowed IS
+                $DOC$If true (the default), the layout engine will allow the sections on any row to take all the available space they can, even if there is way too much space for an attractive display.  When false, we add spacers to push the columns in the row together; the sections will look reasonable, but there could be unattractive space at the end of the row.$DOC$;
 
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
@@ -144,6 +147,36 @@ DO
 
                     DELETE FROM musextputils.musemetric
                         WHERE musemetric_name = 'isLayoutSpaceConserved';
+
+                END IF;
+
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scgrp'
+                                  AND column_name = 'scgrp_is_row_expansion_allowed' ) THEN
+                    --
+                    -- When true, this parameter instructs the group layout
+                    -- engine to adjust the layout to minimize the space taken
+                    -- in case there are sections with fewer columns than
+                    -- others.  The side effect of this is that it can cause
+                    -- reordering of the sections from those specified.  When
+                    -- false, each section may take the full screen width
+                    -- regardless whether it has sufficient columns to justify
+                    -- the space; the upside of this approach is that the
+                    -- sections will follow the user defined order.
+                    --
+
+                    ALTER TABLE musesuperchar.scgrp ADD COLUMN scgrp_is_row_expansion_allowed boolean;
+
+                    COMMENT ON COLUMN musesuperchar.scgrp.scgrp_is_row_expansion_allowed
+                        IS $DOC$If true (the default), the layout engine will allow the sections on any row to take all the available space they can, even if there is way too much space for an attractive display.  When false, we add spacers to push the columns in the row together; the sections will look reasonable, but there could be unattractive space at the end of the row.$DOC$;
+
+                    UPDATE musesuperchar.scgrp
+                        SET scgrp_is_row_expansion_allowed = true;
+
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_is_row_expansion_allowed SET NOT NULL;
+                    ALTER TABLE musesuperchar.scgrp ALTER COLUMN scgrp_is_row_expansion_allowed SET DEFAULT true;
 
                 END IF;
 
