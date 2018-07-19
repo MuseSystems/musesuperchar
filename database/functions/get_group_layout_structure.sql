@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -22,15 +22,13 @@
 -- of generating a structured layout document and actually implementing the
 -- final form.  This should make it easier to upgrade since the final form would
 -- be all that needs to change.
--- 
+--
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigint)
     RETURNS jsonb AS
         $BODY$
             DECLARE
-                vIsConserved boolean := coalesce(musextputils.get_musemetric(
-                        'musesuperchar','isLayoutSpaceConserved', null::boolean),
-                        false);
+                vIsConserved boolean;
                 vRecords musesuperchar.v_form_builder_widgets[];
                 vMaxColumns integer;
                 vGroupIntName text;
@@ -38,8 +36,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                 vSecLayouts jsonb := '{}'::jsonb;
             BEGIN
 
-                IF NOT EXISTS (SELECT true 
-                                FROM musesuperchar.scgrp 
+                IF NOT EXISTS (SELECT true
+                                FROM musesuperchar.scgrp
                                 WHERE scgrp_id = pGroupId) THEN
                     RAISE EXCEPTION 'We require a valid Group ID value. (FUNC: musesuperchar.get_group_layout_structure) (pGroupId: %)',pGroupId;
                 END IF;
@@ -50,21 +48,35 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                 WHERE   scgrp_id = pGroupId;
 
                 -- setup the root elements
-                SELECT DISTINCT 
+                SELECT DISTINCT
                     jsonb_build_object('group',
                         jsonb_build_object(
                              'scgrp_id',r.scgrp_id
                             ,'scgrp_internal_name',r.scgrp_internal_name
                             ,'scgrp_display_name',r.scgrp_display_name
+                            ,'scgrp_min_columns',r.scgrp_min_columns
+                            ,'scgrp_is_space_conserved',r.scgrp_is_space_conserved
+                            ,'scgrp_is_row_expansion_allowed', r.scgrp_is_row_expansion_allowed
                             ,'group_rows','{}'::text[]))
                     INTO vReturnVal
                 FROM unnest(vRecords) r;
 
                 -- Get the maximum number of columns.
-                SELECT scgrp_internal_name, max(r.section_column_count)
-                    INTO vGroupIntName,vMaxColumns
+                SELECT   r.scgrp_internal_name
+                        ,CASE
+                            WHEN
+                                r.scgrp_min_columns < max(r.section_column_count)
+                            THEN
+                                max(r.section_column_count)
+                            ELSE
+                                r.scgrp_min_columns
+                         END
+                        ,r.scgrp_is_space_conserved
+                    INTO vGroupIntName, vMaxColumns, vIsConserved
                 FROM unnest(vRecords) r
-                GROUP BY scgrp_internal_name;
+                GROUP BY scgrp_internal_name
+                        ,scgrp_min_columns
+                        ,scgrp_is_space_conserved;
 
                 SELECT jsonb_object_agg(section_internal_name,
                     jsonb_build_object('section_display_name',
@@ -72,7 +84,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                     INTO vSecLayouts
                 FROM
                     (SELECT section_internal_name,scdef_scgrp_ass_section_name,array_agg(cols) AS seccols
-                    FROM 
+                    FROM
                         (SELECT   section_internal_name
                                 ,scdef_scgrp_ass_section_name
                                 ,jsonb_build_object('column_internal_name',
@@ -105,7 +117,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                     vCurrRow jsonb := '[]'::jsonb;
                     vGroupRows jsonb := '[]'::jsonb;
                 BEGIN
-                        
+
                     IF vIsConserved THEN
                         -- Loop through each section.
                         FOR vCurrSecName, vCurrSecColCount IN
@@ -130,17 +142,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                 vSeenSecs := vSeenSecs || vCurrSecName;
                             ELSE
                                 -- Add our section and find anything else that
-                                -- will fit.  Space is conserved, so keep 
+                                -- will fit.  Space is conserved, so keep
                                 -- going until all options are exhausted.
                                 vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrSecName) ->> 'section_display_name','section_internal_name',vCurrSecName,'section_columns',(vSecLayouts -> vCurrSecName) -> 'columns');
                                 vSeenSecs := vSeenSecs || vCurrSecName;
                                 vCurrRowCols := vCurrRowCols - vCurrSecColCount;
                                 FOR vCurrRestSecName, vCurrRestSecColCount IN
                                     SELECT arow.section_internal_name,arow.section_column_count
-                                        FROM unnest(vRecords) arow 
-                                        WHERE NOT arow.section_internal_name = 
+                                        FROM unnest(vRecords) arow
+                                        WHERE NOT arow.section_internal_name =
                                                 ANY(vSeenSecs) LOOP
-                                    IF vCurrRestSecColCount <= vCurrRowCols 
+                                    IF vCurrRestSecColCount <= vCurrRowCols
                                         AND array_position(vSeenSecs, vCurrRestSecName) IS NULL THEN
                                         -- We have a winner. Add it and continue.
                                         vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrRestSecName) ->> 'section_display_name','section_internal_name',vCurrRestSecName,'section_columns',(vSecLayouts -> vCurrRestSecName) -> 'columns');
@@ -153,7 +165,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                 END LOOP;
                             END IF;
                             -- We should have a complete row by this point.
-                            -- Add the 
+                            -- Add the
                             vGroupRows := vGroupRows || jsonb_build_object(
                                 'row_internal_name',
                                 vGroupIntName||'_row_'||substring('00'||jsonb_array_length(vGroupRows)+1,'..$'),
@@ -184,17 +196,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                 vSeenSecs := vSeenSecs || vCurrSecName;
                             ELSE
                                 -- Add our section and find anything else that
-                                -- will fit.  Space is not conserved, so exit 
+                                -- will fit.  Space is not conserved, so exit
                                 -- the first time we cannot fit a section.
                                 vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrSecName) ->> 'section_display_name','section_internal_name',vCurrSecName,'section_columns',(vSecLayouts -> vCurrSecName) -> 'columns');
                                 vSeenSecs := vSeenSecs || vCurrSecName;
                                 vCurrRowCols := vCurrRowCols - vCurrSecColCount;
                                 FOR vCurrRestSecName, vCurrRestSecColCount IN
                                     SELECT arow.section_internal_name,arow.section_column_count
-                                        FROM unnest(vRecords) arow 
-                                        WHERE NOT arow.section_internal_name = 
+                                        FROM unnest(vRecords) arow
+                                        WHERE NOT arow.section_internal_name =
                                                 ANY(vSeenSecs) LOOP
-                                    IF vCurrRestSecColCount <= vCurrRowCols 
+                                    IF vCurrRestSecColCount <= vCurrRowCols
                                         AND array_position(vSeenSecs, vCurrRestSecName) IS NULL THEN
                                         -- We have a winner. Add it and continue.
                                         vCurrRow := vCurrRow || jsonb_build_object('section_display_name',(vSecLayouts -> vCurrRestSecName) ->> 'section_display_name','section_internal_name',vCurrRestSecName,'section_columns',(vSecLayouts -> vCurrRestSecName) -> 'columns');
@@ -210,14 +222,14 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                 END LOOP;
                             END IF;
                             -- We should have a complete row by this point.
-                            -- Add the 
+                            -- Add the
                             vGroupRows := vGroupRows || jsonb_build_object(
                                 'row_internal_name',
                                 vGroupIntName||'_row_'||substring('00'||jsonb_array_length(vGroupRows)+1,'..$'),
                                 'row_sections',
                                 vCurrRow);
                         END LOOP;
-                    
+
                     END IF;
 
                     -- We should have all rows/sections.
@@ -238,5 +250,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigi
 GRANT EXECUTE ON FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_group_layout_structure(pGroupId bigint)
     IS $DOC$Generates a JSONB object that represents the structure of the group widget.  We do this mostly because JSONB is easier to work with than XML or record sets (associative array like functionality).  Also this separates the concern of generating a structured layout document and actually implementing the final form.  This should make it easier to upgrade since the final form would be all that needs to change.$DOC$;
