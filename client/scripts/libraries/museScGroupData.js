@@ -393,13 +393,6 @@ try {
                 updateColumns.push('scgrp_id = <? value("scgrp_id" ?> ');
             }
 
-            if (pGroupData.hasOwnProperty("scgrp_internal_name")) {
-                updateColumns.push(
-                    "scgrp_internal_name = " +
-                        '<? value("scgrp_internal_name") ?> '
-                );
-            }
-
             if (pGroupData.hasOwnProperty("scgrp_display_name")) {
                 updateColumns.push(
                     "scgrp_display_name = " +
@@ -1718,19 +1711,6 @@ try {
                 throw new MuseUtils.PermissionException(
                     "musesuperchar",
                     "You do not have permission to update system locked super characteristic groups.",
-                    "MuseSuperChar.Group.pPublicApi.updateGroup",
-                    { params: funcParams },
-                    MuseUtils.LOG_WARNING
-                );
-            }
-
-            if (
-                pGroupData.hasOwnProperty("scgrp_internal_name") &&
-                !privileges.check("maintainSuperCharInternalNames")
-            ) {
-                throw new MuseUtils.PermissionException(
-                    "musesuperchar",
-                    "You have asked to update a group's internal name and you do not have permission to make such an update.",
                     "MuseSuperChar.Group.pPublicApi.updateGroup",
                     { params: funcParams },
                     MuseUtils.LOG_WARNING

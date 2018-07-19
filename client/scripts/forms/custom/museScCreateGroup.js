@@ -280,9 +280,7 @@ try {
 
             // Group Edit Area
             displayNameXLineEdit.enabled = true;
-            internalNameXLineEdit.enabled = privileges.check(
-                "maintainSuperCharInternalNames"
-            );
+            internalNameXLineEdit.enabled = false;
             descXTextArea.enabled = true;
 
             // Entity Assign Area
@@ -334,13 +332,6 @@ try {
 
                 if (displayNameXLineEdit.text != lastGroupDisplayName) {
                     groupData.scgrp_display_name = displayNameXLineEdit.text;
-                }
-
-                if (
-                    internalNameXLineEdit.text != lastGroupInternalName &&
-                    privileges.check("maintainSuperCharInternalNames")
-                ) {
-                    groupData.scgrp_internal_name = internalNameXLineEdit.text;
                 }
 
                 if (
