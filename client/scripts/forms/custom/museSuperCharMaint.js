@@ -630,13 +630,11 @@ try {
 
             superCharSystemValuesGroupBox.enabled =
                 privileges.check("maintainSuperCharListQuery") ||
-                privileges.check("maintainSuperCharInternalNames") ||
                 privileges.check("maintainSuperCharSysLockRecsManually");
             isSystemLockedXCheckBox.enabled =
                 true &&
                 privileges.check("maintainSuperCharSysLockRecsManually");
-            internalNameXLineEdit.enabled =
-                true && privileges.check("maintainSuperCharInternalNames");
+            internalNameXLineEdit.enabled = false;
             internalNameXLineEdit.text = currSc.scdef_internal_name;
 
             assignedGroupsListGroupBox.title =

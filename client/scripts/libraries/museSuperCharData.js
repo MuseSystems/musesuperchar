@@ -420,13 +420,6 @@ try {
                 updateColumns.push("scdef_id = " + '<? value("scdef_id") ?> ');
             }
 
-            if (pSuperCharData.hasOwnProperty("scdef_internal_name")) {
-                updateColumns.push(
-                    "scdef_internal_name = " +
-                        '<? value("scdef_internal_name") ?> '
-                );
-            }
-
             if (pSuperCharData.hasOwnProperty("scdef_display_name")) {
                 updateColumns.push(
                     "scdef_display_name = " +
@@ -932,19 +925,6 @@ try {
                 throw new MuseUtils.PermissionException(
                     "musesuperchar",
                     "You do not have permission to update system locked Super Characteristics.",
-                    "MuseSuperChar.SuperChar.pPublicApi.updateSuperChar",
-                    { params: funcParams },
-                    MuseUtils.LOG_WARNING
-                );
-            }
-
-            if (
-                pSuperCharData.hasOwnProperty("scdef_internal_name") &&
-                !privileges.check("maintainSuperCharInternalNames")
-            ) {
-                throw new MuseUtils.PermissionException(
-                    "musesuperchar",
-                    "You do not have permission to update a Super Characteristic's internal name.",
                     "MuseSuperChar.SuperChar.pPublicApi.updateSuperChar",
                     { params: funcParams },
                     MuseUtils.LOG_WARNING
