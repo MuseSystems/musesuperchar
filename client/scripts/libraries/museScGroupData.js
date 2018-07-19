@@ -173,6 +173,9 @@ try {
                         ",scgrp_description " +
                         ",scgrp_pkghead_id " +
                         ",scgrp_is_system_locked " +
+                        ",scgrp_min_columns " +
+                        ",scgrp_is_space_conserved " +
+                        ",scgrp_is_row_expansion_allowed" +
                         ",scgrp_is_active " +
                         ",scgrp_date_created " +
                         ",scgrp_role_created " +
@@ -346,11 +349,16 @@ try {
                 var groupQuery = MuseUtils.executeQuery(
                     "INSERT INTO musesuperchar.scgrp " +
                         "(scgrp_internal_name, scgrp_display_name, " +
-                        "scgrp_description) " +
+                        "scgrp_description, scgrp_min_columns, " +
+                        "scgrp_is_space_conserved, scgrp_is_row_expansion_allowed) " +
                         "VALUES " +
                         '( <? value("scgrp_internal_name") ?> ' +
                         ',<? value("scgrp_display_name") ?> ' +
-                        ',<? value("scgrp_description") ?>) ' +
+                        ',<? value("scgrp_description") ?> ' +
+                        ',<? value("scgrp_min_columns") ?> ' +
+                        ',<? value("scgrp_is_space_conserved") ?> ' +
+                        ',<? value("scgrp_is_row_expansion_allowed") ?> ' +
+                        ") " +
                         "RETURNING scgrp_id",
                     pGroupData
                 );
@@ -414,6 +422,24 @@ try {
             }
 
             if (pGroupData.hasOwnProperty("scgrp_is_active")) {
+                updateColumns.push(
+                    'scgrp_is_active = <? value("scgrp_is_active") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_min_columns")) {
+                updateColumns.push(
+                    'scgrp_min_columns = <? value("scgrp_min_columns") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_is_space_conserved")) {
+                updateColumns.push(
+                    'scgrp_is_space_conserved = <? value("scgrp_is_space_conserved") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_is_row_expansion_allowed")) {
                 updateColumns.push(
                     'scgrp_is_active = <? value("scgrp_is_active") ?> '
                 );
@@ -1668,6 +1694,46 @@ try {
                 throw new MuseUtils.ParameterException(
                     "musesuperchar",
                     "You must provide a group description when creating a new group.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            if (
+                !pGroupData.hasOwnProperty("scgrp_min_columns") ||
+                !Number.isInteger(Number(pGroupData.scgrp_min_columns)) ||
+                pGroupData.scgrp_min_columns < 0
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a minimum number of columns that the group must support, though this number can be zero.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            if (
+                !pGroupData.hasOwnProperty("scgrp_is_space_conserved") ||
+                typeof pGroupData.scgrp_is_space_conserved !== "boolean"
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a value for whether or not a group layout is to undergo space preservation or not.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            if (
+                !pGroupData.hasOwnProperty("scgrp_is_row_expansion_allowed") ||
+                typeof pGroupData.scgrp_is_row_expansion_allowed !== "boolean"
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a value for whether or not group sections may take all available space.",
                     "MuseSuperChar.Group.pPublicApi.createGroup",
                     { params: funcParams },
                     MuseUtils.LOG_WARNING
