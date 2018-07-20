@@ -5,7 +5,7 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -35,7 +35,9 @@ DO
                     ,scdef_scgrp_ass_section_name text NOT NULL DEFAULT 'General'
                     ,scdef_scgrp_ass_is_column_start boolean NOT NULL default false
                     ,scdef_scgrp_ass_width integer
+                    ,scdef_scgrp_ass_max_width integer
                     ,scdef_scgrp_ass_height integer
+                    ,scdef_scgrp_ass_max_height integer
                     ,scdef_scgrp_ass_pkghead_id integer REFERENCES public.pkghead (pkghead_id)
                     ,scdef_scgrp_ass_is_system_locked boolean NOT NULL DEFAULT false
                 );
@@ -71,8 +73,14 @@ DO
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_width IS
                 $DOC$If set, will become the minimum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass_max_width IS
+                $DOC$If set, will become the maxumum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
+
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_height IS
                 $DOC$If set, will become the minimum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass_max_height IS
+                $DOC$If set, will become the maxumum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_pkghead_id IS
                 $DOC$If the group/characteristic relationship is managed by an extension package if this value is not null.$DOC$;
@@ -96,7 +104,43 @@ DO
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scdef_scgrp_ass'
+                                  AND column_name = 'scdef_scgrp_ass_max_width' ) THEN
+                    --
+                    -- If set, will become the minimum width for the data widget
+                    -- in this layout.  If not set the widget is allowed to
+                    -- default.
+                    --
 
+                    ALTER TABLE musesuperchar.scdef_scgrp_ass ADD COLUMN scdef_scgrp_ass_max_width integer;
+
+                    COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_max_width
+                        IS
+                        $DOC$If set, will become the minimum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
+
+                END IF;
+
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scdef_scgrp_ass'
+                                  AND column_name = 'scdef_scgrp_ass_max_height' ) THEN
+                    --
+                    -- If set, will become the maxumum height for the data
+                    -- widget in this layout.  If not set the widget is allowed
+                    -- to default.
+                    --
+
+                    ALTER TABLE musesuperchar.scdef_scgrp_ass ADD COLUMN scdef_scgrp_ass_max_height integer;
+
+                    COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_max_height
+                        IS
+                        $DOC$If set, will become the maxumum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
+
+                END IF;
             END IF;
         END;
     $BODY$;
