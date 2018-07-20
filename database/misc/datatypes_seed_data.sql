@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -27,7 +27,7 @@ INSERT INTO musesuperchar.datatype (
         ,datatype_is_array
         ,datatype_is_lov_based
         ,datatype_is_user_visible)
-    VALUES 
+    VALUES
          ('textfield', 'Text Field', 'A single line of text.', true, false, false, 10, false, false, false, true)
         ,('textarea', 'Text Area', 'A larger, multi-line text area.', true, false, false, 20, false, false, false, true)
         ,('datecluster', 'Date', 'A date field.', false, false, true, 30, false, false, false, true)
