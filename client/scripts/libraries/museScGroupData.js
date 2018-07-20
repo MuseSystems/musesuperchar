@@ -761,7 +761,9 @@ try {
                         ",ssa.scdef_scgrp_ass_section_name " +
                         ",ssa.scdef_scgrp_ass_is_column_start " +
                         ",ssa.scdef_scgrp_ass_width " +
+                        ",ssa.scdef_scgrp_ass_max_width" +
                         ",ssa.scdef_scgrp_ass_height " +
+                        ",ssa.scdef_scgrp_ass_max_height" +
                         ",ssa.scdef_scgrp_ass_pkghead_id " +
                         ",ssa.scdef_scgrp_ass_is_system_locked " +
                         ",CASE " +
@@ -886,22 +888,24 @@ try {
                 );
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width")) {
                 columnList.push("scdef_scgrp_ass_width");
                 valueList.push('<? value("scdef_scgrp_ass_width") ?>');
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_width")) {
+                columnList.push("scdef_scgrp_ass_max_width");
+                valueList.push('<? value("scdef_scgrp_ass_max_width") ?>');
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height")) {
                 columnList.push("scdef_scgrp_ass_height");
                 valueList.push('<? value("scdef_scgrp_ass_height") ?>');
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_height")) {
+                columnList.push("scdef_scgrp_ass_max_height");
+                valueList.push('<? value("scdef_scgrp_ass_max_height") ?>');
             }
 
             try {
@@ -970,36 +974,28 @@ try {
                     '<? value("scdef_scgrp_ass_is_column_start") ?> ';
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width")) {
                 queryText +=
                     ",scdef_scgrp_ass_width = " +
                     '<? value("scdef_scgrp_ass_width") ?> ';
-            } else if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width < 1
-            ) {
-                queryText += ",scdef_scgrp_ass_width = " + "null ";
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_width")) {
+                queryText +=
+                    ",scdef_scgrp_ass_max_width = " +
+                    '<? value("scdef_scgrp_ass_max_width") ?> ';
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height")) {
                 queryText +=
                     ",scdef_scgrp_ass_height = " +
                     '<? value("scdef_scgrp_ass_height") ?> ';
-            } else if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height < 1
-            ) {
-                queryText += ",scdef_scgrp_ass_height = " + "null ";
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_height")) {
+                queryText +=
+                    ",scdef_scgrp_ass_max_height = " +
+                    '<? value("scdef_scgrp_ass_max_height") ?> ';
             }
 
             queryText +=

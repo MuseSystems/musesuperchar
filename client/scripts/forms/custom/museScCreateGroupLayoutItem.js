@@ -95,7 +95,9 @@ try {
             scdef_scgrp_ass_section_name: null,
             scdef_scgrp_ass_is_column_start: null,
             scdef_scgrp_ass_width: null,
+            scdef_scgrp_ass_max_width: null,
             scdef_scgrp_ass_height: null,
+            scdef_scgrp_ass_max_height: null,
             scdef_scgrp_ass_pkghead_id: null,
             scdef_scgrp_ass_is_system_locked: null
         };
@@ -111,16 +113,20 @@ try {
         var sectionComboBox = mywindow.findChild("sectionComboBox");
         var superCharComboBox = mywindow.findChild("superCharComboBox");
         var heightXLineEdit = mywindow.findChild("heightXLineEdit");
+        var maxHeightXLineEdit = mywindow.findChild("maxHeightXLineEdit");
         var widthXLineEdit = mywindow.findChild("widthXLineEdit");
+        var maxWidthXLineEdit = mywindow.findChild("maxWidthXLineEdit");
         var isNewColumnCheckBox = mywindow.findChild("isNewColumnCheckBox");
         var groupXLabel = mywindow.findChild("groupXLabel");
         var heightXLabel = mywindow.findChild("heightXLabel");
+        var maxHeightXLabel = mywindow.findChild("maxHeightXLabel");
         var saveButtonBox = mywindow.findChild("saveButtonBox");
         var sectionXLabel = mywindow.findChild("sectionXLabel");
         var seqValueXLabel = mywindow.findChild("seqValueXLabel");
         var seqXLabel = mywindow.findChild("seqXLabel");
         var superCharXLabel = mywindow.findChild("superCharXLabel");
         var widthXLabel = mywindow.findChild("widthXLabel");
+        var maxWidthXLabel = mywindow.findChild("maxWidthXLabel");
 
         var cancelPushButton = saveButtonBox.button(QDialogButtonBox.Cancel);
         var savePushButton = saveButtonBox.button(QDialogButtonBox.Save);
@@ -137,7 +143,9 @@ try {
         sectionComboBox.allowNull = false;
 
         MuseUtils.numericLineEdit(heightXLineEdit, 0);
+        MuseUtils.numericLineEdit(maxHeightXLineEdit, 0);
         MuseUtils.numericLineEdit(widthXLineEdit, 0);
+        MuseUtils.numericLineEdit(maxWidthXLineEdit, 0);
 
         cancelPushButton.enabled = true;
         savePushButton.enabled = false;
@@ -154,8 +162,10 @@ try {
             sectionComboBox.clear();
             superCharComboBox.clear();
             heightXLineEdit.clear();
+            maxHeightXLineEdit.clear();
             seqValueXLabel.clear();
             widthXLineEdit.clear();
+            maxWidthXLineEdit.clear();
             isNewColumnCheckBox.checked = false;
         };
 
@@ -183,7 +193,9 @@ try {
             sectionComboBox.enabled = false;
             superCharComboBox.enabled = false;
             heightXLineEdit.enabled = false;
+            maxHeightXLineEdit.enabled = false;
             widthXLineEdit.enabled = false;
+            maxWidthXLineEdit.enabled = false;
             isNewColumnCheckBox.enabled = false;
             setButtons();
         };
@@ -198,9 +210,13 @@ try {
             sectionComboBox.clear();
             heightXLineEdit.enabled = false;
             heightXLineEdit.clear();
+            maxHeightXLineEdit.enabled = false;
+            maxHeightXLineEdit.clear();
             seqValueXLabel.clear();
             widthXLineEdit.enabled = false;
             widthXLineEdit.clear();
+            maxWidthXLineEdit.enabled = false;
+            maxWidthXLineEdit.clear();
             isNewColumnCheckBox.enabled = false;
             isNewColumnCheckBox.checked = false;
             superCharComboBox.populate(
@@ -217,8 +233,10 @@ try {
             // We'll let the set mode functions deal with that.
             sectionComboBox.clear();
             heightXLineEdit.clear();
+            maxHeightXLineEdit.clear();
             seqValueXLabel.clear();
             widthXLineEdit.clear();
+            maxWidthXLineEdit.clear();
             isNewColumnCheckBox.checked = false;
 
             if (MuseUtils.isValidId(currGroupLayoutItem.scdef_scgrp_ass_id)) {
@@ -250,16 +268,25 @@ try {
                 heightXLineEdit.setFormattedText(
                     currGroupLayoutItem.scdef_scgrp_ass_height
                 );
+                maxHeightXLineEdit.setFormattedText(
+                    currGroupLayoutItem.scdef_scgrp_ass_max_height
+                );
                 widthXLineEdit.setFormattedText(
                     currGroupLayoutItem.scdef_scgrp_ass_width
                 );
+                maxWidthXLineEdit.setFormattedText(
+                    currGroupLayoutItem.scdef_scgrp_ass_max_width
+                );
+
                 isNewColumnCheckBox.checked = MuseUtils.isTrue(
                     currGroupLayoutItem.scdef_scgrp_ass_is_column_start
                 );
 
                 sectionComboBox.enabled = true && mode != "view";
                 heightXLineEdit.enabled = true && mode != "view";
+                maxHeightXLineEdit.enabled = true && mode != "view";
                 widthXLineEdit.enabled = true && mode != "view";
+                maxWidthXLineEdit.enabled = true && mode != "view";
                 isNewColumnCheckBox.enabled = true && mode != "view";
             } else {
                 sectionComboBox.populate(
@@ -270,14 +297,18 @@ try {
 
                 seqValueXLabel.text = "Not Yet Assigned";
                 heightXLineEdit.setFormattedText(0);
+                maxHeightXLineEdit.setFormattedText(0);
                 widthXLineEdit.setFormattedText(0);
+                maxWidthXLineEdit.setFormattedText(0);
                 isNewColumnCheckBox.checked = MuseUtils.isTrue(
                     currGroupLayoutItem.scdef_scgrp_ass_is_column_start
                 );
 
                 sectionComboBox.enabled = true && mode != "view";
                 heightXLineEdit.enabled = true && mode != "view";
+                maxHeightXLineEdit.enabled = true && mode != "view";
                 widthXLineEdit.enabled = true && mode != "view";
+                maxWidthXLineEdit.enabled = true && mode != "view";
                 isNewColumnCheckBox.enabled = true && mode != "view";
             }
 
@@ -297,7 +328,9 @@ try {
                 ),
                 scdef_scgrp_ass_is_column_start: isNewColumnCheckBox.checked,
                 scdef_scgrp_ass_width: widthXLineEdit.getNumericValue(),
-                scdef_scgrp_ass_height: heightXLineEdit.getNumericValue()
+                scdef_scgrp_ass_max_width: maxWidthXLineEdit.getNumericValue(),
+                scdef_scgrp_ass_height: heightXLineEdit.getNumericValue(),
+                scdef_scgrp_ass_max_height: maxHeightXLineEdit.getNumericValue()
             };
 
             try {
