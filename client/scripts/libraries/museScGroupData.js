@@ -441,7 +441,7 @@ try {
 
             if (pGroupData.hasOwnProperty("scgrp_is_row_expansion_allowed")) {
                 updateColumns.push(
-                    'scgrp_is_active = <? value("scgrp_is_active") ?> '
+                    'scgrp_is_row_expansion_allowed = <? value("scgrp_is_row_expansion_allowed") ?> '
                 );
             }
 
