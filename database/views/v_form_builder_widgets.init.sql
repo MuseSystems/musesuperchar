@@ -31,7 +31,9 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
             ,scdef_internal_name
             ,scdef_display_name
             ,scdef_scgrp_ass_height
+            ,scdef_scgrp_ass_max_height
             ,scdef_scgrp_ass_width
+            ,scdef_scgrp_ass_max_width
             ,datatype_id
             ,datatype_internal_name
             ,scdef_scgrp_ass_section_name
@@ -55,7 +57,9 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
                     ,scdef_internal_name
                     ,scdef_display_name
                     ,scdef_scgrp_ass_height
+                    ,scdef_scgrp_ass_max_height
                     ,scdef_scgrp_ass_width
+                    ,scdef_scgrp_ass_max_width
                     ,datatype_id
                     ,datatype_internal_name
                     ,scdef_scgrp_ass_section_name

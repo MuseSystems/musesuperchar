@@ -326,18 +326,32 @@ try {
             "scdef_scgrp_ass_is_column_start"
         );
         groupLayoutXTreeWidget.addColumn(
-            "Width",
+            "Min Width",
             45,
             Qt.AlignRight,
             true,
             "scdef_scgrp_ass_width"
         );
         groupLayoutXTreeWidget.addColumn(
-            "Height",
+            "Max Width",
+            45,
+            Qt.AlignRight,
+            true,
+            "scdef_scgrp_ass_max_width"
+        );
+        groupLayoutXTreeWidget.addColumn(
+            "Min Height",
             45,
             Qt.AlignRight,
             true,
             "scdef_scgrp_ass_height"
+        );
+        groupLayoutXTreeWidget.addColumn(
+            "Max Height",
+            45,
+            Qt.AlignRight,
+            true,
+            "scdef_scgrp_ass_max_height"
         );
         groupLayoutXTreeWidget.addColumn(
             "Is System Locked",

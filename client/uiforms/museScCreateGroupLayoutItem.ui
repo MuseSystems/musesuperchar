@@ -14,7 +14,7 @@ to be bound by its terms.</comment>
     <x>0</x>
     <y>0</y>
     <width>856</width>
-    <height>198</height>
+    <height>237</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,17 +49,27 @@ to be bound by its terms.</comment>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="XLabel" name="heightXLabel">
          <property name="text">
-          <string>Height:</string>
+          <string>Min. Height:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="XLineEdit" name="heightXLineEdit"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="XLabel" name="widthXLabel">
+         <property name="text">
+          <string>Min. Width:</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="XLineEdit" name="heightXLineEdit"/>
+        <widget class="XLineEdit" name="widthXLineEdit"/>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="XCheckBox" name="isNewColumnCheckBox">
          <property name="text">
           <string>Starts New Column?</string>
@@ -88,17 +98,37 @@ to be bound by its terms.</comment>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="XLabel" name="seqValueXLabel"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="XLabel" name="widthXLabel">
+        <widget class="XLabel" name="seqValueXLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>27</height>
+          </size>
+         </property>
          <property name="text">
-          <string>Width:</string>
+          <string>N/A</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="XLineEdit" name="widthXLineEdit"/>
+        <widget class="XLineEdit" name="maxWidthXLineEdit"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="XLabel" name="maxWidthXLabel">
+         <property name="text">
+          <string>Max. Width:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="XLabel" name="maxHeightXLabel">
+         <property name="text">
+          <string>Max. Height:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="XLineEdit" name="maxHeightXLineEdit"/>
        </item>
       </layout>
      </item>

@@ -96,7 +96,9 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                                                 ,'scdef_display_name', scdef_display_name
                                                                 ,'datatype_internal_name',datatype_internal_name
                                                                 ,'scdef_scgrp_ass_height',scdef_scgrp_ass_height
-                                                                ,'scdef_scgrp_ass_width',scdef_scgrp_ass_width))) AS cols
+                                                                ,'scdef_scgrp_ass_max_height',scdef_scgrp_ass_max_height
+                                                                ,'scdef_scgrp_ass_width',scdef_scgrp_ass_width
+                                                                ,'scdef_scgrp_ass_max_width',scdef_scgrp_ass_max_width))) AS cols
                         FROM unnest(vRecords)
                         WHERE  scgrp_id = pGroupId
                         GROUP BY section_internal_name, scdef_scgrp_ass_section_name, internal_column_name

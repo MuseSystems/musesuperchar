@@ -130,6 +130,7 @@
     <createfunction file="database/triggers/trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_entity_scgrp_ass_maintain_qt_entity_recs" />
     <createfunction file="database/triggers/trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs.sql" name="trig_a_id_scdef_scgrp_ass_maintain_qt_entity_recs" />
     <createfunction file="database/triggers/trig_a_u_scgrp_qt_ui_maint.sql" name="trig_a_u_scgrp_qt_ui_maint" />
+    <createfunction file="database/triggers/trig_b_iu_scdef_scgrp_ass_minmax_rules.sql" name="trig_b_iu_scdef_scgrp_ass_minmax_rules" />
 
     <createtable file="database/tables/datatype.sql" name="datatype" />
     <createtable file="database/tables/valtype.sql" name="valtype" />
