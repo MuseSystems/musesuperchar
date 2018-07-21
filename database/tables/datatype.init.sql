@@ -39,6 +39,7 @@ DO
                     ,datatype_is_array boolean NOT NULL DEFAULT false
                     ,datatype_is_lov_based boolean NOT NULL DEFAULT false
                     ,datatype_is_user_visible boolean NOT NULL DEFAULT false
+                    ,datatype_is_cosmetic boolean NOT NULL DEFAULT false
                     ,datatype_display_order integer NOT NULL DEFAULT 99999
                 );
 
@@ -85,6 +86,9 @@ DO
                 COMMENT ON COLUMN musesuperchar.datatype.datatype_is_user_visible IS
                 $DOC$If true, the data type can be assigned to normal user created fields via the UI.$DOC$;
 
+                COMMENT ON COLUMN musesuperchar.datatype.datatype_is_cosmetic IS
+                $DOC$If true, this means the characteristic should not be persisted into the database, but only exists to enhance the UI aesthetics.$DOC$;
+
                 COMMENT ON COLUMN musesuperchar.datatype.datatype_display_order IS
                 $DOC$The display order in the user interface with lower numbers appearing first.$DOC$;
 
@@ -104,6 +108,24 @@ DO
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'datatype'
+                                  AND column_name = 'datatype_is_cosmetic' ) THEN
+                    --
+                    -- If true, this means the characteristic should not be
+                    -- persisted into the database, but only exists to enhance
+                    -- the UI aesthetics.
+                    --
+
+                    ALTER TABLE musesuperchar.datatype ADD COLUMN datatype_is_cosmetic boolean NOT NULL DEFAULT false;
+
+                    COMMENT ON COLUMN musesuperchar.datatype.datatype_is_cosmetic
+                        IS
+                        $DOC$If true, this means the characteristic should not be persisted into the database, but only exists to enhance the UI aesthetics.$DOC$;
+
+                END IF;
 
             END IF;
 
