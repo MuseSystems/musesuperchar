@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -18,13 +18,13 @@
 DO
     $BODY$
         DECLARE
-            
+
         BEGIN
 
             -- Create the table if it does not exist.  Apply deltas if it does and it's needed.
-            IF NOT EXISTS(SELECT     true 
-                          FROM         musextputils.v_basic_catalog 
-                          WHERE     table_schema_name = 'musesuperchar' 
+            IF NOT EXISTS(SELECT     true
+                          FROM         musextputils.v_basic_catalog
+                          WHERE     table_schema_name = 'musesuperchar'
                                   AND table_name = 'scdef') THEN
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.scdef (
@@ -39,14 +39,14 @@ DO
                     ,scdef_list_query      text
                     ,scdef_is_searchable boolean NOT NULL   DEFAULT false
                 );
-                
+
                 ALTER TABLE  musesuperchar.scdef OWNER TO admin;
 
                 REVOKE ALL ON TABLE musesuperchar.scdef FROM public;
                 GRANT ALL ON TABLE musesuperchar.scdef TO admin;
                 GRANT ALL ON TABLE musesuperchar.scdef TO xtrole;
-                
-                COMMENT ON TABLE musesuperchar.scdef 
+
+                COMMENT ON TABLE musesuperchar.scdef
                     IS $DOC$Defines individual super characteristics.  Here we define the type, default validation, and whether or not a value is considered required.$DOC$;
 
                 -- Column Comments
@@ -86,19 +86,19 @@ DO
                                                                 ,'scdef_date_created'
                                                                 ,'scdef_role_created'
                                                                 ,'scdef_date_deactivated'
-                                                                ,'scdef_role_deactivated' 
+                                                                ,'scdef_role_deactivated'
                                                                 ,'scdef_date_modified'
                                                                 ,'scdef_wallclock_modified'
                                                                 ,'scdef_role_modified'
                                                                 ,'scdef_row_version_number'
                                                                 ,'scdef_is_active');
-                
+
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
 
             END IF;
-            
+
 
         END;
     $BODY$;
