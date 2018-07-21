@@ -40,6 +40,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                 vReturnVal xml;
                 vTabOrder text[] := '{}'::text[];
                 vCustomWidgets xml[] := '{}'::xml[];
+                vScDefIntName text;
 
             BEGIN
                 IF vIsRowExp THEN
@@ -59,9 +60,14 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                             vFields := '{}'::xml[];
                             <<field>>
                             FOR vCurrField IN SELECT jsonb_array_elements(vCurrColumn -> 'column_fields') LOOP
+                                IF (vCurrField ->> 'datatype_internal_name') IN ('emptyspace', 'horizontalline') THEN
+                                    vScDefIntName := (vCurrField ->> 'scdef_internal_name') || coalesce(array_length(vFields, 1),0) + 1;
+                                ELSE
+                                    vScDefIntName :=  (vCurrField ->> 'scdef_internal_name');
+                                END IF;
                                 vCurrfieldWidget := musesuperchar.get_qt_ui_widget_for_datatype(
                                                         vObjPfx,
-                                                        vCurrField ->> 'scdef_internal_name',
+                                                        vScDefIntName,
                                                         vCurrField ->> 'datatype_internal_name',
                                                         (vCurrField ->> 'scdef_scgrp_ass_height')::integer,
                                                         (vCurrField ->> 'scdef_scgrp_ass_width')::integer,
@@ -83,7 +89,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                 vFields := vFields ||
                                     xmlconcat(
                                         xmlelement(name item,xmlattributes('0' as column, vCurrField ->> 'column_row_number' as row),
-                                            xmlelement(name widget, xmlattributes('XLabel' as class, vObjPfx||'_'||(vCurrField->>'scdef_internal_name')||'_xlabel' as name),
+                                            xmlelement(name widget, xmlattributes('XLabel' as class, vObjPfx||'_'||vScDefIntName||'_xlabel' as name),
                                                 xmlelement(name property,xmlattributes('text' AS name),
                                                     xmlelement(name string,(vCurrField->>'scdef_display_name'))))),
                                         xmlelement(name item,xmlattributes('1' as column, vCurrField ->> 'column_row_number' AS row),
