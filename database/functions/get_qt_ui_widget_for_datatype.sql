@@ -53,17 +53,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -95,17 +95,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -137,17 +137,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -179,17 +179,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -220,17 +220,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -262,17 +262,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -304,17 +304,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -346,17 +346,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -388,17 +388,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -430,17 +430,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -472,17 +472,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -514,17 +514,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -556,17 +556,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -598,17 +598,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -640,17 +640,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
@@ -682,17 +682,17 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                                     null
                             END,
                             CASE
-                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
                                     xmlelement(name property, xmlattributes('maximumSize' AS name),
                                         xmlelement(name size, null,
                                             CASE
-                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
                                                     xmlelement(name width, null, pMaxWidth)
                                                 ELSE
                                                     xmlelement(name width, null, 16777215)
                                             END,
                                             CASE
-                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
                                                     xmlelement(name height, null, pMaxHeight)
                                                 ELSE
                                                     xmlelement(name height, null, 16777215)
