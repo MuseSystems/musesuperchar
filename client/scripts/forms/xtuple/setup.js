@@ -89,11 +89,16 @@ try {
             unifiedName,
             unifiedUiName,
             setup.MasterInformation,
-            Xt.ProductsModule |
-                Xt.InventoryModule |
-                Xt.CRMModule |
+            Xt.AllModules |
+                Xt.AccountingModule |
                 Xt.SalesModule |
-                Xt.AccountingModule,
+                Xt.CRMModule |
+                Xt.ManufactureModule |
+                Xt.PurchaseModule |
+                Xt.ScheduleModule |
+                Xt.InventoryModule |
+                Xt.ProductsModule |
+                Xt.SystemModule,
             unifiedModeVal,
             unifiedModeVal
         );
