@@ -45,5 +45,7 @@ INSERT INTO musesuperchar.datatype (
         ,('percent', 'Percentage', 'A numeric value rounded to the "Percent" locale precision.', false, true, false, 115, false, false, false, true, false)
         --,('filecluster', 'File', 'A file/attachment reference field.', true, false, false, 120, false, false, false, true, false)
         ,('imagecluster', 'Image', 'An xTuple Image field.', true, false, false, 130, false, false, false, true, false)
+        ,('emptyspace', 'Empty Space', 'A placeholder like field which just takes space.', false, false, false, 500, false, false, false, false, true)
+        ,('horizontalline', 'Horizontal Line', 'Draws a line across the column where this characteristic is placed.', false, false, false, 510, false, false, false, false, true)
     ON CONFLICT(datatype_internal_name)
         DO NOTHING;
