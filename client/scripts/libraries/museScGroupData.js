@@ -1257,13 +1257,16 @@ try {
                         "'(' || scdef_internal_name || ')'  END AS scdef_list_name " +
                         ",scdef_internal_name " +
                         "FROM    musesuperchar.scdef " +
+                        "JOIN musesuperchar.datatype " +
+                        "ON scdef_datatype_id = datatype_id " +
                         "LEFT OUTER JOIN musesuperchar.scdef_scgrp_ass  " +
                         "ON scdef_id = scdef_scgrp_ass_scdef_id  " +
                         "AND scdef_scgrp_ass_is_active " +
                         "AND scdef_scgrp_ass_scgrp_id =  " +
                         '<? value("pGroupId") ?> ' +
                         "WHERE   scdef_is_active " +
-                        "AND scdef_scgrp_ass_id IS NULL " +
+                        "AND (scdef_scgrp_ass_id IS NULL " +
+                        "OR datatype_is_cosmetic) " +
                         "ORDER BY " +
                         "coalesce(nullif(regexp_replace(scdef_display_name,'[[:space:]]','','g'),''), scdef_internal_name) " +
                         ",scdef_internal_name",
