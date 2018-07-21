@@ -702,6 +702,90 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_widget_for_datatype(pPrefix t
                             END),
                         xmlelement(name customwidget,
                             xmlforest('ImageCluster' as class, 'QWidget' as extends, 'imagecluster.h' as header))]
+                    WHEN pDataTypeIntName = 'emptyspace' THEN
+                        ARRAY[xmlelement(name widget, xmlattributes('XLabel' as class, pPrefix||'_'||pScDefIntName||'_xlabelspace' AS name),
+                            CASE
+                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                    xmlelement(name property, xmlattributes('minimumSize' AS name),
+                                        xmlelement(name size, null,
+                                            CASE
+                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                    xmlelement(name width, null, pWidth)
+                                                ELSE
+                                                    xmlelement(name width, null, 0)
+                                            END,
+                                            CASE
+                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                    xmlelement(name height, null, pHeight)
+                                                ELSE
+                                                    xmlelement(name height, null, 0)
+                                            END))
+                                ELSE
+                                    null
+                            END,
+                            CASE
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
+                                    xmlelement(name property, xmlattributes('maximumSize' AS name),
+                                        xmlelement(name size, null,
+                                            CASE
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
+                                                    xmlelement(name width, null, pMaxWidth)
+                                                ELSE
+                                                    xmlelement(name width, null, 16777215)
+                                            END,
+                                            CASE
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
+                                                    xmlelement(name height, null, pMaxHeight)
+                                                ELSE
+                                                    xmlelement(name height, null, 16777215)
+                                            END))
+                                ELSE
+                                    null
+                            END),
+                        xmlelement(name customwidget,
+                            xmlforest('XLabel' as class, 'QLabel' as extends, 'xlabel.h' as header))]
+                    WHEN pDataTypeIntName = 'horizontalline' THEN
+                        ARRAY[xmlelement(name widget, xmlattributes('Line' as class, pPrefix||'_'||pScDefIntName||'_line' AS name),
+                            xmlelement(name property, xmlattributes('orientation' AS name),
+                                xmlelement(name enum, null, 'Qt::Horizontal')),
+                            CASE
+                                WHEN coalesce(pHeight,0) > 0 OR coalesce(pWidth,0) > 0 THEN
+                                    xmlelement(name property, xmlattributes('minimumSize' AS name),
+                                        xmlelement(name size, null,
+                                            CASE
+                                                WHEN coalesce(pWidth,0) > 0 THEN
+                                                    xmlelement(name width, null, pWidth)
+                                                ELSE
+                                                    xmlelement(name width, null, 0)
+                                            END,
+                                            CASE
+                                                WHEN coalesce(pHeight,0) > 0 THEN
+                                                    xmlelement(name height, null, pHeight)
+                                                ELSE
+                                                    xmlelement(name height, null, 0)
+                                            END))
+                                ELSE
+                                    null
+                            END,
+                            CASE
+                                WHEN coalesce(pMaxHeight,0) > 0 OR coalesce(pMaxWidth,0) > 0 THEN
+                                    xmlelement(name property, xmlattributes('maximumSize' AS name),
+                                        xmlelement(name size, null,
+                                            CASE
+                                                WHEN coalesce(pMaxWidth,0) > 0 THEN
+                                                    xmlelement(name width, null, pMaxWidth)
+                                                ELSE
+                                                    xmlelement(name width, null, 16777215)
+                                            END,
+                                            CASE
+                                                WHEN coalesce(pMaxHeight,0) > 0 THEN
+                                                    xmlelement(name height, null, pMaxHeight)
+                                                ELSE
+                                                    xmlelement(name height, null, 16777215)
+                                            END))
+                                ELSE
+                                    null
+                            END)]
                 END;
         $BODY$
     LANGUAGE sql IMMUTABLE;
