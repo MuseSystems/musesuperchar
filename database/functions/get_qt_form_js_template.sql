@@ -493,7 +493,7 @@ try {
                     "We found errors while attempting to process a signal.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };
@@ -534,7 +534,7 @@ try {
                     "We found errors while attempting to cause a value to update from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };
@@ -557,7 +557,7 @@ try {
                     "We found errors while attempting to update all form values from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateAllValues",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };
