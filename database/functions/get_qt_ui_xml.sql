@@ -72,7 +72,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                                         (vCurrField ->> 'scdef_scgrp_ass_height')::integer,
                                                         (vCurrField ->> 'scdef_scgrp_ass_width')::integer,
                                                         (vCurrField ->> 'scdef_scgrp_ass_max_height')::integer,
-                                                        (vCurrField ->> 'scdef_scgrp_ass_max_width')::integer);
+                                                        (vCurrField ->> 'scdef_scgrp_ass_max_width')::integer,
+                                                        (vCurrField ->> 'scdef_is_display_only')::boolean);
                                 vTabOrder := vTabOrder ||
                                     (xpath('string(/widget/@name)',
                                         vCurrfieldWidget[1]))[1]::text;
