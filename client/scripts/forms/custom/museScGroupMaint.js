@@ -1089,6 +1089,9 @@ try {
         entityListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sEntitySelected
         );
+        entityListXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditEntity
+        );
 
         // Group Buttons
         groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
@@ -1096,6 +1099,9 @@ try {
         groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
         groupListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sGroupSelected
+        );
+        groupListXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditGroup
         );
 
         // Group Layout Buttons
@@ -1116,6 +1122,9 @@ try {
         );
         groupLayoutXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sGroupLayoutSelected
+        );
+        groupLayoutXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditSuperCharInLayout
         );
         groupLayoutPreviewPushButton.clicked.connect(
             pPublicApi.sPreviewGroupUiForm
