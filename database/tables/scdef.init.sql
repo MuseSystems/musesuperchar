@@ -38,6 +38,8 @@ DO
                     ,scdef_values_list     text[]
                     ,scdef_list_query      text
                     ,scdef_is_searchable boolean NOT NULL   DEFAULT false
+                    ,scdef_is_display_only boolean NOT NULL DEFAULT false
+                    ,scdef_is_virtual boolean NOT NULL DEFAULT false
                 );
 
                 ALTER TABLE  musesuperchar.scdef OWNER TO admin;
@@ -80,6 +82,12 @@ DO
                 COMMENT ON COLUMN musesuperchar.scdef.scdef_is_searchable IS
                 $DOC$Determines whether or not if the super characteristic is searchable; this only applies if there is an appropriate/relevant search available for the entity type.$DOC$;
 
+                COMMENT ON COLUMN musesuperchar.scdef.scdef_is_display_only IS
+                $DOC$Determines whether or not this characteristic accepts user input from the UI.  If true, the field displays in the user interface, but is "disabled" for entry.  Note that values in this field may still be persisted in the database.$DOC$;
+
+                COMMENT ON COLUMN musesuperchar.scdef.scdef_is_virtual IS
+                $DOC$If true, the value represented by the characteristic is not saved to the database, but is expected to be populated/calculated for display by the UI itself.$DOC$;
+
                 -- Let's now add the audit columns and triggers
                 PERFORM musextputils.add_common_table_columns(   'musesuperchar'
                                                                 ,'scdef'
@@ -96,7 +104,55 @@ DO
 
             ELSE
                 -- Deltas go here.  Be sure to check if each is really needed.
+                -- Create scdef is display only column if needed
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scdef'
+                                  AND column_name = 'scdef_is_display_only' ) THEN
+                    --
+                    -- Determines whether or not this characteristic accepts
+                    -- user input from the UI.  If true, the field displays in
+                    -- the user interface, but is "disabled" for entry.  Note
+                    -- that values in this field may still be persisted in the
+                    -- database.
+                    --
 
+                    ALTER TABLE musesuperchar.scdef ADD COLUMN scdef_is_display_only boolean;
+
+                    COMMENT ON COLUMN musesuperchar.scdef.scdef_is_display_only
+                        IS $DOC$Determines whether or not this characteristic accepts user input from the UI.  If true, the field displays in the user interface, but is "disabled" for entry.  Note that values in this field may still be persisted in the database.$DOC$;
+
+                    UPDATE musesuperchar.scdef SET scdef_is_display_only = false;
+
+                    ALTER TABLE musesuperchar.scdef ALTER COLUMN scdef_is_display_only SET NOT NULL;
+                    ALTER TABLE musesuperchar.scdef ALTER COLUMN scdef_is_display_only SET DEFAULT false;
+
+                END IF;
+
+                -- Create scdef is display only column if needed
+                IF NOT EXISTS(SELECT true
+                              FROM musextputils.v_basic_catalog
+                              WHERE     table_schema_name = 'musesuperchar'
+                                  AND table_name = 'scdef'
+                                  AND column_name = 'scdef_is_virtual' ) THEN
+                    --
+                    -- If true, the value represented by the characteristic is
+                    -- not saved to the database, but is expected to be
+                    -- populated/calculated for display by the UI itself.
+                    --
+
+                    ALTER TABLE musesuperchar.scdef ADD COLUMN scdef_is_virtual boolean;
+
+                    COMMENT ON COLUMN musesuperchar.scdef.scdef_is_virtual
+                        IS $DOC$If true, the value represented by the characteristic is not saved to the database, but is expected to be populated/calculated for display by the UI itself.$DOC$;
+
+                    UPDATE musesuperchar.scdef SET scdef_is_virtual = false;
+
+                    ALTER TABLE musesuperchar.scdef ALTER COLUMN scdef_is_virtual SET NOT NULL;
+                    ALTER TABLE musesuperchar.scdef ALTER COLUMN scdef_is_virtual SET DEFAULT false;
+
+                END IF;
             END IF;
 
 
