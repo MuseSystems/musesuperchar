@@ -163,14 +163,14 @@ try {
         entityListXTreeWidget.addColumn(
             "Entity",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "entity_display_name"
         );
         entityListXTreeWidget.addColumn(
             "Data Table",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "entity_data_table"
         );
@@ -221,14 +221,14 @@ try {
         groupListXTreeWidget.addColumn(
             "Group",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_display_name"
         );
         groupListXTreeWidget.addColumn(
             "Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scgrp_internal_name"
         );
@@ -272,35 +272,35 @@ try {
         groupLayoutXTreeWidget.addColumn(
             "Group",
             15,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scgrp_display_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "Group ID",
             -1,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_scgrp_ass_scgrp_id"
         );
         groupLayoutXTreeWidget.addColumn(
             "Group Int. Name",
             -1,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scgrp_internal_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "Section",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_scgrp_ass_section_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_scgrp_ass_scdef_display_name"
         );
@@ -314,7 +314,7 @@ try {
         groupLayoutXTreeWidget.addColumn(
             "SuperChar Int. Name",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scdef_internal_name"
         );
