@@ -240,42 +240,42 @@ try {
         superCharListXTreeWidget.addColumn(
             "SuperChar ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_id"
         );
         superCharListXTreeWidget.addColumn(
             "SuperChar Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_internal_name"
         );
         superCharListXTreeWidget.addColumn(
             "SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_display_name"
         );
         superCharListXTreeWidget.addColumn(
             "Type ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_datatype_id"
         );
         superCharListXTreeWidget.addColumn(
             "Type Interal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_datatype_internal_name"
         );
         superCharListXTreeWidget.addColumn(
             "Type",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_datatype_display_name"
         );
@@ -303,7 +303,7 @@ try {
         superCharListXTreeWidget.addColumn(
             "Package Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_package_name"
         );
@@ -311,28 +311,28 @@ try {
         assignedGroupsListXTreeWidget.addColumn(
             "Group ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scgrp_id"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scgrp_internal_name"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_display_name"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group Entities",
             300,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_entity_display_names"
         );
@@ -347,7 +347,7 @@ try {
         listOfValuesXTreeWidget.addColumn(
             "Value Text",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "value_text"
         );
@@ -355,49 +355,49 @@ try {
         condValXTreeWidget.addColumn(
             "Rule ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_id"
         );
         condValXTreeWidget.addColumn(
             "If SC ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_object_scdef_id"
         );
         condValXTreeWidget.addColumn(
             "If SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_object_scdef_display_name"
         );
         condValXTreeWidget.addColumn(
             "Then SC ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_subject_scdef_id"
         );
         condValXTreeWidget.addColumn(
             "Then SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_subject_scdef_display_name"
         );
         condValXTreeWidget.addColumn(
             "If Val Type",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_if_valtype_display_name"
         );
         condValXTreeWidget.addColumn(
             "Then Val Type",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_then_valtype_display_name"
         );
