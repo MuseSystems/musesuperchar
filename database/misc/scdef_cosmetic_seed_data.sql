@@ -24,7 +24,9 @@ INSERT INTO musesuperchar.scdef (
     ,scdef_datatype_id
     ,scdef_values_list
     ,scdef_list_query
-    ,scdef_is_searchable)
+    ,scdef_is_searchable
+    ,scdef_is_display_only
+    ,scdef_is_virtual)
 VALUES
     ('system_empty_space'
     ,''
@@ -34,7 +36,9 @@ VALUES
     ,(SELECT datatype_id FROM musesuperchar.datatype WHERE datatype_internal_name = 'emptyspace')
     ,null
     ,null
-    ,false),
+    ,false
+    ,true
+    ,true),
     ('system_horizontal_line'
     ,''
     ,'Allows you to add a horizontal dividing line into a group layout.  This characteristic can be added to a group multiple times as needed.'
@@ -43,6 +47,8 @@ VALUES
     ,(SELECT datatype_id FROM musesuperchar.datatype WHERE datatype_internal_name = 'horizontalline')
     ,null
     ,null
-    ,false)
+    ,false
+    ,true
+    ,true)
 ON CONFLICT(scdef_internal_name)
         DO NOTHING;

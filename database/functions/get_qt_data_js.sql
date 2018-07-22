@@ -26,8 +26,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_data_js(pEntityId bigint)
                 vCfgPfx text :=
                     musextputils.get_musemetric('musesuperchar', 'widgetPrefix',
                         null::text);
-                vRecords musextputils.v_basic_catalog[];
-                vCurrRecord musextputils.v_basic_catalog;
+                vDataColumns text[];
+                vCurrDataColumn text;
                 vEntitySchema text;
                 vEntityTable text;
                 vEntityDisplayName text;
@@ -57,17 +57,24 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_data_js(pEntityId bigint)
                     RAISE EXCEPTION 'We must have a valid entity id in order to generate a Qt Data Script (FUNC: musesuperchar.get_qt_data_js) (%)',pEntityId;
                 END IF;
 
+                SELECT array_agg(data_column) INTO vDataColumns
+                FROM
+                    (SELECT  1 AS seq, vbc.column_name AS data_column
+                     FROM musextputils.v_basic_catalog vbc
+                     WHERE table_schema_name = 'musesuperchar'
+                         AND table_name = vEntityDataTable
+                         AND column_name ~ vEntityDataTable
+                         AND column_ordinal > 0
+                     UNION
+                     SELECT  2 AS seq, scdef_internal_name AS data_column
+                     FROM musesuperchar.v_superchar_entities
+                     WHERE entity_data_table = vEntityDataTable
+                     ORDER BY seq, data_column) q;
 
-                SELECT array_agg(vbc) INTO vRecords
-                FROM musextputils.v_basic_catalog vbc
-                WHERE table_schema_name = 'musesuperchar'
-                    AND table_name = vEntityDataTable
-                    AND column_ordinal > 0;
-
-                FOR vCurrRecord IN SELECT * FROM unnest(vRecords) LOOP
+                FOR vCurrDataColumn IN SELECT * FROM unnest(vDataColumns) LOOP
                     vStructFields := vStructFields ||
                         format(E'                 "%1$s": null,\n',
-                            vCurrRecord.column_name);
+                            vCurrDataColumn);
                 END LOOP;
 
                 RETURN

@@ -49,6 +49,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
                                 AND vse.scdef_internal_name = vbc.column_name
                     WHERE vbc.column_name IS NULL
                         AND NOT d.datatype_is_cosmetic
+                        AND NOT s.scdef_is_virtual
                     ORDER BY vse.entity_data_table
                             ,vse.scdef_internal_name
                             ,d.datatype_internal_name LOOP
