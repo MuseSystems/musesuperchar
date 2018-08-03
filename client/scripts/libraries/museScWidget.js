@@ -101,6 +101,8 @@ try {
         pPublicApi.PERCENT = "percent";
         pPublicApi.FILECLUSTER = "filecluster";
         pPublicApi.IMAGECLUSTER = "imagecluster";
+        pPublicApi.EMPTYSPACE = "emptyspace";
+        pPublicApi.HORIZONTALLINE = "horizontalline";
 
         pPublicApi.WIDGETTYPES = [
             pPublicApi.TEXTFIELD,
@@ -118,7 +120,9 @@ try {
             pPublicApi.WEIGHT,
             pPublicApi.PERCENT,
             pPublicApi.FILECLUSTER,
-            pPublicApi.IMAGECLUSTER
+            pPublicApi.IMAGECLUSTER,
+            pPublicApi.EMPTYSPACE,
+            pPublicApi.HORIZONTALLINE
         ];
 
         //--------------------------------------------------------------------
@@ -736,11 +740,32 @@ try {
             })();
         };
 
-        var generateScWidget = function(pDataTypeIntName, pScInternalName) {
+        var updateWidgetOptions = function(pWidget, pOptions) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pWidget: pWidget,
+                pOptions: pOptions
+            };
+
+            pWidget.enabled = !(pOptions.scdef_is_display_only || false);
+            pWidget.minimumHeight = pOptions.scdef_scgrp_ass_height || 0;
+            pWidget.maximumHeight =
+                pOptions.scdef_scgrp_ass_max_height || 16777215;
+            pWidget.minimumWidth = pOptions.scdef_scgrp_ass_width || 0;
+            pWidget.maximumWidth =
+                pOptions.scdef_scgrp_ass_max_width || 16777215;
+        };
+
+        var generateScWidget = function(
+            pDataTypeIntName,
+            pScInternalName,
+            pOptions
+        ) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pDataTypeIntName: pDataTypeIntName,
-                pScInternalName: pScInternalName
+                pScInternalName: pScInternalName,
+                pOptions: pOptions
             };
 
             var returnWidget;
@@ -1461,6 +1486,42 @@ try {
                         };
 
                         break;
+                    case pPublicApi.EMPTYSPACE:
+                        returnWidget = toolbox.createWidget(
+                            "XLabel",
+                            null,
+                            pScInternalName
+                        );
+
+                        returnWidget.setDataValue = function(pFunc) {
+                            return null;
+                        };
+                        returnWidget.getDataValue = function(pFunc) {
+                            return null;
+                        };
+                        returnWidget.setOnChangeFunc = function(pFunc) {
+                            return null;
+                        };
+
+                        break;
+                    case pPublicApi.HORIZONTALLINE:
+                        returnWidget = toolbox.createWidget(
+                            "Line",
+                            null,
+                            pScInternalName
+                        );
+
+                        returnWidget.setDataValue = function(pFunc) {
+                            return null;
+                        };
+                        returnWidget.getDataValue = function(pFunc) {
+                            return null;
+                        };
+                        returnWidget.setOnChangeFunc = function(pFunc) {
+                            return null;
+                        };
+
+                        break;
                     default:
                         throw new MuseUtils.OutOfBoundsException(
                             "musesuperchar",
@@ -1470,6 +1531,7 @@ try {
                         );
                 }
 
+                updateWidgetOptions(returnWidget, pOptions);
                 extendFieldWidget(returnWidget);
                 return returnWidget;
             } catch (e) {
@@ -1619,7 +1681,21 @@ try {
                                 currCol[i_field].scdef_display_name;
                             var currDataWidget = generateScWidget(
                                 currCol[i_field].datatype_internal_name,
-                                currCol[i_field].scdef_internal_name
+                                currCol[i_field].scdef_internal_name,
+                                {
+                                    scdef_is_display_only:
+                                        currCol[i_field].scdef_is_display_only,
+                                    scdef_scgrp_ass_height:
+                                        currCol[i_field].scdef_scgrp_ass_height,
+                                    scdef_scgrp_ass_max_height:
+                                        currCol[i_field]
+                                            .scdef_scgrp_ass_max_height,
+                                    scdef_scgrp_ass_width:
+                                        currCol[i_field].scdef_scgrp_ass_width,
+                                    scdef_scgrp_ass_max_width:
+                                        currCol[i_field]
+                                            .scdef_scgrp_ass_max_width
+                                }
                             );
 
                             retObj.scdefs[
@@ -1628,7 +1704,10 @@ try {
                                 label: currDataLabel,
                                 widget: currDataWidget,
                                 datatype_internal_name:
-                                    currCol[i_field].datatype_internal_name
+                                    currCol[i_field].datatype_internal_name,
+                                datatype_is_cosmetic:
+                                    currCol[i_field].datatype_is_cosmetic ||
+                                    false
                             };
 
                             currColumFormLayout.addRow(
@@ -1640,6 +1719,16 @@ try {
                     }
                     // After Columns Loop
                     currGrpRowHBoxLayout.addWidget(currSecGroupBox);
+                    if (pStructure.scgrp_is_row_expansion_allowed === false) {
+                        currGrpRowHBoxLayout.addSpacerItem(
+                            new QSpacerItem(
+                                20,
+                                0,
+                                QSizePolicy.Maximum,
+                                QSizePolicy.Preferred
+                            )
+                        );
+                    }
                 }
                 // After Sections Loop
                 composedWidgetVBoxLayout.addLayout(currGrpRowHBoxLayout);

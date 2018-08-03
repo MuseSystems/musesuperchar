@@ -95,7 +95,9 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_layout_structure(pGroupId big
                                                                 ,'scdef_internal_name',scdef_internal_name
                                                                 ,'scdef_display_name', scdef_display_name
                                                                 ,'scdef_is_display_only',scdef_is_display_only
+                                                                ,'scdef_is_virtual',scdef_is_virtual
                                                                 ,'datatype_internal_name',datatype_internal_name
+                                                                ,'datatype_is_cosmetic',datatype_is_cosmetic
                                                                 ,'scdef_scgrp_ass_height',scdef_scgrp_ass_height
                                                                 ,'scdef_scgrp_ass_max_height',scdef_scgrp_ass_max_height
                                                                 ,'scdef_scgrp_ass_width',scdef_scgrp_ass_width

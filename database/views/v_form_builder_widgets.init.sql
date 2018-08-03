@@ -31,12 +31,14 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
             ,scdef_internal_name
             ,scdef_display_name
             ,scdef_is_display_only
+            ,scdef_is_virtual
             ,scdef_scgrp_ass_height
             ,scdef_scgrp_ass_max_height
             ,scdef_scgrp_ass_width
             ,scdef_scgrp_ass_max_width
             ,datatype_id
             ,datatype_internal_name
+            ,datatype_is_cosmetic
             ,scdef_scgrp_ass_section_name
             ,section_internal_name
             ,max(current_column::integer) OVER (PARTITION BY scdef_scgrp_ass_section_name) + 1 AS section_column_count
@@ -58,12 +60,14 @@ CREATE OR REPLACE VIEW musesuperchar.v_form_builder_widgets AS
                     ,scdef_internal_name
                     ,scdef_display_name
                     ,scdef_is_display_only
+                    ,scdef_is_virtual
                     ,scdef_scgrp_ass_height
                     ,scdef_scgrp_ass_max_height
                     ,scdef_scgrp_ass_width
                     ,scdef_scgrp_ass_max_width
                     ,datatype_id
                     ,datatype_internal_name
+                    ,datatype_is_cosmetic
                     ,scdef_scgrp_ass_section_name
                     ,lower(regexp_replace(regexp_replace(scdef_scgrp_ass_section_name,E'[^[:alnum:]_]+','_','g'),E'^_+|_+$','','g')) AS section_internal_name
                     ,substring('00'||sum(CASE WHEN scdef_scgrp_ass_is_column_start THEN 1 ELSE 0 END)
