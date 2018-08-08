@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristic for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -45,7 +45,7 @@
 --   ]
 -- }
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint)
     RETURNS jsonb AS
         $BODY$
             SELECT jsonb_build_object(   'violation_count'
@@ -72,26 +72,26 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_add_violations(pSub
                         ,osd.scdef_id
                         ,osd.scdef_internal_name
                         ,osd.scdef_display_name
-                        ,cvr.condvalrule_id 
+                        ,cvr.condvalrule_id
                         ,cvr.condvalrule_fails_message_text
-                        ,ifvt.valtype_id AS if_valtype_id 
-                        ,ifvt.valtype_display_name AS if_valtype_display_name 
-                        ,thenvt.valtype_id AS then_valtype_id 
-                        ,thenvt.valtype_display_name AS then_valtype_display_name 
-                FROM    musesuperchar.condvalrule cvr 
-                    JOIN musesuperchar.valtype ifvt 
+                        ,ifvt.valtype_id AS if_valtype_id
+                        ,ifvt.valtype_display_name AS if_valtype_display_name
+                        ,thenvt.valtype_id AS then_valtype_id
+                        ,thenvt.valtype_display_name AS then_valtype_display_name
+                FROM    musesuperchar.condvalrule cvr
+                    JOIN musesuperchar.valtype ifvt
                         ON cvr.condvalrule_if_valtype_id = ifvt.valtype_id
                     JOIN musesuperchar.valtype thenvt
                         ON cvr.condvalrule_then_valtype_id = thenvt.valtype_id
                     JOIN musesuperchar.v_superchar_entities sub
                         ON cvr.condvalrule_subject_scdef_id = sub.scdef_id
-                    JOIN musesuperchar.scdef osd 
-                        ON cvr.condvalrule_object_scdef_id = osd.scdef_id 
-                            AND osd.scdef_id != pSubSuperCharId 
-                    LEFT OUTER JOIN musesuperchar.v_superchar_entities obj 
-                        ON sub.entity_id = obj.entity_id 
-                            AND pGroupId = ANY(obj.scgrp_ids) 
-                WHERE   obj.scdef_id IS NULL 
+                    JOIN musesuperchar.scdef osd
+                        ON cvr.condvalrule_object_scdef_id = osd.scdef_id
+                            AND osd.scdef_id != pSubSuperCharId
+                    LEFT OUTER JOIN musesuperchar.v_superchar_entities obj
+                        ON sub.entity_id = obj.entity_id
+                            AND pGroupId = ANY(obj.scgrp_ids)
+                WHERE   obj.scdef_id IS NULL
                     AND sub.scdef_id = pSubSuperCharId) q;
         $BODY$
     LANGUAGE sql STABLE;
@@ -104,7 +104,7 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubS
 GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_superchar_group_add_violations(pSubSuperCharId bigint, pGroupId bigint)
     IS $DOC$Returns potential validation violations when adding a Super Characteristic to a group.  Since a Super Characteristic defines its own validation rules, and group defines with what entities its member characteristics are associated with, it is possible to inadvertantly add characteristic to a group (and thereby entity) for which passing validation is not possible.  For a given Super Characteristic and group, this function will return a JSON (jsonb) object which counts the number of violations and enumerates the entity & missing characteristics which cause the validator exceptions.  The returns JSON object has the following format:
 {
   "violation_count": 1,

@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -23,7 +23,7 @@
 -- entity does not exist, we create that record.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text, pDisplayName text, pPkColumnName text, pPackageName text DEFAULT null, pIsSystemLocked boolean DEFAULT false) 
+CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text, pDisplayName text, pPkColumnName text, pPackageName text DEFAULT null, pIsSystemLocked boolean DEFAULT false)
     RETURNS bigint AS
         $BODY$
             DECLARE
@@ -31,18 +31,18 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
             BEGIN
 
                 -- Validate that we have minimum & sane parameters.
-                IF NOT EXISTS(SELECT true 
+                IF NOT EXISTS(SELECT true
                                 FROM musextputils.v_basic_catalog
                                WHERE table_schema_name = pSchema
                                     AND table_name = pTable
                                     AND column_name = pPkColumnName
                                     AND table_kind = 'TABLE'
-                                    AND is_required) THEN 
+                                    AND is_required) THEN
                     RAISE EXCEPTION 'We require a valid database schema, database table, and an xTuple standard primary key column. (FUNC: musesuperchar.create_entity) (pSchema: %, pTable: %, pDisplayName: %, pPkColumnName: %, pPackageName: %, pIsSystemLocked: %)',pSchema,pTable,pDisplayName,pPkColumnName,pPackageName,pIsSystemLocked;
-                    
-                ELSIF pPackageName IS NOT NULL 
-                    AND NOT EXISTS(SELECT true 
-                                   FROM public.pkghead 
+
+                ELSIF pPackageName IS NOT NULL
+                    AND NOT EXISTS(SELECT true
+                                   FROM public.pkghead
                                   WHERE pkghead_name = pPackageName) THEN
                     RAISE EXCEPTION 'If a package is specified, it must exist in the system. (FUNC: musesuperchar.create_entity) (pSchema: %, pTable: %, pDisplayName: %, pPkColumnName: %, pPackageName: %, pIsSystemLocked: %)',pSchema,pTable,pDisplayName,pPkColumnName,pPackageName,pIsSystemLocked;
                 END IF;
@@ -56,9 +56,9 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
                 -- No matter what we'll insert the entity record if it needs it.
                 IF vEntityId IS NULL THEN
                     INSERT INTO musesuperchar.entity (
-                             entity_schema          
-                            ,entity_table           
-                            ,entity_pk_column       
+                             entity_schema
+                            ,entity_table
+                            ,entity_pk_column
                             ,entity_display_name
                             ,entity_data_table
                             ,entity_is_system_locked)
@@ -69,7 +69,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.create_entity(pSchema text, pTable text
                             ,coalesce(pDisplayName, pSchema || '.' || pTable)
                             ,musesuperchar.get_sc_table_name(pSchema,pTable)
                             ,pIsSystemLocked AND pPackageName IS NOT NULL)
-                        RETURNING entity_id INTO vEntityId; 
+                        RETURNING entity_id INTO vEntityId;
                 END IF;
 
                 IF pPackageName IS NOT NULL THEN
@@ -109,5 +109,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.create_entity(pSchema text, pTable text,
 GRANT EXECUTE ON FUNCTION musesuperchar.create_entity(pSchema text, pTable text, pDisplayName text, pPkColumnName text, pPackageName text, pIsSystemLocked boolean) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.create_entity(pSchema text, pTable text, pDisplayName text, pPkColumnName text, pPackageName text, pIsSystemLocked boolean) 
+COMMENT ON FUNCTION musesuperchar.create_entity(pSchema text, pTable text, pDisplayName text, pPkColumnName text, pPackageName text, pIsSystemLocked boolean)
     IS $DOC$Safely adds musesuperchar.entity records for tables in the database.  Since a reference to a table can only appear once in the entity table, we check first before inserting and if we're called for a package, we add that to the managing packages list if the entity already exists.  Naturally, if the entity does not exist, we create that record.$DOC$;

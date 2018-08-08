@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,7 +20,7 @@
 -- entity contains rows.  If the table is empty return false.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.is_superchar_table_populated(pEntityId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.is_superchar_table_populated(pEntityId bigint)
     RETURNS boolean AS
         $BODY$
             DECLARE
@@ -31,8 +31,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.is_superchar_table_populated(pEntityId 
                 END IF;
 
                 EXECUTE format('SELECT EXISTS(SELECT true FROM musesuperchar.%1$I)',
-                    (SELECT entity_data_table 
-                       FROM musesuperchar.entity 
+                    (SELECT entity_data_table
+                       FROM musesuperchar.entity
                       WHERE entity_id = pEntityId)) INTO vReturnVal;
 
                 RETURN coalesce(vReturnVal,false);
@@ -48,5 +48,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.is_superchar_table_populated(pEntityId b
 GRANT EXECUTE ON FUNCTION musesuperchar.is_superchar_table_populated(pEntityId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.is_superchar_table_populated(pEntityId bigint) 
+COMMENT ON FUNCTION musesuperchar.is_superchar_table_populated(pEntityId bigint)
     IS $DOC$Returns true if super characteristic data table associated with the provided entity contains rows.  If the table is empty return false.$DOC$;

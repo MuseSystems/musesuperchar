@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -21,7 +21,7 @@
 -- sequencing is consistent.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutItemId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutItemId bigint)
     RETURNS integer AS
         $BODY$
             DECLARE
@@ -64,5 +64,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutIt
 GRANT EXECUTE ON FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutItemId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutItemId bigint) 
+COMMENT ON FUNCTION musesuperchar.move_group_layout_item_up(pGroupLayoutItemId bigint)
     IS $DOC$Moves a given Group Layout Item up in the layout while ensuring that the sequence remains intact.  This function should be used to ensure that sequencing is consistent.$DOC$;
