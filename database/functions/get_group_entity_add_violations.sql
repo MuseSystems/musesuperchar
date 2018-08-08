@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -38,14 +38,14 @@
 --   ]
 -- }
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId bigint, pEntityId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId bigint, pEntityId bigint)
     RETURNS jsonb AS
         $BODY$
             WITH curr_entity AS (
-                SELECT   entity_id              
-                        ,entity_data_table      
-                        ,entity_display_name    
-                FROM    musesuperchar.entity 
+                SELECT   entity_id
+                        ,entity_data_table
+                        ,entity_display_name
+                FROM    musesuperchar.entity
                 WHERE   entity_id = pEntityId)
             SELECT jsonb_build_object(   'violation_count'
                                         ,count(condvalrule_id)
@@ -68,18 +68,18 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_entity_add_violations(pGroupI
                 (SELECT  DISTINCT obj.scdef_id
                         ,obj.scdef_internal_name
                         ,obj.scdef_display_name
-                        ,cvr.condvalrule_id 
+                        ,cvr.condvalrule_id
                         ,cvr.condvalrule_fails_message_text
-                        ,ifvt.valtype_id AS if_valtype_id 
-                        ,ifvt.valtype_display_name AS if_valtype_display_name 
-                        ,thenvt.valtype_id AS then_valtype_id 
-                        ,thenvt.valtype_display_name AS then_valtype_display_name 
+                        ,ifvt.valtype_id AS if_valtype_id
+                        ,ifvt.valtype_display_name AS if_valtype_display_name
+                        ,thenvt.valtype_id AS then_valtype_id
+                        ,thenvt.valtype_display_name AS then_valtype_display_name
                 FROM    musesuperchar.condvalrule cvr
-                    JOIN musesuperchar.valtype ifvt 
+                    JOIN musesuperchar.valtype ifvt
                         ON cvr.condvalrule_if_valtype_id = ifvt.valtype_id
                     JOIN musesuperchar.valtype thenvt
                         ON cvr.condvalrule_then_valtype_id = thenvt.valtype_id
-                    JOIN musesuperchar.v_superchar_entities sub 
+                    JOIN musesuperchar.v_superchar_entities sub
                         ON cvr.condvalrule_subject_scdef_id = sub.scdef_id
                     JOIN musesuperchar.v_superchar_entities obj
                         ON cvr.condvalrule_object_scdef_id = obj.scdef_id
@@ -89,7 +89,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_group_entity_add_violations(pGroupI
                 WHERE   pGroupId = any(sub.scgrp_ids)
                     AND NOT pGroupId = any(obj.scgrp_ids)
                     AND targ.scdef_id IS NULL
-                    AND cvr.condvalrule_subject_scdef_id != 
+                    AND cvr.condvalrule_subject_scdef_id !=
                         cvr.condvalrule_object_scdef_id) q;
         $BODY$
     LANGUAGE sql STABLE;
@@ -102,7 +102,7 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId
 GRANT EXECUTE ON FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId bigint, pEntityId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId bigint, pEntityId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_group_entity_add_violations(pGroupId bigint, pEntityId bigint)
     IS $DOC$Returns the list of validator violations that would occur if the given group were associated with the given entity.  The format of the returned jsonb is:
 {
   "violation_count": 1,

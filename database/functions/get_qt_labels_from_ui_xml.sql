@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristic for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -25,10 +25,10 @@
 -- get_qt_widgets_from_ui_xml for the generalized version.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml)
     RETURNS jsonb AS
         $BODY$
-            SELECT 
+            SELECT
                 jsonb_object(
                     xpath('widget//widget[@class="XLabel"]/./@name',
                         pXml::xml)::text[],
@@ -45,5 +45,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml) TO a
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml) 
+COMMENT ON FUNCTION musesuperchar.get_qt_labels_from_ui_xml(pXml xml)
     IS $DOC$Takes Qt UI XML as input and returns the extracted widget names as keys and their Qt object class as values of a flat jsonb object.  Note that because we're using jsonb as the return type, we expect the object names to unique otherwise it is indeterminate which object you will receive (actually is to probably the last one in the file, but we're not going to take the time to prove it out.)  Note that this function only includes XLabel widgets, see get_qt_widgets_from_ui_xml for the generalized version.$DOC$;

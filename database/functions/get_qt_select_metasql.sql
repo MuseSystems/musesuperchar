@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -19,7 +19,7 @@
 -- Generates select MetaSQL for a given Super Characteristics Entity.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint)
     RETURNS text AS
         $BODY$
             DECLARE
@@ -59,12 +59,12 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint)
 
                 vColumnList := format(E'%1$s\n',vDataTablePkName);
                 vWhereList := E'WHERE    true\n';
-                
+
                 -- We could well do this without looping, but I don't think it
                 -- would be very clear and I don't think the loop's performance
                 -- will be bad enough to justify it.
-                FOR vCurrStructRec IN 
-                    SELECT q.* FROM unnest(vDataTableStruct) q LOOP 
+                FOR vCurrStructRec IN
+                    SELECT q.* FROM unnest(vDataTableStruct) q LOOP
 
                     vColumnList := vColumnList || format(E'    <? if exists("select_%1$s") ?>,%1$s<? endif ?>\n',
                         vCurrStructRec.column_name);
@@ -73,7 +73,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint)
 
                 END LOOP;
 
-                vSelectMql := 
+                vSelectMql :=
                     E'-- Group: musesuperchar\n' ||
                     format(E'-- Name: %1$s\n',vCfgPfx||'_'||vEntityDataTable||'_select') ||
                     format(E'-- Notes: MetaSQL for Super Characteristics Entity %1$s\n',vEntityDisplayName) ||
@@ -96,5 +96,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint) 
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_qt_select_metasql(pEntityId bigint)
     IS $DOC$Generates select MetaSQL for a given Super Characteristics Entity.$DOC$;

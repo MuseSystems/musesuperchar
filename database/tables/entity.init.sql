@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -18,13 +18,13 @@
 DO
     $BODY$
         DECLARE
-            
+
         BEGIN
 
             -- Create the table if it does not exist.  Apply deltas if it does and it's needed.
-            IF NOT EXISTS(SELECT     true 
-                          FROM         musextputils.v_basic_catalog 
-                          WHERE     table_schema_name = 'musesuperchar' 
+            IF NOT EXISTS(SELECT     true
+                          FROM         musextputils.v_basic_catalog
+                          WHERE     table_schema_name = 'musesuperchar'
                                   AND table_name = 'entity') THEN
                 -- The table doesn't exist, so let's create it.
                 CREATE TABLE musesuperchar.entity (
@@ -37,14 +37,14 @@ DO
                     ,entity_is_system_locked boolean      NOT NULL   DEFAULT false
                     ,UNIQUE(entity_schema, entity_table)
                 );
-                
-                ALTER TABLE musesuperchar.entity OWNER TO admin;    
+
+                ALTER TABLE musesuperchar.entity OWNER TO admin;
 
                 REVOKE ALL ON TABLE musesuperchar.entity FROM public;
                 GRANT ALL ON TABLE musesuperchar.entity TO admin;
                 GRANT ALL ON TABLE musesuperchar.entity TO xtrole;
-                
-                COMMENT ON TABLE musesuperchar.entity 
+
+                COMMENT ON TABLE musesuperchar.entity
                     IS $DOC$Keeps track of what tables (entity) to which we can associate Super Characteristics.$DOC$;
 
                 -- Column Comments
@@ -73,7 +73,7 @@ DO
                                                                 ,'entity_date_created'
                                                                 ,'entity_role_created'
                                                                 ,'entity_date_deactivated'
-                                                                ,'entity_role_deactivated' 
+                                                                ,'entity_role_deactivated'
                                                                 ,'entity_date_modified'
                                                                 ,'entity_wallclock_modified'
                                                                 ,'entity_role_modified'
