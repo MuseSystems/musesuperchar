@@ -5,7 +5,7 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -84,9 +84,11 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_form_js(pGroupId bigint, pQtUiXm
                         JOIN musesuperchar.datatype dt
                             ON sd.scdef_datatype_id = dt.datatype_id
                     WHERE ssa.scdef_scgrp_ass_scgrp_id = pGroupId
+                        AND NOT dt.datatype_is_cosmetic
                 LOOP
-                    -- We assume that every SC in the group actually is part of
-                    -- the UI with a data type, widget, and label.
+                    -- We assume that every non-cosmetic SC in the group
+                    -- actually is part of the UI with a data type, widget, and
+                    -- label.
                     vScDefTypeList := vScDefTypeList ||
                         ('                ' || vCurrScDefIntName || ': "' ||
                             vCurrScDefDataType || E'",\n');

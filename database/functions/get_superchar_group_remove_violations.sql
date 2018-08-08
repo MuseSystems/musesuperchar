@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -39,7 +39,7 @@
 --   ]
 -- }
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_remove_violations(pObjSuperCharId bigint, pGroupId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_remove_violations(pObjSuperCharId bigint, pGroupId bigint)
     RETURNS jsonb AS
         $BODY$
             SELECT jsonb_build_object(   'violation_count'
@@ -66,14 +66,14 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_remove_violations(p
                          ,sub.scdef_id
                          ,sub.scdef_internal_name
                          ,sub.scdef_display_name
-                         ,cvr.condvalrule_id 
+                         ,cvr.condvalrule_id
                          ,cvr.condvalrule_fails_message_text
-                         ,ifvt.valtype_id AS if_valtype_id 
-                         ,ifvt.valtype_display_name AS if_valtype_display_name 
-                         ,thenvt.valtype_id AS then_valtype_id 
+                         ,ifvt.valtype_id AS if_valtype_id
+                         ,ifvt.valtype_display_name AS if_valtype_display_name
+                         ,thenvt.valtype_id AS then_valtype_id
                          ,thenvt.valtype_display_name AS then_valtype_display_name
-                 FROM    musesuperchar.condvalrule cvr 
-                         JOIN musesuperchar.valtype ifvt 
+                 FROM    musesuperchar.condvalrule cvr
+                         JOIN musesuperchar.valtype ifvt
                              ON cvr.condvalrule_if_valtype_id = ifvt.valtype_id
                          JOIN musesuperchar.valtype thenvt
                              ON cvr.condvalrule_then_valtype_id = thenvt.valtype_id
@@ -82,7 +82,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_superchar_group_remove_violations(p
                          JOIN musesuperchar.v_superchar_entities obj
                              ON cvr.condvalrule_object_scdef_id = obj.scdef_id
                                  AND obj.entity_id = obj.entity_id
-                         LEFT OUTER JOIN (SELECT  DISTINCT scdef_scgrp_ass_scdef_id 
+                         LEFT OUTER JOIN (SELECT  DISTINCT scdef_scgrp_ass_scdef_id
                                                  ,esga.entity_scgrp_ass_entity_id
                                           FROM    musesuperchar.scdef_scgrp_ass sdsga
                                               JOIN musesuperchar.entity_scgrp_ass esga
@@ -105,7 +105,7 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_group_remove_violations(pO
 GRANT EXECUTE ON FUNCTION musesuperchar.get_superchar_group_remove_violations(pObjSuperCharId bigint, pGroupId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_superchar_group_remove_violations(pObjSuperCharId bigint, pGroupId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_superchar_group_remove_violations(pObjSuperCharId bigint, pGroupId bigint)
     IS $DOC$Returns the validator violations that would occur if the given Super Characteristic where removed from the given group.  The format of the jsonb response is:
 {
   "violation_count": 1,

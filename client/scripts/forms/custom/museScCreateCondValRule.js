@@ -5,7 +5,7 @@
  ** Project:     Muse System Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -561,6 +561,8 @@ try {
                 scgrps: group,
                 scdefs: data
             };
+
+            return MuseSuperChar.Data.Entities[normPrefix + "_condvalrule"];
         };
 
         var addValidatorWidget = function(
@@ -600,8 +602,8 @@ try {
                 var tmpEntityName =
                     MuseUtils.getNormalizedString(pPrefix) + "_condvalrule";
                 fieldsWidget = MuseSuperChar.Widget.generateLegacyWidget(
-                    MuseSuperChar.Data.Entities[tmpEntityName].scgrps,
-                    MuseSuperChar.Data.Entities[tmpEntityName].scdefs
+                    widgetData.scgrps,
+                    widgetData.scdefs
                 );
             }
 

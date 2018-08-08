@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -138,6 +138,20 @@ try {
                     '<? value("scdef_is_searchable") ?> ';
             }
 
+            if (pParams.hasOwnProperty("scdef_is_display_only")) {
+                whereClause =
+                    whereClause +
+                    "AND scdef_is_display_only = " +
+                    '<? value("scdef_is_display_only") ?> ';
+            }
+
+            if (pParams.hasOwnProperty("scdef_is_virtual")) {
+                whereClause =
+                    whereClause +
+                    "AND scdef_is_virtual = " +
+                    '<? value("scdef_is_virtual") ?> ';
+            }
+
             if (pParams.hasOwnProperty("scdef_scgrp_ass_scgrp_id")) {
                 whereClause =
                     whereClause +
@@ -172,6 +186,8 @@ try {
                         ",array_to_string(scdef_values_list, ',') AS scdef_values_list " +
                         ",scdef_list_query " +
                         ",scdef_is_searchable " +
+                        ",scdef_is_display_only " +
+                        ",scdef_is_virtual " +
                         ",pkghead_name AS scdef_package_name " +
                         ",CASE " +
                         "WHEN scdef_is_system_locked THEN " +
@@ -371,13 +387,16 @@ try {
                     "INSERT INTO musesuperchar.scdef " +
                         "(scdef_internal_name, scdef_display_name, " +
                         "scdef_description, scdef_datatype_id, " +
-                        "scdef_is_searchable) " +
+                        "scdef_is_searchable, scdef_is_display_only, " +
+                        "scdef_is_virtual) " +
                         "VALUES " +
                         '( <? value("scdef_internal_name") ?> ' +
                         ',<? value("scdef_display_name") ?> ' +
                         ',<? value("scdef_description") ?> ' +
                         ',<? value("scdef_datatype_id") ?> ' +
-                        ',<? value("scdef_is_searchable") ?>) ' +
+                        ',<? value("scdef_is_searchable") ?> ' +
+                        ',<? value("scdef_is_display_only") ?> ' +
+                        ',<? value("scdef_is_virtual") ?> )' +
                         "RETURNING scdef_id ",
                     pSuperCharData
                 );
@@ -418,13 +437,6 @@ try {
 
             if (pSuperCharData.hasOwnProperty("scdef_id")) {
                 updateColumns.push("scdef_id = " + '<? value("scdef_id") ?> ');
-            }
-
-            if (pSuperCharData.hasOwnProperty("scdef_internal_name")) {
-                updateColumns.push(
-                    "scdef_internal_name = " +
-                        '<? value("scdef_internal_name") ?> '
-                );
             }
 
             if (pSuperCharData.hasOwnProperty("scdef_display_name")) {
@@ -895,6 +907,14 @@ try {
                 MuseUtils.coalesce(pSuperCharData.scdef_is_searchable, false)
             );
 
+            pSuperCharData.scdef_is_display_only = MuseUtils.isTrue(
+                MuseUtils.coalesce(pSuperCharData.scdef_is_display_only, false)
+            );
+
+            pSuperCharData.scdef_is_virtual = MuseUtils.isTrue(
+                MuseUtils.coalesce(pSuperCharData.scdef_is_virtual, false)
+            );
+
             return createSuperChar(pSuperCharData);
         };
 
@@ -932,19 +952,6 @@ try {
                 throw new MuseUtils.PermissionException(
                     "musesuperchar",
                     "You do not have permission to update system locked Super Characteristics.",
-                    "MuseSuperChar.SuperChar.pPublicApi.updateSuperChar",
-                    { params: funcParams },
-                    MuseUtils.LOG_WARNING
-                );
-            }
-
-            if (
-                pSuperCharData.hasOwnProperty("scdef_internal_name") &&
-                !privileges.check("maintainSuperCharInternalNames")
-            ) {
-                throw new MuseUtils.PermissionException(
-                    "musesuperchar",
-                    "You do not have permission to update a Super Characteristic's internal name.",
                     "MuseSuperChar.SuperChar.pPublicApi.updateSuperChar",
                     { params: funcParams },
                     MuseUtils.LOG_WARNING

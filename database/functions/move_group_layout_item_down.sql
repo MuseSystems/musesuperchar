@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -21,7 +21,7 @@
 -- UI to behave badly.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayoutItemId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayoutItemId bigint)
     RETURNS integer AS
         $BODY$
             DECLARE
@@ -38,10 +38,10 @@ CREATE OR REPLACE FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayou
                 FROM    musesuperchar.scdef_scgrp_ass
                 WHERE   scdef_scgrp_ass_id = pGroupLayoutItemId;
 
-                IF vCurrGli.scdef_scgrp_ass_sequence = 
+                IF vCurrGli.scdef_scgrp_ass_sequence =
                         (SELECT max(scdef_scgrp_ass_sequence)
                          FROM musesuperchar.scdef_scgrp_ass
-                         WHERE scdef_scgrp_ass_scgrp_id = 
+                         WHERE scdef_scgrp_ass_scgrp_id =
                                 vCurrGli.scdef_scgrp_ass_scgrp_id) THEN
                     RETURN vCurrGli.scdef_scgrp_ass_sequence;
                 ELSE
@@ -69,5 +69,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayout
 GRANT EXECUTE ON FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayoutItemId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayoutItemId bigint) 
+COMMENT ON FUNCTION musesuperchar.move_group_layout_item_down(pGroupLayoutItemId bigint)
     IS $DOC$Moves a Group Layout Item down in the onscreen layout.  This function should be used as to preserve the sequence integrity as disrupting it will cause the UI to behave badly.$DOC$;

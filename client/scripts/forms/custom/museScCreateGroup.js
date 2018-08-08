@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Charateristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -82,6 +82,9 @@ try {
         var lastGroupDisplayName = "";
         var lastGroupInternalName = "";
         var lastGroupDescription = "";
+        var lastMinColumns = null;
+        var lastIsSpaceConserved = null;
+        var lastIsRowExpAllowed = null;
 
         //--------------------------------------------------------------------
         //  Get Object References From Screen Definitions
@@ -128,6 +131,14 @@ try {
         var internalNameXLineEdit = mywindow.findChild("internalNameXLineEdit");
         var savePushButton = mywindow.findChild("savePushButton");
         var unsassignPushButton = mywindow.findChild("unsassignPushButton");
+
+        var minColumnsXLineEdit = mywindow.findChild("minColumnsXLineEdit");
+        var isRowExpAllowedQCheckBox = mywindow.findChild(
+            "isRowExpAllowedQCheckBox"
+        );
+        var isSpaceConservedQCheckBox = mywindow.findChild(
+            "isSpaceConservedQCheckBox"
+        );
 
         //--------------------------------------------------------------------
         //  Custom Screen Objects and Starting GUI Manipulation
@@ -205,6 +216,17 @@ try {
             descXTextArea.setPlainText(groupData.scgrp_description);
             lastGroupDescription = descXTextArea.document.toPlainText();
 
+            minColumnsXLineEdit.text = groupData.scgrp_min_columns;
+            lastMinColumns = Number(minColumnsXLineEdit.text);
+
+            isSpaceConservedQCheckBox.checked =
+                groupData.scgrp_is_space_conserved;
+            lastIsSpaceConserved = isSpaceConservedQCheckBox.checked;
+
+            isRowExpAllowedQCheckBox.checked =
+                groupData.scgrp_is_row_expansion_allowed;
+            lastIsRowExpAllowed = isRowExpAllowedQCheckBox.checked;
+
             availEntityXTreeWidget.populate(
                 MuseSuperChar.Group.getNonGroupEntities(pGroupId)
             );
@@ -228,11 +250,16 @@ try {
                 (displayNameXLineEdit.text != lastGroupDisplayName ||
                     internalNameXLineEdit.text != lastGroupInternalName ||
                     descXTextArea.document.toPlainText() !=
-                        lastGroupDescription) &&
+                        lastGroupDescription ||
+                    minColumnsXLineEdit.text != lastMinColumns ||
+                    isSpaceConservedQCheckBox.checked != lastIsSpaceConserved ||
+                    isRowExpAllowedQCheckBox.checked != lastIsRowExpAllowed) &&
                 MuseUtils.coalesce(displayNameXLineEdit.text, "") !== "" &&
                 MuseUtils.coalesce(internalNameXLineEdit.text, "") !== "" &&
                 MuseUtils.coalesce(descXTextArea.document.toPlainText(), "") !==
-                    ""
+                    "" &&
+                Number.isInteger(Number(minColumnsXLineEdit.text)) &&
+                Number(minColumnsXLineEdit.text) >= 0
             ) {
                 closePushButton.enabled = true;
                 closePushButton.text = "Cancel";
@@ -265,6 +292,12 @@ try {
             internalNameXLineEdit.enabled = true;
             descXTextArea.enabled = true;
             descXTextArea.setPlainText("");
+            minColumnsXLineEdit.enabled = true;
+            minColumnsXLineEdit.text = 0;
+            isSpaceConservedQCheckBox.enabled = true;
+            isSpaceConservedQCheckBox.checked = false;
+            isRowExpAllowedQCheckBox.enabled = true;
+            isRowExpAllowedQCheckBox.checked = true;
 
             // Entity Assign Area
             groupEntityGroupBox.enabled = false;
@@ -280,10 +313,11 @@ try {
 
             // Group Edit Area
             displayNameXLineEdit.enabled = true;
-            internalNameXLineEdit.enabled = privileges.check(
-                "maintainSuperCharInternalNames"
-            );
+            internalNameXLineEdit.enabled = false;
             descXTextArea.enabled = true;
+            minColumnsXLineEdit.enabled = true;
+            isSpaceConservedQCheckBox.enabled = true;
+            isRowExpAllowedQCheckBox.enabled = true;
 
             // Entity Assign Area
             groupEntityGroupBox.enabled = true;
@@ -300,6 +334,9 @@ try {
             displayNameXLineEdit.enabled = false;
             internalNameXLineEdit.enabled = false;
             descXTextArea.enabled = false;
+            minColumnsXLineEdit.enabled = false;
+            isSpaceConservedQCheckBox.enabled = false;
+            isRowExpAllowedQCheckBox.enabled = false;
 
             // Entity Assign Area
             groupEntityGroupBox.enabled = false;
@@ -326,7 +363,11 @@ try {
                 groupData = {
                     scgrp_display_name: displayNameXLineEdit.text,
                     scgrp_internal_name: internalNameXLineEdit.text,
-                    scgrp_description: descXTextArea.document.toPlainText()
+                    scgrp_description: descXTextArea.document.toPlainText(),
+                    scgrp_min_columns: minColumnsXLineEdit.text,
+                    scgrp_is_space_conserved: isSpaceConservedQCheckBox.checked,
+                    scgrp_is_row_expansion_allowed:
+                        isRowExpAllowedQCheckBox.checked
                 };
                 setEditMode(MuseSuperChar.Group.createGroup(groupData));
             } else if (mode == "edit") {
@@ -337,16 +378,25 @@ try {
                 }
 
                 if (
-                    internalNameXLineEdit.text != lastGroupInternalName &&
-                    privileges.check("maintainSuperCharInternalNames")
-                ) {
-                    groupData.scgrp_internal_name = internalNameXLineEdit.text;
-                }
-
-                if (
                     descXTextArea.document.toPlainText() != lastGroupDescription
                 ) {
                     groupData.scgrp_description = descXTextArea.document.toPlainText();
+                }
+
+                if (Number(minColumnsXLineEdit.text) != lastMinColumns) {
+                    groupData.scgrp_min_columns = Number(
+                        minColumnsXLineEdit.text
+                    );
+                }
+
+                if (isSpaceConservedQCheckBox.checked != lastIsSpaceConserved) {
+                    groupData.scgrp_is_space_conserved =
+                        isSpaceConservedQCheckBox.checked;
+                }
+
+                if (isRowExpAllowedQCheckBox.checked != lastIsRowExpAllowed) {
+                    groupData.scgrp_is_row_expansion_allowed =
+                        isRowExpAllowedQCheckBox.checked;
                 }
 
                 setEditMode(MuseSuperChar.Group.updateGroup(groupData));
@@ -587,6 +637,15 @@ try {
 
             descXTextArea["textChanged()"].connect(pPublicApi.sFieldsUpdated);
             displayNameXLineEdit["editingFinished()"].connect(
+                pPublicApi.sFieldsUpdated
+            );
+            minColumnsXLineEdit["editingFinished()"].connect(
+                pPublicApi.sFieldsUpdated
+            );
+            isSpaceConservedQCheckBox["stateChanged(int)"].connect(
+                pPublicApi.sFieldsUpdated
+            );
+            isRowExpAllowedQCheckBox["stateChanged(int)"].connect(
                 pPublicApi.sFieldsUpdated
             );
             internalNameXLineEdit["editingFinished()"].connect(

@@ -5,7 +5,7 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -29,44 +29,6 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
                 vDataType text;
                 vColumnComment text;
             BEGIN
-
-                -- First drop columns which need dropping.
-                <<delcols>>
-                FOR vTargetTable, vTargetColumn IN
-                    SELECT   DISTINCT vbc.table_name
-                            ,vbc.column_name
-                    FROM    musextputils.v_basic_catalog vbc
-                        LEFT OUTER JOIN musesuperchar.v_superchar_entities vse
-                            ON  vse.entity_data_table = vbc.table_name
-                                AND vse.scdef_internal_name = vbc.column_name
-                    WHERE vse.scdef_id IS NULL
-                        AND vbc.table_schema_name = 'musesuperchar'
-                        AND vbc.table_kind = 'TABLE'
-                        AND vbc.table_persistence = 'PERMANENT'
-                        AND vbc.column_ordinal > 0
-                        AND NOT vbc.column_name ~* (E'^'||vbc.table_name||E'_.+')
-                        AND NOT vbc.table_name ~ E'^pkg.+' LOOP
-
-                    IF EXISTS(SELECT true
-                              FROM musextputils.v_catalog_triggers
-                              WHERE     table_schema_name = 'musesuperchar'
-                                    AND table_name = vTargetTable
-                                    AND function_schema_name = 'musextputils'
-                                    AND function_name = 'trig_a_iud_record_audit_logging') THEN
-
-                        EXECUTE format('UPDATE musesuperchar.%1$I ' ||
-                                            'SET %2$I = null',
-                            vTargetTable,vTargetColumn);
-
-                    END IF;
-
-                    EXECUTE format(
-                        'ALTER TABLE musesuperchar.%1$I DROP COLUMN %2$I ',
-                        vTargetTable, vTargetColumn);
-
-                END LOOP delcols;
-
-                -- Next add columns which need adding.
                 <<addcols>>
                 FOR vTargetTable, vTargetColumn, vDataType, vColumnComment IN
                     SELECT   DISTINCT vse.entity_data_table
@@ -86,6 +48,8 @@ CREATE OR REPLACE FUNCTION musesuperchar.update_entity_data_structure()
                                 AND vse.entity_data_table = vbc.table_name
                                 AND vse.scdef_internal_name = vbc.column_name
                     WHERE vbc.column_name IS NULL
+                        AND NOT d.datatype_is_cosmetic
+                        AND NOT s.scdef_is_virtual
                     ORDER BY vse.entity_data_table
                             ,vse.scdef_internal_name
                             ,d.datatype_internal_name LOOP

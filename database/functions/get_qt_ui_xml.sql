@@ -5,11 +5,11 @@
  ** Project:      Muse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,12 +20,14 @@
 -- given layout structure.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
     RETURNS xml AS
         $BODY$
             DECLARE
                 vCfgPfx text := musextputils.get_musemetric('musesuperchar','widgetPrefix',null::text);
                 vObjPfx text := vCfgPfx||'_'||(pStructure #>> '{group, scgrp_internal_name}');
+                vIsRowExp boolean := coalesce((pStructure #>> '{group, scgrp_is_row_expansion_allowed}')::boolean, true);
+                vHSizePol text;
                 vGroupsRows xml[] := '{}'::xml[]; -- an array of rows
                 vCurrRow jsonb;
                 vSections xml[] := '{}'::xml[]; -- an array of sections for one row
@@ -38,8 +40,15 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                 vReturnVal xml;
                 vTabOrder text[] := '{}'::text[];
                 vCustomWidgets xml[] := '{}'::xml[];
+                vScDefIntName text;
 
             BEGIN
+                IF vIsRowExp THEN
+                    vHSizePol := 'MinimumExpanding';
+                ELSE
+                    vHSizePol := 'Maximum';
+                END IF;
+
                 <<row>>
                 FOR vCurrRow IN SELECT jsonb_array_elements(pStructure #> '{group, group_rows}') LOOP
                     vSections := '{}'::xml[];
@@ -51,16 +60,24 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                             vFields := '{}'::xml[];
                             <<field>>
                             FOR vCurrField IN SELECT jsonb_array_elements(vCurrColumn -> 'column_fields') LOOP
+                                IF (vCurrField ->> 'datatype_internal_name') IN ('emptyspace', 'horizontalline') THEN
+                                    vScDefIntName := (vCurrField ->> 'scdef_internal_name') || coalesce(array_length(vFields, 1),0) + 1;
+                                ELSE
+                                    vScDefIntName :=  (vCurrField ->> 'scdef_internal_name');
+                                END IF;
                                 vCurrfieldWidget := musesuperchar.get_qt_ui_widget_for_datatype(
-                                                        vObjPfx, 
-                                                        vCurrField ->> 'scdef_internal_name', 
-                                                        vCurrField ->> 'datatype_internal_name', 
-                                                        (vCurrField ->> 'scdef_scgrp_ass_height')::integer, 
-                                                        (vCurrField ->> 'scdef_scgrp_ass_width')::integer);
-                                vTabOrder := vTabOrder || 
+                                                        vObjPfx,
+                                                        vScDefIntName,
+                                                        vCurrField ->> 'datatype_internal_name',
+                                                        (vCurrField ->> 'scdef_scgrp_ass_height')::integer,
+                                                        (vCurrField ->> 'scdef_scgrp_ass_width')::integer,
+                                                        (vCurrField ->> 'scdef_scgrp_ass_max_height')::integer,
+                                                        (vCurrField ->> 'scdef_scgrp_ass_max_width')::integer,
+                                                        (vCurrField ->> 'scdef_is_display_only')::boolean);
+                                vTabOrder := vTabOrder ||
                                     (xpath('string(/widget/@name)',
                                         vCurrfieldWidget[1]))[1]::text;
-                                -- This is a bit of a hack, but should work 
+                                -- This is a bit of a hack, but should work
                                 -- since we're controlling generation in this
                                 -- process.
                                 IF vCurrfieldWidget[2] IS NOT NULL
@@ -73,7 +90,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                 vFields := vFields ||
                                     xmlconcat(
                                         xmlelement(name item,xmlattributes('0' as column, vCurrField ->> 'column_row_number' as row),
-                                            xmlelement(name widget, xmlattributes('XLabel' as class, vObjPfx||'_'||(vCurrField->>'scdef_internal_name')||'_xlabel' as name),
+                                            xmlelement(name widget, xmlattributes('XLabel' as class, vObjPfx||'_'||vScDefIntName||'_xlabel' as name),
                                                 xmlelement(name property,xmlattributes('text' AS name),
                                                     xmlelement(name string,(vCurrField->>'scdef_display_name'))))),
                                         xmlelement(name item,xmlattributes('1' as column, vCurrField ->> 'column_row_number' AS row),
@@ -86,7 +103,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                         vSections := vSections ||
                             xmlelement(name widget, xmlattributes('QGroupBox' as class, vObjPfx||'_'||(vCurrSection ->> 'section_internal_name')||'_qgroupbox' as name),
                                 xmlelement(name property, xmlattributes('sizePolicy' as name),
-                                    xmlelement(name sizepolicy,xmlattributes('MinimumExpanding' as hsizetype, 'MinimumExpanding' as vsizetype),
+                                    xmlelement(name sizepolicy,xmlattributes(vHSizePol as hsizetype, 'MinimumExpanding' as vsizetype),
                                         xmlelement(name horstretch, '0'),
                                         xmlelement(name verstretch, '0'))),
                                 xmlelement(name property, xmlattributes('title' as name),
@@ -97,11 +114,22 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                                      WHEN array_length(vColumns,1) = 1 THEN
                                         vColumns[1]
                                     ELSE
-                                        null 
+                                        null
                                 END);
                     END LOOP section;
                     vGroupsRows := vGroupsRows ||
-                        CASE WHEN array_length(vSections,1) > 1 THEN 
+                        CASE WHEN array_length(vSections,1) > 1 AND NOT vIsRowExp THEN
+                                xmlelement(name layout, xmlattributes('QHBoxLayout' as class, vObjPfx||'_'||(vCurrRow->>'row_internal_name')||'_qhboxlayout' AS name),
+                                    (SELECT xmlagg(xmlelement(name item,q)) FROM unnest(vSections) q),
+                                    xmlelement(name item,
+                                        xmlelement(name spacer, xmlattributes(vObjPfx||'_'||(vCurrRow->>'row_internal_name')||'_rightspacer' AS name),
+                                            xmlelement(name property, xmlattributes('orientation' AS name),
+                                                xmlelement(name enum, null, 'Qt::Horizontal')),
+                                            xmlelement(name property, xmlattributes('sizeHint' AS name, '0' AS stdset),
+                                                xmlelement(name size,null,
+                                                    xmlelement(name width, null, '0'),
+                                                    xmlelement(name height, null, '20'))))))
+                            WHEN array_length(vSections,1) > 1 AND vIsRowExp THEN
                                 xmlelement(name layout, xmlattributes('QHBoxLayout' as class, vObjPfx||'_'||(vCurrRow->>'row_internal_name')||'_qhboxlayout' AS name),
                                     (SELECT xmlagg(xmlelement(name item,q)) FROM unnest(vSections) q))
                             WHEN array_length(vSections,1) = 1 THEN
@@ -125,7 +153,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
                         xmlelement(name tabstops,
                             (SELECT xmlagg(xmlelement(name tabstop, q)) FROM unnest(vTabOrder) q)))
                     INTO vReturnVal;
-                
+
                 RETURN vReturnVal;
             END;
         $BODY$
@@ -139,5 +167,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) TO admin
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb) 
+COMMENT ON FUNCTION musesuperchar.get_qt_ui_xml(pStructure jsonb)
     IS $DOC$Generates a Qt UI XML document based on the Group Layout Items for the layout structure.$DOC$;

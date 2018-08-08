@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -131,6 +131,10 @@ try {
         var isSystemLockedXCheckBox = mywindow.findChild(
             "isSystemLockedXCheckBox"
         );
+        var isDisplayOnlyXCheckBox = mywindow.findChild(
+            "isDisplayOnlyXCheckBox"
+        );
+        var isVirtualXCheckBox = mywindow.findChild("isVirtualXCheckBox");
 
         var superCharDataTypeXComboBox = mywindow.findChild(
             "superCharDataTypeXComboBox"
@@ -167,6 +171,8 @@ try {
         var displayNameXLabel = mywindow.findChild("displayNameXLabel");
         var internalNameXLabel = mywindow.findChild("internalNameXLabel");
         var isSearchableXLabel = mywindow.findChild("isSearchableXLabel");
+        var isDisplayOnlyXLabel = mywindow.findChild("isDisplayOnlyXLabel");
+        var isVirtualXLabel = mywindow.findChild("isVirtualXLabel");
         var isSystemLockedXLabel = mywindow.findChild("isSystemLockedXLabel");
         var listQueryXLabel = mywindow.findChild("listQueryXLabel");
         var managingPackageValueXLabel = mywindow.findChild(
@@ -234,42 +240,42 @@ try {
         superCharListXTreeWidget.addColumn(
             "SuperChar ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_id"
         );
         superCharListXTreeWidget.addColumn(
             "SuperChar Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_internal_name"
         );
         superCharListXTreeWidget.addColumn(
             "SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_display_name"
         );
         superCharListXTreeWidget.addColumn(
             "Type ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_datatype_id"
         );
         superCharListXTreeWidget.addColumn(
             "Type Interal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_datatype_internal_name"
         );
         superCharListXTreeWidget.addColumn(
             "Type",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_datatype_display_name"
         );
@@ -297,7 +303,7 @@ try {
         superCharListXTreeWidget.addColumn(
             "Package Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_package_name"
         );
@@ -305,28 +311,28 @@ try {
         assignedGroupsListXTreeWidget.addColumn(
             "Group ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scgrp_id"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scgrp_internal_name"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_display_name"
         );
         assignedGroupsListXTreeWidget.addColumn(
             "Group Entities",
             300,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_entity_display_names"
         );
@@ -341,7 +347,7 @@ try {
         listOfValuesXTreeWidget.addColumn(
             "Value Text",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "value_text"
         );
@@ -349,49 +355,49 @@ try {
         condValXTreeWidget.addColumn(
             "Rule ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_id"
         );
         condValXTreeWidget.addColumn(
             "If SC ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_object_scdef_id"
         );
         condValXTreeWidget.addColumn(
             "If SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_object_scdef_display_name"
         );
         condValXTreeWidget.addColumn(
             "Then SC ID",
             45,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "condvalrule_subject_scdef_id"
         );
         condValXTreeWidget.addColumn(
             "Then SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_subject_scdef_display_name"
         );
         condValXTreeWidget.addColumn(
             "If Val Type",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_if_valtype_display_name"
         );
         condValXTreeWidget.addColumn(
             "Then Val Type",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "condvalrule_then_valtype_display_name"
         );
@@ -436,6 +442,8 @@ try {
             listQueryXTextEdit.setPlainText("");
             isSearchableXCheckBox.checked = false;
             isSystemLockedXCheckBox.checked = false;
+            isDisplayOnlyXCheckBox.checked = false;
+            isVirtualXCheckBox.checked = false;
             superCharDataTypeXComboBox.setId(-1);
 
             currSc = {
@@ -457,6 +465,8 @@ try {
                 scdef_values_list: null,
                 scdef_list_query: null,
                 scdef_is_searchable: null,
+                scdef_is_display_only: null,
+                scdef_is_virtual: null,
                 scdef_package_name: null
             };
         };
@@ -472,7 +482,10 @@ try {
                     currSc.scdef_is_system_locked ||
                 listQueryXTextEdit.document.toPlainText() !=
                     currSc.scdef_list_query ||
-                superCharDataTypeXComboBox.id() != currSc.scdef_datatype_id
+                superCharDataTypeXComboBox.id() != currSc.scdef_datatype_id ||
+                isDisplayOnlyXCheckBox.checked !=
+                    currSc.scdef_is_display_only ||
+                isVirtualXCheckBox.checked != currSc.scdef_is_virtual
             );
         };
 
@@ -630,13 +643,11 @@ try {
 
             superCharSystemValuesGroupBox.enabled =
                 privileges.check("maintainSuperCharListQuery") ||
-                privileges.check("maintainSuperCharInternalNames") ||
                 privileges.check("maintainSuperCharSysLockRecsManually");
             isSystemLockedXCheckBox.enabled =
                 true &&
                 privileges.check("maintainSuperCharSysLockRecsManually");
-            internalNameXLineEdit.enabled =
-                true && privileges.check("maintainSuperCharInternalNames");
+            internalNameXLineEdit.enabled = false;
             internalNameXLineEdit.text = currSc.scdef_internal_name;
 
             assignedGroupsListGroupBox.title =
@@ -668,6 +679,11 @@ try {
                 listQueryXTextEdit.enabled = false;
                 listQueryXTextEdit.clear();
             }
+
+            isDisplayOnlyXCheckBox.enabled = false;
+            isDisplayOnlyXCheckBox.checked = currSc.scdef_is_display_only;
+            isVirtualXCheckBox.enabled = false;
+            isVirtualXCheckBox.checked = currSc.scdef_is_virtual;
 
             superCharDataTypeXComboBox.enabled = false;
             superCharDataTypeXComboBox.setId(currSc.scdef_datatype_id);
@@ -731,7 +747,8 @@ try {
             superCharSystemValuesGroupBox.enabled = true;
             isSystemLockedXCheckBox.enabled = false;
             internalNameXLineEdit.enabled = true;
-
+            isDisplayOnlyXCheckBox.enabled = true;
+            isVirtualXCheckBox.enabled = true;
             assignedGroupsListGroupBox.title = "(N/A) Assigned Groups";
             condValGroupBox.title = "(N/A) Conditional Validation";
             superCharSystemValuesGroupBox.title =
@@ -815,7 +832,9 @@ try {
                     scdef_display_name: displayNameXLineEdit.text,
                     scdef_description: descriptionXTextEdit.document.toPlainText(),
                     scdef_datatype_id: superCharDataTypeXComboBox.id(),
-                    scdef_is_searchable: isSearchableXCheckBox.checked
+                    scdef_is_searchable: isSearchableXCheckBox.checked,
+                    scdef_is_display_only: isDisplayOnlyXCheckBox.checked,
+                    scdef_is_virtual: isVirtualXCheckBox.checked
                 };
 
                 var newScId = MuseSuperChar.SuperChar.createSuperChar(scData);
@@ -850,6 +869,18 @@ try {
                     isSearchableXCheckBox.checked != currSc.scdef_is_searchable
                 ) {
                     scData.scdef_is_searchable = isSearchableXCheckBox.checked;
+                }
+
+                if (
+                    isDisplayOnlyXCheckBox.checked !=
+                    currSc.scdef_is_display_only
+                ) {
+                    scData.scdef_is_display_only =
+                        isDisplayOnlyXCheckBox.checked;
+                }
+
+                if (isVirtualXCheckBox.checked != currSc.scdef_is_virtual) {
+                    scData.scdef_is_virtual = isVirtualXCheckBox.checked;
                 }
 
                 var updatedScId = MuseSuperChar.SuperChar.updateSuperChar(
@@ -1334,6 +1365,8 @@ try {
             pPublicApi.sFieldsUpdated
         );
         isSearchableXCheckBox.clicked.connect(pPublicApi.sFieldsUpdated);
+        isDisplayOnlyXCheckBox.clicked.connect(pPublicApi.sFieldsUpdated);
+        isVirtualXCheckBox.clicked.connect(pPublicApi.sFieldsUpdated);
         isSystemLockedXCheckBox.clicked.connect(pPublicApi.sFieldsUpdated);
         superCharDataTypeXComboBox["newID(int)"].connect(
             pPublicApi.sFieldsUpdated

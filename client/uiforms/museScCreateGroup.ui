@@ -78,6 +78,69 @@ to be bound by its terms.</comment>
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="XLabel" name="minColumnsXLabel">
+         <property name="text">
+          <string>Minimum Columns:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="XLineEdit" name="minColumnsXLineEdit">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string extracomment="Allows you to set the number of columns the system will try to generate on a form.  Otherwise, the system will use the section with the most columns."/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="defaultText">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="XLabel" name="isSpaceConservedXLabel">
+         <property name="text">
+          <string>Pack Sections Tightly:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="isSpaceConservedQCheckBox">
+         <property name="text">
+          <string>(Checking may reorder sections)</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="XLabel" name="isRowExpAllowedXLabel">
+         <property name="text">
+          <string>Sections Use All Space:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="isRowExpAllowedQCheckBox">
+         <property name="text">
+          <string>(Checking may result in long fields)</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -278,24 +341,24 @@ to be bound by its terms.</comment>
  <customwidgets>
   <customwidget>
    <class>XLabel</class>
-   <extends>QLabel</extends>
+   <extends></extends>
    <header>xlabel.h</header>
   </customwidget>
   <customwidget>
    <class>XLineEdit</class>
-   <extends>QLineEdit</extends>
+   <extends></extends>
    <header>xlineedit.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>XTreeWidget</class>
-   <extends>QTreeWidget</extends>
+   <extends></extends>
    <header>xtreewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>XTextEdit</class>
-   <extends>QTextEdit</extends>
+   <extends></extends>
    <header>xtextedit.h</header>
   </customwidget>
  </customwidgets>

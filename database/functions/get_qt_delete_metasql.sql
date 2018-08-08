@@ -5,11 +5,11 @@
  ** Project:      Muse Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -19,7 +19,7 @@
 -- Generates delete MetaSQL for a given Super Characteristics Entity.
 --
 
-CREATE OR REPLACE FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint) 
+CREATE OR REPLACE FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint)
     RETURNS text AS
         $BODY$
             DECLARE
@@ -71,5 +71,5 @@ GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint) 
 GRANT EXECUTE ON FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint) TO xtrole;
 
 
-COMMENT ON FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint) 
+COMMENT ON FUNCTION musesuperchar.get_qt_delete_metasql(pEntityId bigint)
     IS $DOC$Generates delete MetaSQL for a given Super Characteristics Entity.$DOC$;

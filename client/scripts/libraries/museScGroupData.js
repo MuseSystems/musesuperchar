@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -173,6 +173,9 @@ try {
                         ",scgrp_description " +
                         ",scgrp_pkghead_id " +
                         ",scgrp_is_system_locked " +
+                        ",scgrp_min_columns " +
+                        ",scgrp_is_space_conserved " +
+                        ",scgrp_is_row_expansion_allowed" +
                         ",scgrp_is_active " +
                         ",scgrp_date_created " +
                         ",scgrp_role_created " +
@@ -346,11 +349,16 @@ try {
                 var groupQuery = MuseUtils.executeQuery(
                     "INSERT INTO musesuperchar.scgrp " +
                         "(scgrp_internal_name, scgrp_display_name, " +
-                        "scgrp_description) " +
+                        "scgrp_description, scgrp_min_columns, " +
+                        "scgrp_is_space_conserved, scgrp_is_row_expansion_allowed) " +
                         "VALUES " +
                         '( <? value("scgrp_internal_name") ?> ' +
                         ',<? value("scgrp_display_name") ?> ' +
-                        ',<? value("scgrp_description") ?>) ' +
+                        ',<? value("scgrp_description") ?> ' +
+                        ',<? value("scgrp_min_columns") ?> ' +
+                        ',<? value("scgrp_is_space_conserved") ?> ' +
+                        ',<? value("scgrp_is_row_expansion_allowed") ?> ' +
+                        ") " +
                         "RETURNING scgrp_id",
                     pGroupData
                 );
@@ -393,13 +401,6 @@ try {
                 updateColumns.push('scgrp_id = <? value("scgrp_id" ?> ');
             }
 
-            if (pGroupData.hasOwnProperty("scgrp_internal_name")) {
-                updateColumns.push(
-                    "scgrp_internal_name = " +
-                        '<? value("scgrp_internal_name") ?> '
-                );
-            }
-
             if (pGroupData.hasOwnProperty("scgrp_display_name")) {
                 updateColumns.push(
                     "scgrp_display_name = " +
@@ -423,6 +424,24 @@ try {
             if (pGroupData.hasOwnProperty("scgrp_is_active")) {
                 updateColumns.push(
                     'scgrp_is_active = <? value("scgrp_is_active") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_min_columns")) {
+                updateColumns.push(
+                    'scgrp_min_columns = <? value("scgrp_min_columns") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_is_space_conserved")) {
+                updateColumns.push(
+                    'scgrp_is_space_conserved = <? value("scgrp_is_space_conserved") ?> '
+                );
+            }
+
+            if (pGroupData.hasOwnProperty("scgrp_is_row_expansion_allowed")) {
+                updateColumns.push(
+                    'scgrp_is_row_expansion_allowed = <? value("scgrp_is_row_expansion_allowed") ?> '
                 );
             }
 
@@ -742,7 +761,9 @@ try {
                         ",ssa.scdef_scgrp_ass_section_name " +
                         ",ssa.scdef_scgrp_ass_is_column_start " +
                         ",ssa.scdef_scgrp_ass_width " +
+                        ",ssa.scdef_scgrp_ass_max_width" +
                         ",ssa.scdef_scgrp_ass_height " +
+                        ",ssa.scdef_scgrp_ass_max_height" +
                         ",ssa.scdef_scgrp_ass_pkghead_id " +
                         ",ssa.scdef_scgrp_ass_is_system_locked " +
                         ",CASE " +
@@ -867,22 +888,24 @@ try {
                 );
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width")) {
                 columnList.push("scdef_scgrp_ass_width");
                 valueList.push('<? value("scdef_scgrp_ass_width") ?>');
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_width")) {
+                columnList.push("scdef_scgrp_ass_max_width");
+                valueList.push('<? value("scdef_scgrp_ass_max_width") ?>');
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height")) {
                 columnList.push("scdef_scgrp_ass_height");
                 valueList.push('<? value("scdef_scgrp_ass_height") ?>');
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_height")) {
+                columnList.push("scdef_scgrp_ass_max_height");
+                valueList.push('<? value("scdef_scgrp_ass_max_height") ?>');
             }
 
             try {
@@ -951,36 +974,28 @@ try {
                     '<? value("scdef_scgrp_ass_is_column_start") ?> ';
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width")) {
                 queryText +=
                     ",scdef_scgrp_ass_width = " +
                     '<? value("scdef_scgrp_ass_width") ?> ';
-            } else if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_width") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_width) &&
-                pGroupLayoutData.scdef_scgrp_ass_width < 1
-            ) {
-                queryText += ",scdef_scgrp_ass_width = " + "null ";
             }
 
-            if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height > 0
-            ) {
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_width")) {
+                queryText +=
+                    ",scdef_scgrp_ass_max_width = " +
+                    '<? value("scdef_scgrp_ass_max_width") ?> ';
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height")) {
                 queryText +=
                     ",scdef_scgrp_ass_height = " +
                     '<? value("scdef_scgrp_ass_height") ?> ';
-            } else if (
-                pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_height") &&
-                Number.isInteger(pGroupLayoutData.scdef_scgrp_ass_height) &&
-                pGroupLayoutData.scdef_scgrp_ass_height < 1
-            ) {
-                queryText += ",scdef_scgrp_ass_height = " + "null ";
+            }
+
+            if (pGroupLayoutData.hasOwnProperty("scdef_scgrp_ass_max_height")) {
+                queryText +=
+                    ",scdef_scgrp_ass_max_height = " +
+                    '<? value("scdef_scgrp_ass_max_height") ?> ';
             }
 
             queryText +=
@@ -1237,16 +1252,24 @@ try {
             try {
                 return MuseUtils.executeQuery(
                     "SELECT   scdef_id " +
-                        ",scdef_display_name " +
+                        ",CASE WHEN nullif(regexp_replace(scdef_display_name,'[[:space:]]','','g'),'') IS NOT NULL THEN " +
+                        "scdef_display_name || ' (' || scdef_internal_name || ')' ELSE " +
+                        "'(' || scdef_internal_name || ')'  END AS scdef_list_name " +
                         ",scdef_internal_name " +
                         "FROM    musesuperchar.scdef " +
+                        "JOIN musesuperchar.datatype " +
+                        "ON scdef_datatype_id = datatype_id " +
                         "LEFT OUTER JOIN musesuperchar.scdef_scgrp_ass  " +
                         "ON scdef_id = scdef_scgrp_ass_scdef_id  " +
                         "AND scdef_scgrp_ass_is_active " +
                         "AND scdef_scgrp_ass_scgrp_id =  " +
                         '<? value("pGroupId") ?> ' +
                         "WHERE   scdef_is_active " +
-                        "AND scdef_scgrp_ass_id IS NULL ",
+                        "AND (scdef_scgrp_ass_id IS NULL " +
+                        "OR datatype_is_cosmetic) " +
+                        "ORDER BY " +
+                        "coalesce(nullif(regexp_replace(scdef_display_name,'[[:space:]]','','g'),''), scdef_internal_name) " +
+                        ",scdef_internal_name",
                     { pGroupId: pGroupId }
                 );
             } catch (e) {
@@ -1676,6 +1699,46 @@ try {
                 );
             }
 
+            if (
+                !pGroupData.hasOwnProperty("scgrp_min_columns") ||
+                !Number.isInteger(Number(pGroupData.scgrp_min_columns)) ||
+                pGroupData.scgrp_min_columns < 0
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a minimum number of columns that the group must support, though this number can be zero.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            if (
+                !pGroupData.hasOwnProperty("scgrp_is_space_conserved") ||
+                typeof pGroupData.scgrp_is_space_conserved !== "boolean"
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a value for whether or not a group layout is to undergo space preservation or not.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            if (
+                !pGroupData.hasOwnProperty("scgrp_is_row_expansion_allowed") ||
+                typeof pGroupData.scgrp_is_row_expansion_allowed !== "boolean"
+            ) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "You must provide a value for whether or not group sections may take all available space.",
+                    "MuseSuperChar.Group.pPublicApi.createGroup",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
             return createGroup(pGroupData);
         };
 
@@ -1713,19 +1776,6 @@ try {
                 throw new MuseUtils.PermissionException(
                     "musesuperchar",
                     "You do not have permission to update system locked super characteristic groups.",
-                    "MuseSuperChar.Group.pPublicApi.updateGroup",
-                    { params: funcParams },
-                    MuseUtils.LOG_WARNING
-                );
-            }
-
-            if (
-                pGroupData.hasOwnProperty("scgrp_internal_name") &&
-                !privileges.check("maintainSuperCharInternalNames")
-            ) {
-                throw new MuseUtils.PermissionException(
-                    "musesuperchar",
-                    "You have asked to update a group's internal name and you do not have permission to make such an update.",
                     "MuseSuperChar.Group.pPublicApi.updateGroup",
                     { params: funcParams },
                     MuseUtils.LOG_WARNING

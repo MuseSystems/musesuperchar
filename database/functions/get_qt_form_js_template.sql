@@ -5,7 +5,7 @@
  ** Project:      MUse Systems Super Characteristics for xTuple ERP
  ** Author:       Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -33,7 +33,7 @@ $JS$
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      %9$s Script Automatically Generated On %10$s
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -493,7 +493,7 @@ try {
                     "We found errors while attempting to process a signal.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.sStringSignalHandler",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };
@@ -534,7 +534,7 @@ try {
                     "We found errors while attempting to cause a value to update from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateValue",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };
@@ -557,7 +557,7 @@ try {
                     "We found errors while attempting to update all form values from our associated data object.",
                     "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".pPublicApi.updateAllValues",
                     {params: funcParams, thrownError: e},
-                    MuseUtils.LOG_CRITICAL)
+                    MuseUtils.LOG_CRITICAL);
                 MuseUtils.displayError(error, mywindow);
             }
         };

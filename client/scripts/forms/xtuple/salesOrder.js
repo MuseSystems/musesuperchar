@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -140,12 +140,12 @@ try {
         };
 
         /**
-     * Form startup initialization.  Standard part of the xTuple ERP
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
+         * Form startup initialization.  Standard part of the xTuple ERP
+         * startup process.
+         * @param {Object} pParams An associative array of values passed from
+         *                         the xTuple C++ forms which contain context
+         *                         setting information.
+         */
         pPublicApi.set = function(pParams) {
             var myMode = pParams.mode.toString();
 

@@ -5,7 +5,7 @@
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
- ** (C) 2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
+ ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
@@ -163,14 +163,14 @@ try {
         entityListXTreeWidget.addColumn(
             "Entity",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "entity_display_name"
         );
         entityListXTreeWidget.addColumn(
             "Data Table",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "entity_data_table"
         );
@@ -221,14 +221,14 @@ try {
         groupListXTreeWidget.addColumn(
             "Group",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scgrp_display_name"
         );
         groupListXTreeWidget.addColumn(
             "Internal Name",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scgrp_internal_name"
         );
@@ -272,35 +272,35 @@ try {
         groupLayoutXTreeWidget.addColumn(
             "Group",
             15,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scgrp_display_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "Group ID",
             -1,
-            Qt.AlignCenter,
+            Qt.AlignRight,
             false,
             "scdef_scgrp_ass_scgrp_id"
         );
         groupLayoutXTreeWidget.addColumn(
             "Group Int. Name",
             -1,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scgrp_internal_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "Section",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_scgrp_ass_section_name"
         );
         groupLayoutXTreeWidget.addColumn(
             "SuperChar",
             150,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             true,
             "scdef_scgrp_ass_scdef_display_name"
         );
@@ -314,7 +314,7 @@ try {
         groupLayoutXTreeWidget.addColumn(
             "SuperChar Int. Name",
             100,
-            Qt.AlignCenter,
+            Qt.AlignLeft,
             false,
             "scdef_scgrp_ass_scdef_internal_name"
         );
@@ -326,18 +326,32 @@ try {
             "scdef_scgrp_ass_is_column_start"
         );
         groupLayoutXTreeWidget.addColumn(
-            "Width",
+            "Min Width",
             45,
             Qt.AlignRight,
             true,
             "scdef_scgrp_ass_width"
         );
         groupLayoutXTreeWidget.addColumn(
-            "Height",
+            "Max Width",
+            45,
+            Qt.AlignRight,
+            true,
+            "scdef_scgrp_ass_max_width"
+        );
+        groupLayoutXTreeWidget.addColumn(
+            "Min Height",
             45,
             Qt.AlignRight,
             true,
             "scdef_scgrp_ass_height"
+        );
+        groupLayoutXTreeWidget.addColumn(
+            "Max Height",
+            45,
+            Qt.AlignRight,
+            true,
+            "scdef_scgrp_ass_max_height"
         );
         groupLayoutXTreeWidget.addColumn(
             "Is System Locked",
@@ -1075,6 +1089,9 @@ try {
         entityListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sEntitySelected
         );
+        entityListXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditEntity
+        );
 
         // Group Buttons
         groupAddPushButton.clicked.connect(pPublicApi.sAddGroup);
@@ -1082,6 +1099,9 @@ try {
         groupDeletePushButton.clicked.connect(pPublicApi.sDeleteGroup);
         groupListXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sGroupSelected
+        );
+        groupListXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditGroup
         );
 
         // Group Layout Buttons
@@ -1102,6 +1122,9 @@ try {
         );
         groupLayoutXTreeWidget["itemClicked(XTreeWidgetItem *, int)"].connect(
             pPublicApi.sGroupLayoutSelected
+        );
+        groupLayoutXTreeWidget["itemSelected(int)"].connect(
+            pPublicApi.sEditSuperCharInLayout
         );
         groupLayoutPreviewPushButton.clicked.connect(
             pPublicApi.sPreviewGroupUiForm
