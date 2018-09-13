@@ -40,7 +40,8 @@ try {
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_JSPOLYFILL,
         MuseUtils.MOD_JS,
-        MuseUtils.MOD_CONFIG
+        MuseUtils.MOD_CONFIG,
+        MuseUtils.MOD_QT
     ]);
 
     if (typeof MuseSuperChar.Loader === "undefined") {
@@ -136,13 +137,41 @@ try {
             }
         };
 
+        var formUpdated = function() {
+            try {
+                var myId = MuseUtils.isValidId(mywindow.id())
+                    ? mywindow.id()
+                    : null;
+                var myMode = MuseUtils.getModeFromXtpEnumId(mywindow.mode());
+
+                if (!["new", "edit", "view"].includes(myMode)) {
+                    return;
+                }
+
+                initSuperChar(myMode, myId);
+            } catch (e) {
+                var error = new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We failed to properly initialize the Super Characteristics in response to a customer change or mode change.",
+                    "MuseSuperChar.Customer.formUpdated",
+                    { thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+
+                MuseUtils.displayError(error, mywindow);
+            }
+        };
+
         var initSuperChar = function(pMode, pParentId) {
+            if (scWidget == null) {
+                return;
+            }
+
             scWidget.initWidget(pMode, pParentId);
 
             //----------------------------------------------------------------
             //  Connects/Disconnects
             //----------------------------------------------------------------
-            mywindow["saved(int)"].connect(mySave);
         };
 
         //--------------------------------------------------------------------
@@ -158,12 +187,23 @@ try {
         };
 
         pPublicApi.set = function(pParams) {
-            var myMode = pParams.mode;
+            try {
+                var myMode = pParams.mode.toString();
 
-            if (["new", "edit", "view"].includes(myMode) && scWidget !== null) {
-                initSuperChar(myMode, mywindow.id());
-            } else {
-                return;
+                formUpdated();
+
+                mywindow["newId(int)"].connect(formUpdated);
+                mywindow["newMode(int)"].connect(formUpdated);
+                mywindow["saved(int)"].connect(mySave);
+            } catch (e) {
+                var error = new MuseUtils.FormException(
+                    "musesuperchar",
+                    "We failed to initialize the SuperChars for the Customer Workbench.",
+                    "MuseSuperChar.Customer.pPublicApi,set",
+                    { params: { pParams: pParams }, thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+                MuseUtils.displayError(e, mywindow);
             }
         };
 

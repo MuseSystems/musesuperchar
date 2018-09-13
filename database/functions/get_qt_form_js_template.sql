@@ -429,6 +429,14 @@ try {
             return null;
         };
 
+        var connectWidgets = function() {
+%7$s
+        }
+
+        var disconnectWidgets = function() {
+%11$s
+        };
+
         var resetForm = function(pEntityObjName, pMode, pDataRecId) {
             // Capture function parameters for later exception references.
             var funcParams = {
@@ -453,9 +461,11 @@ try {
             };
 
             try {
+                disconnectWidgets();
                 populateComboboxes();
                 setMode();
                 updateAllValues();
+                connectWidgets();
             } catch(e) {
                 throw new MuseUtils.ApiException(
                     "musesuperchar",
@@ -621,7 +631,7 @@ try {
                 mainwindow["emitSignal(QString, QString)"].connect(
                     pPublicApi.sStringSignalHandler);
 
-    %7$s        myIsConnectsSet = true;}
+                myIsConnectsSet = true;}
 
         };
     } catch (e) {
