@@ -40,7 +40,8 @@ try {
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_JSPOLYFILL,
         MuseUtils.MOD_JS,
-        MuseUtils.MOD_CONFIG
+        MuseUtils.MOD_CONFIG,
+        MuseUtils.MOD_QT
     ]);
 
     if (typeof MuseSuperChar.Loader === "undefined") {
@@ -143,12 +144,28 @@ try {
             //----------------------------------------------------------------
             //  Connects/Disconnects
             //----------------------------------------------------------------
-            mywindow["saved(int)"].connect(mySave);
         };
 
         //--------------------------------------------------------------------
         //  Public Interface -- Slots
         //--------------------------------------------------------------------
+        pPublicApi.sItemWindowUpdate = function() {
+            try {
+                pPublicApi.set({
+                    mode: MuseUtils.getModeFromXtpEnumId(mywindow.mode()),
+                    item_id: mywindow.id()
+                });
+            } catch (e) {
+                var error = new MuseUtils.FormException(
+                    "musesuperchar",
+                    "We failed to respond correctly to an update in the Item form information.",
+                    "MuseSuperChar.Item.pPublicApi.sItemWindowUpdate",
+                    { thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+                MuseUtils.displayError(error, mywindow);
+            }
+        };
 
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
@@ -170,6 +187,8 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
+        mywindow["saved(int)"].connect(mySave);
+        mywindow["populated()"].connect(pPublicApi.sItemWindowUpdate);
 
         //--------------------------------------------------------------------
         //  Foreign Script "Set" Handling

@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="1.4.1"
+         version="1.4.2"
          updater="2.4.0">
 
     <pkgnotes>
@@ -39,13 +39,13 @@
                     WHERE pkghead_name = 'musextputils'
                 )
                 SELECT
-                       (major_version = 3 AND minor_version = 0 AND patch_version >= 0)
-                   OR  (major_version = 3 AND minor_version > 0)
-                   OR  (major_version > 3)
+                       (major_version = 4 AND minor_version = 0 AND patch_version >= 0)
+                   OR  (major_version = 4 AND minor_version > 0)
+                   OR  (major_version > 4)
                 FROM version;
          </query>
          <message>
-             This package requires that the Muse Systems xTuple Utilities version 3.0.0 or any higher version 3 series is installed prior to installation of this package.
+             This package requires that the Muse Systems xTuple Utilities version 4.0.0 or any higher version 4 series is installed prior to installation of this package.
          </message>
      </prerequisite>
     <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
