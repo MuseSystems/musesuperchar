@@ -141,10 +141,22 @@ DO
                         $DOC$If set, will become the maxumum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
                 END IF;
+
             END IF;
 
-            CREATE UNIQUE INDEX IF NOT EXISTS scdef_scgrp_ass_scdef_scgrp_udx
-                ON musesuperchar.scdef_scgrp_ass
-                (scdef_scgrp_ass_scdef_id, scdef_scgrp_ass_scgrp_id);
+            IF NOT EXISTS(SELECT true
+                          FROM information_schema.table_constraints
+                          WHERE constraint_schema = 'musesuperchar'
+                            AND table_name = 'scdef_scgrp_ass'
+                            AND constraint_name = 'scdef_scgrp_ass_scdef_scgrp_udx'
+                            AND constraint_type = 'UNIQUE') THEN
+                -- Add a unique constraint on this table so we can use
+                -- ON CONFLICT insert queries.
+                ALTER TABLE musesuperchar.scdef_scgrp_ass
+                    ADD CONSTRAINT scdef_scgrp_ass_scdef_scgrp_udx
+                    UNIQUE (scdef_scgrp_ass_scdef_id, scdef_scgrp_ass_scgrp_id);
+
+            END IF;
+
         END;
     $BODY$;
