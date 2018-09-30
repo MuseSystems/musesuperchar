@@ -178,7 +178,9 @@
     <loadappscript file="client/scripts/forms/xtuple/salesOrderItem.js" name="salesOrderItem" order="10">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="10">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="10">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
-
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="20">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteItem.js" name="museRequestForQuoteItem" order="20">Muse Super Characteristics Muse Request for Quote Item Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteVendItem.js" name="museRequestForQuoteVendItem" order="20">Muse Super Characteristics Muse Request for Quote Vendor Item Form Loader</loadappscript>
 
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
