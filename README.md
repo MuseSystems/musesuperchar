@@ -1,1 +1,1 @@
-# Muse Systems Super Characteristics for xTuple ERP v1.4.2
+# Muse Systems Super Characteristics for xTuple ERP v1.5.0
