@@ -142,5 +142,9 @@ DO
 
                 END IF;
             END IF;
+
+            CREATE UNIQUE INDEX IF NOT EXISTS scdef_scgrp_ass_scdef_scgrp_udx
+                ON musesuperchar.scdef_scgrp_ass
+                (scdef_scgrp_ass_scdef_id, scdef_scgrp_ass_scgrp_id);
         END;
     $BODY$;
