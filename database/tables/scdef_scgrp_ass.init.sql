@@ -73,13 +73,13 @@ DO
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_width IS
                 $DOC$If set, will become the minimum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass_max_width IS
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_max_width IS
                 $DOC$If set, will become the maxumum width for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_height IS
                 $DOC$If set, will become the minimum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
-                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass_max_height IS
+                COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_max_height IS
                 $DOC$If set, will become the maxumum height for the data widget in this layout.  If not set the widget is allowed to default.$DOC$;
 
                 COMMENT ON COLUMN musesuperchar.scdef_scgrp_ass.scdef_scgrp_ass_pkghead_id IS
