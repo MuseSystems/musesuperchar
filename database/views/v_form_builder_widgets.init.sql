@@ -14,7 +14,7 @@
  **
  *************************************************************************
  ************************************************************************/
-DROP VIEW musesuperchar.v_form_builder_widgets CASCADE;
+DROP VIEW IF EXISTS musesuperchar.v_form_builder_widgets CASCADE;
 --
 -- Assembles the basic elements required for building the Qt .ui XML files.  We go so far as including the fundamental widget xml and names required for constructing subsequent levels of the format.
 --
