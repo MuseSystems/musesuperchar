@@ -176,6 +176,8 @@
     <loadappscript file="client/scripts/forms/xtuple/vendor.js" name="vendor" order="10">Muse Super Characteristics Vendor Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/salesOrder.js" name="salesOrder" order="10">Muse Super Characteristics Sales Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/salesOrderItem.js" name="salesOrderItem" order="10">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/transferOrder.js" name="transferOrder" order="10">Muse Super Characteristics Transfer Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/transferOrderItem.js" name="transferOrderItem" order="10">Muse Super Characteristics Transfer Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="10">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="10">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="20">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
