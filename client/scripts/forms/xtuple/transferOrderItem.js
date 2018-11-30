@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:        salesOrderItem.js
+ ** File:        transferOrderItem.js
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
