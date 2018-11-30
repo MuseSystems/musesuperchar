@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:        salesOrder.js
+ ** File:        transferOrder.js
  ** Project:     Muse Systems Super Characteristics for xTuple ERP
  ** Author:      Steven C. Buttgereit
  **
@@ -104,6 +104,11 @@ try {
             var funcParams = {
                 pRecId: pRecId
             };
+
+            if (scWidget == null) {
+                // Nothing to do here.
+                return;
+            }
 
             try {
                 scWidget.save(pRecId);
