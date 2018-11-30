@@ -129,6 +129,11 @@ try {
                 pRecId: pRecId
             };
 
+            if (scWidget == null) {
+                // Nothing to do here.
+                return;
+            }
+
             try {
                 scWidget.save(pRecId);
             } catch (e) {
