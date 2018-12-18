@@ -144,19 +144,12 @@ DO
 
             END IF;
 
-            IF NOT EXISTS(SELECT true
-                          FROM information_schema.table_constraints
-                          WHERE constraint_schema = 'musesuperchar'
-                            AND table_name = 'scdef_scgrp_ass'
-                            AND constraint_name = 'scdef_scgrp_ass_scdef_scgrp_udx'
-                            AND constraint_type = 'UNIQUE') THEN
-                -- Add a unique constraint on this table so we can use
-                -- ON CONFLICT insert queries.
-                ALTER TABLE musesuperchar.scdef_scgrp_ass
-                    ADD CONSTRAINT scdef_scgrp_ass_scdef_scgrp_udx
-                    UNIQUE (scdef_scgrp_ass_scdef_id, scdef_scgrp_ass_scgrp_id);
-
-            END IF;
+            -- In v1.6.1, we added a unique constraint on
+            -- scdef_scgrp_ass_scdef_id, scdef_scgrp_ass_scgrp_id.  This was a
+            -- bad idea as it stopped us from adding empty space and horizontal
+            -- line repeatable superchars.  Drop it if it was previously added.
+            ALTER TABLE musesuperchar.scdef_scgrp_ass
+                DROP CONSTRAINT IF EXISTS scdef_scgrp_ass_scdef_scgrp_udx;
 
         END;
     $BODY$;
