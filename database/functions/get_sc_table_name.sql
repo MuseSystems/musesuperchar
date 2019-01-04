@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         get_sc_table_name.sql
- ** Project:      Muse Systems Super Characteristics for xTuple ERP
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        get_sc_table_name.sql
+-- Location:    musesuperchar/database/functions
+-- Project:     Muse Systems Super Characteristics for xTuple ERP
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 --
 -- Returns the standardized table name to be used to store super characteristic data for the entity found at the provided schema/table combination.  Note that this function does not try to validate the schema/table combination

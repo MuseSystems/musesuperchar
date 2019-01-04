@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         get_qt_ui_widget_for_datatype.sql
- ** Project:      Muse Systems Super Characteristic for xTuple ERP
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        get_qt_ui_widget_for_datatype.sql
+-- Location:    musesuperchar/database/functions
+-- Project:     Muse Systems Super Characteristics for xTuple ERP
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 -- Drop the legacy version of this function
 DROP FUNCTION IF EXISTS musesuperchar.get_qt_ui_widget_for_datatype(

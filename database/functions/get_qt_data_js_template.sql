@@ -1,19 +1,15 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         get_qt_data_js_template.sql
- ** Project:      Muse Systems Super Characteristics for xTuple ERP
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        get_qt_data_js_template.sql
+-- Location:    musesuperchar/database/functions
+-- Project:     Muse Systems Super Characteristics for xTuple ERP
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
 
 --
 -- Returns the standard Super Characteristic Data Library JS Template.  We keep
@@ -26,22 +22,19 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_data_js_template()
         $BODY$
             SELECT
 $JS$
-/*************************************************************************
- *************************************************************************
- **
- ** File:        %7$s%5$s
- ** Project:     Muse Systems Super Characteristics for xTuple ERP
- ** Author:      %4$s Script Automatically Generated On %8$s
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+// File:        %7$s%5$s
+// Project:     Muse Systems Super Characteristics for xTuple ERP
+// Version:     1.6.3
+// Created:     %4$s Script Automatically Generated On %8$s
+//
+// Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+// more agreements.  Muse Systems licenses this file to you under the Apache
+// License, Version 2.0.
+//
+// See the LICENSE file in the project root for license terms and conditions.
+// See the NOTICE file in the project root for copyright ownership information.
+//
+// muse.information@musesystems.com  :: https://muse.systems
 
 try {
     //////////////////////////////////////////////////////////////////////////
