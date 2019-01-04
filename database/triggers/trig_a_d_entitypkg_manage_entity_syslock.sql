@@ -1,16 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         trig_a_d_entitypkg_manage_entity_syslock.sql
- ** Project:      Muse Systems Super Characteristics for xTuple ERP
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ************************************************************************/
+-- File:        trig_a_d_entitypkg_manage_entity_syslock.sql
+-- Location:    musesuperchar/database/triggers
+-- Project:     Muse Systems Super Characteristics for xTuple ERP
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 --
 -- When the last managing package is deleted, set the related entity record to

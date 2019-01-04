@@ -2,12 +2,30 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="1.6.2"
+         version="1.6.3"
          updater="2.4.0">
 
     <pkgnotes>
         A package to provide an enhanced, more broadly functional user defined field functionality.
     </pkgnotes>
+    <prerequisite type="license" name="License Terms" >
+        <message>
+&lt;p>
+Muse Systems Super Characteristics for xTuple ERP (musesuperchar) &lt;br/>
+Version 1.6.3
+&lt;/p>
+&lt;p>
+Copyright (C) 2017-2019 &lt;br/>
+Lima Buttgereit Holdings LLC (d/b/a Muse Systems)&lt;br/>
+All Rights Reserved
+&lt;/p>
+&lt;p>
+Muse Systems licenses this file to you under the Apache License, Version 2.0.
+&lt;/p>
+See the LICENSE file in the project root for full terms and conditions.&lt;br/>
+See the NOTICE file in the project root for full copyright ownership information.&lt;br/>
+        </message>
+ </prerequisite>
     <prerequisite type="Query"
                 name="xTuple ERP version">
         <query>

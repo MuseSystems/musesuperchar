@@ -1,19 +1,17 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         v_form_builder_widgets.init.sql
- ** Project:      Muse Systems Super Characteristics for xTuple ERP
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2017-2018 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        v_form_builder_widgets.init.sql
+-- Location:    musesuperchar/database/views
+-- Project:     Muse Systems Super Characteristics for xTuple ERP
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
+
 DROP VIEW IF EXISTS musesuperchar.v_form_builder_widgets CASCADE;
 --
 -- Assembles the basic elements required for building the Qt .ui XML files.  We go so far as including the fundamental widget xml and names required for constructing subsequent levels of the format.
