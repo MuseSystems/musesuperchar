@@ -173,34 +173,34 @@ See the NOTICE file in the project root for full copyright ownership information
     <loadappui file="client/uiforms/museScCreateGroupLayoutItem.ui" order="20">Muse Systems Super Characteristic Create Group Layout Item form.</loadappui>
     <loadappui file="client/uiforms/museScUnifiedSetup.ui" order="20">Muse Systems Super Characteristic Setup Parent Form.</loadappui>
 
-    <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="10">Muse Systems Super Characteristic Entity Data Library</loadappscript>
-    <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="10">Muse Systems Super Characteristic Group Data Library</loadappscript>
-    <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="10">Script Description Here</loadappscript>
-    <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="10">Muse Systems Super Characteristic Widget Library</loadappscript>
-    <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="10">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
-    <loadappscript file="client/scripts/libraries/museScLoader.js" name="museScLoader" order="10">Muse Systems Super Characteristics Widget Loader Script</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScEntityData.js" name="museScEntityData" order="8">Muse Systems Super Characteristic Entity Data Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScGroupData.js" name="museScGroupData" order="8">Muse Systems Super Characteristic Group Data Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museSuperCharData.js" name="museSuperCharData" order="8">Script Description Here</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScWidget.js" name="museScWidget" order="8">Muse Systems Super Characteristic Widget Library</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScCondValRuleData.js" name="museScCondValRuleData" order="8">Muse Systems Super Characteristic Conditional Validation Rule Data Library.</loadappscript>
+    <loadappscript file="client/scripts/libraries/museScLoader.js" name="museScLoader" order="8">Muse Systems Super Characteristics Widget Loader Script</loadappscript>
 
-    <loadappscript file="client/scripts/forms/xtuple/setup.js" name="setup" order="10">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScGroupMaint.js" name="museScGroupMaint" order="10">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museSuperCharMaint.js" name="museSuperCharMaint" order="10">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScCreateEntity.js" name="museScCreateEntity" order="10">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScCreateGroup.js" name="museScCreateGroup" order="10">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScCreateCondValRule.js" name="museScCreateCondValRule" order="10">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="10">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
-    <loadappscript file="client/scripts/forms/custom/museScUnifiedSetup.js" name="museScUnifiedSetup" order="10">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/item.js" name="item" order="10">Muse Super Characteristics Item Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/customer.js" name="customer" order="10">Muse Super Characteristics Customer Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/crmaccount.js" name="crmaccount" order="10">Muse Super Characteristics CRM Account Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/vendor.js" name="vendor" order="10">Muse Super Characteristics Vendor Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/salesOrder.js" name="salesOrder" order="10">Muse Super Characteristics Sales Order Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/salesOrderItem.js" name="salesOrderItem" order="10">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/transferOrder.js" name="transferOrder" order="10">Muse Super Characteristics Transfer Order Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/transferOrderItem.js" name="transferOrderItem" order="10">Muse Super Characteristics Transfer Order Item Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="10">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
-    <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="10">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
-    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="20">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
-    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteItem.js" name="museRequestForQuoteItem" order="20">Muse Super Characteristics Muse Request for Quote Item Form Loader</loadappscript>
-    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteVendItem.js" name="museRequestForQuoteVendItem" order="20">Muse Super Characteristics Muse Request for Quote Vendor Item Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/setup.js" name="setup" order="8">Muse Systems Super Characteristic; load SuperChar related setup forms into setup main window.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScGroupMaint.js" name="museScGroupMaint" order="8">Muse Systems Super Characteristic; load group maintenance backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museSuperCharMaint.js" name="museSuperCharMaint" order="8">Muse Systems Super Characteristic; load characteristic maintenance form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScCreateEntity.js" name="museScCreateEntity" order="8">Muse Systems Super Characteristic; create entity form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScCreateGroup.js" name="museScCreateGroup" order="8">Muse Systems Super Characteristic; create group form backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScCreateCondValRule.js" name="museScCreateCondValRule" order="8">Muse Systems Super Characteristic; creat validation rule backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScCreateGroupLayoutItem.js" name="museScCreateGroupLayoutItem" order="8">Muse Systems Super Characteristic Create Group Layout Item backing script.</loadappscript>
+    <loadappscript file="client/scripts/forms/custom/museScUnifiedSetup.js" name="museScUnifiedSetup" order="8">Muse Systems Super Characteristic Setup Form Backing Script</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/item.js" name="item" order="8">Muse Super Characteristics Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/customer.js" name="customer" order="8">Muse Super Characteristics Customer Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/crmaccount.js" name="crmaccount" order="8">Muse Super Characteristics CRM Account Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/vendor.js" name="vendor" order="8">Muse Super Characteristics Vendor Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/salesOrder.js" name="salesOrder" order="8">Muse Super Characteristics Sales Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/salesOrderItem.js" name="salesOrderItem" order="8">Muse Super Characteristics Sales Order Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/transferOrder.js" name="transferOrder" order="8">Muse Super Characteristics Transfer Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/transferOrderItem.js" name="transferOrderItem" order="8">Muse Super Characteristics Transfer Order Item Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="8">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="8">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="8">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteItem.js" name="museRequestForQuoteItem" order="8">Muse Super Characteristics Muse Request for Quote Item Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteVendItem.js" name="museRequestForQuoteVendItem" order="8">Muse Super Characteristics Muse Request for Quote Vendor Item Form Loader</loadappscript>
 
     <finalscript file="database/misc/datatypes_seed_data.sql" />
     <finalscript file="database/misc/valtypes_seed_data.sql" />
