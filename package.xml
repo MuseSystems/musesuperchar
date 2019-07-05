@@ -99,6 +99,7 @@ See the NOTICE file in the project root for full copyright ownership information
     <initscript file="database/tables/condvalrule.init.sql" />
     <initscript file="database/views/v_superchar_entities.init.sql" />
     <initscript file="database/views/v_form_builder_widgets.init.sql" />
+    <initscript file="database/misc/drop_objects.sql" />
 
     <createfunction file="database/functions/get_sc_table_name.sql" name="get_sc_table_name" />
     <createfunction file="database/functions/is_superchar_table_populated.sql" name="is_superchar_table_populated" />
