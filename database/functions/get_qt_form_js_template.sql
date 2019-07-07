@@ -466,7 +466,7 @@ try {
 
         var connectWidgets = function() {
 %7$s
-        }
+        };
 
         var disconnectWidgets = function() {
 %11$s
