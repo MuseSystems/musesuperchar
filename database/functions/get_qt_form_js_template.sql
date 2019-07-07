@@ -375,6 +375,41 @@ try {
             }
         };
 
+        var setDisplayOnlyOn = function(pScDefIntName) {
+            var funcParams = {
+                pScDefIntName: pScDefIntName
+            };
+
+            try {
+                widgets[pScDefIntName].enabled = false;
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We failed to set the requested field to be display only.",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setDisplayOnlyOn",
+                    {params: funcParams, thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
+            }
+        };
+
+        var setDisplayOnlyOff = function(pScDefIntName) {
+            var funcParams = {
+                pScDefIntName: pScDefIntName
+            };
+
+            try {
+                widgets[pScDefIntName].enabled = true;
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We failed to set the requested field to allow user input (when editing allowed).",
+                    "MuseSuperChar.Groups." + FORM_OBJECT_NAME + ".setDisplayOnlyOff",
+                    {params: funcParams, thrownError: e, context: context},
+                    MuseUtils.LOG_WARNING);
+            }
+        };
+
+
         var signalParser  = function(pSignal) {
             // Is it for us?  If not exit..
             var signal = pSignal.match(/^_@(.+?)@_$/);
@@ -417,6 +452,12 @@ try {
             } else if(pType == "lov_override" &&
                 SC_DEFS.hasOwnProperty(signalData.signalScDef)) {
                 return setLovOverride(signalData.signalScDef);
+            } else if(pType == "display_only_true" &&
+                SC_DEFS.hasOwnProperty(signalData.signalScDef)) {
+                return setDisplayOnlyOn(signalData.signalScDef);
+            } else if(pType == "display_only_false" &&
+                SC_DEFS.hasOwnProperty(signalData.signalScDef)) {
+                return setDisplayOnlyOff(signalData.signalScDef);
             }
 
             // If we get here, silently fail.
@@ -425,7 +466,7 @@ try {
 
         var connectWidgets = function() {
 %7$s
-        }
+        };
 
         var disconnectWidgets = function() {
 %11$s

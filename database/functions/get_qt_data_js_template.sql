@@ -736,6 +736,45 @@ try {
             }
         };
 
+        var sendDisplayOnlySignal = function(pScIntName, pDataRecId, pIsDisplayOnly) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pScIntName: pScIntName,
+                pDataRecId: pDataRecId,
+                pIsDisplayOnly: pIsDisplayOnly
+            };
+
+            var displaySignal;
+
+            if (pIsDisplayOnly) {
+                displaySignal = "display_only_true";
+            } else {
+                displaySignal = "display_only_false";
+            }
+
+            try {
+                mainwindow.sEmitSignal(
+                    "_@"+PREFIX+"@@"+ENTITY_OBJECT_NAME+"@@"+pDataRecId+"@@"+pScIntName+"@_",
+                    displaySignal);
+            } catch(e) {
+                throw new MuseUtils.ApiException(
+                    "musesuperchar",
+                    "We received errors while signalling that we set a value.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".sendUpdateSignal",
+                    {params: funcParams, thrownError: e},
+                    MuseUtils.LOG_WARNING);
+            }
+        };
+
+        var setValueDisplayOnlyOn = function(pScIntName, pDataRecId) {
+            return sendDisplayOnlySignal(pScIntName, pDataRecId, true);
+        };
+
+        var setValueDisplayOnlyOff = function(pScIntName, pDataRecId) {
+            return sendDisplayOnlySignal(pScIntName, pDataRecId, false);
+        };
+
+
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
         //--------------------------------------------------------------------
@@ -1146,6 +1185,84 @@ try {
 
             return getLovQuery(pScIntName, pDataRecId);
         };
+
+        pPublicApi.setValueDisplayOnlyOn = function(pScIntName, pDataRecId) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pScIntName: pScIntName,
+                pDataRecId: pDataRecId
+            };
+
+            if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We did not understand which Super Characteristic you wished to set as display only.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOn",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            if(MuseUtils.realNull(pDataRecId) === null ||
+                (!MuseUtils.isValidId(pDataRecId) &&
+                pDataRecId.toString().match(/^new/) === null)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We must have a valid entity data record identifier.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOn",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            if(!data.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "The requested entity data record is not currently initialized.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOn",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            return setValueDisplayOnlyOn(pScIntName, pDataRecId);
+        }
+
+        pPublicApi.setValueDisplayOnlyOff = function(pScIntName, pDataRecId) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pScIntName: pScIntName,
+                pDataRecId: pDataRecId
+            };
+
+            if(!DATA_STRUCT.hasOwnProperty(pScIntName)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We did not understand which Super Characteristic you wished to set as display only.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOff",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            if(MuseUtils.realNull(pDataRecId) === null ||
+                (!MuseUtils.isValidId(pDataRecId) &&
+                pDataRecId.toString().match(/^new/) === null)) {
+                throw new MuseUtils.ParameterException(
+                    "musesuperchar",
+                    "We must have a valid entity data record identifier.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOff",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            if(!data.hasOwnProperty(SC_DATA_TABLE + "_" +pDataRecId)) {
+                throw new MuseUtils.NotFoundException(
+                    "musesuperchar",
+                    "The requested entity data record is not currently initialized.",
+                    "MuseSuperChar.Data." + ENTITY_OBJECT_NAME + ".pPublicApi.setValueDisplayOnlyOff",
+                    {params: funcParams},
+                    MuseUtils.LOG_WARNING);
+            }
+
+            return setValueDisplayOnlyOff(pScIntName, pDataRecId);
+        }
     } catch (e) {
         var error = new MuseUtils.ModuleException(
             "musesuperchar",
