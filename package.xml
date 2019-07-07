@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="2.0.0"
+         version="2.1.0"
          updater="2.4.0">
 
     <pkgnotes>
@@ -12,7 +12,7 @@
         <message>
 &lt;p>
 Muse Systems Super Characteristics for xTuple ERP (musesuperchar) &lt;br/>
-Version 2.0.0
+Version 2.1.0
 &lt;/p>
 &lt;p>
 Copyright (C) 2017-2019 &lt;br/>
