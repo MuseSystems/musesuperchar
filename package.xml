@@ -198,6 +198,7 @@ See the NOTICE file in the project root for full copyright ownership information
     <loadappscript file="client/scripts/forms/xtuple/transferOrder.js" name="transferOrder" order="8">Muse Super Characteristics Transfer Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/transferOrderItem.js" name="transferOrderItem" order="8">Muse Super Characteristics Transfer Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="8">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/purchaseOrderItem.js" name="purchaseOrderItem" order="8">Muse Super Characteristics Purchase Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="8">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="8">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteItem.js" name="museRequestForQuoteItem" order="8">Muse Super Characteristics Muse Request for Quote Item Form Loader</loadappscript>
