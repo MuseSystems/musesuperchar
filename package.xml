@@ -86,7 +86,7 @@ See the NOTICE file in the project root for full copyright ownership information
         Grants a user the ability to maintain super characteristic groups, specifically creating or deleting groups.
     </loadpriv>
 
-
+    <initscript file="database/misc/add_entity_data_table_unique_const.sql" />
     <initscript file="database/misc/early_create_musemetrics.sql" />
     <initscript file="database/tables/datatype.init.sql" />
     <initscript file="database/tables/valtype.init.sql" />

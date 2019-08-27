@@ -23,6 +23,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
             DECLARE
                 vEntityPkColmnName text;
                 vEntityFkColmnName text;
+                vEntityFkUnqCnstName text;
                 vEntityDataColmnName text;
 
                 vEntityDefaultGroupId bigint;
@@ -35,6 +36,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
 
                     vEntityPkColmnName := NEW.entity_data_table || '_id';
                     vEntityFkColmnName := NEW.entity_data_table || '_' || NEW.entity_table || '_id';
+                    vEntityFkUnqCnstName := NEW.entity_data_table || '_' || NEW.entity_table || '_id_unq';
                     vEntityDataColmnName := NEW.entity_data_table || '_data';
 
                     EXECUTE format('CREATE TABLE musesuperchar.%1$I ( ' ||
@@ -46,6 +48,10 @@ CREATE OR REPLACE FUNCTION musesuperchar.trig_a_id_manage_sc_entity_tables()
                         vEntityDataColmnName);
                     EXECUTE format('ALTER TABLE musesuperchar.%1$I OWNER TO admin',
                         NEW.entity_data_table);
+                    EXECUTE format('ALTER TABLE musesuperchar.%1$I ADD CONSTRAINT %2$I UNIQUE (%3$I)',
+                        NEW.entity_data_table, vEntityFkUnqCnstName, vEntityFkColmnName);
+                    EXECUTE format('COMMENT ON CONSTRAINT %1$I ON musesuperchar.%2$I IS $DOC$Enforces the one-to-one relationship between records in the the supercharacteristic entity data table and its parent entity table.$DOC$',
+                        vEntityFkUnqCnstName, NEW.entity_data_table);
                     EXECUTE format('REVOKE ALL ON TABLE musesuperchar.%1$I FROM public',
                         NEW.entity_data_table);
                     EXECUTE format('GRANT ALL ON TABLE musesuperchar.%1$I TO admin',
