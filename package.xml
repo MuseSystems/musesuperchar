@@ -2,8 +2,8 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="2.1.0"
-         updater="2.4.0">
+         version="2.1.1"
+         updater="2.5.2">
 
     <pkgnotes>
         A package to provide an enhanced, more broadly functional user defined field functionality.
@@ -12,7 +12,7 @@
         <message>
 &lt;p>
 Muse Systems Super Characteristics for xTuple ERP (musesuperchar) &lt;br/>
-Version 2.1.0
+Version 2.1.1
 &lt;/p>
 &lt;p>
 Copyright (C) 2017-2019 &lt;br/>
@@ -86,7 +86,7 @@ See the NOTICE file in the project root for full copyright ownership information
         Grants a user the ability to maintain super characteristic groups, specifically creating or deleting groups.
     </loadpriv>
 
-
+    <initscript file="database/misc/add_entity_data_table_unique_const.sql" />
     <initscript file="database/misc/early_create_musemetrics.sql" />
     <initscript file="database/tables/datatype.init.sql" />
     <initscript file="database/tables/valtype.init.sql" />
