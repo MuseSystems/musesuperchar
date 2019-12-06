@@ -410,12 +410,6 @@ try {
         };
 
         var getSuperCharWidget = function(pEntityDataTable, pScGrpIntName) {
-        QMessageBox.critical(
-            mainwindow,
-            "getSuperCharWidget",
-            "" + pEntityDataTable + " ... " + pScGrpIntName
-        );
-
             // Capture function parameters for later exception references.
             var funcParams = {
                 pEntityDataTable: pEntityDataTable,

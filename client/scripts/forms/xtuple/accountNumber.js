@@ -11,12 +11,6 @@
 //
 // muse.information@musesystems.com  :: https://muse.systems
 
-        QMessageBox.critical(
-            mainwindow,
-            "",
-            "loaded accountNumber.js"
-        );
-
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition
@@ -151,25 +145,22 @@ try {
          */
         pPublicApi.set = function(pParams) {
             var myMode = pParams.mode.toString();
-        QMessageBox.critical(
-            mainwindow,
-            "myMode",
-            myMode
-        );
 
             if (["new", "edit", "view"].includes(myMode)) {
                 scWidget = MuseSuperChar.Loader.getSuperCharWidget(
                     ENTITY_DATA_TABLE
                 );
 
+/*
         QMessageBox.critical(
             mainwindow,
             "scWidget",
             "" + scWidget
         );
+*/
 
                 if (scWidget !== null) {
-                    mywindow.addChild(scWidget);
+                    mywindow.layout().addWidget(scWidget, 10, 0);
                 } else {
                     return;
                 }
