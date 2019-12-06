@@ -81,7 +81,7 @@ try {
         //  Constants and Module State
         //--------------------------------------------------------------------
         // Constants
-        var ENTITY_DATA_TABLE = "accnt";
+        var ENTITY_DATA_TABLE = "public_accnt";
 
         // Mutable state
         var scWidget = null;
