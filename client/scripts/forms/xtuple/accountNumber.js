@@ -78,6 +78,7 @@ try {
         var ENTITY_DATA_TABLE = "public_accnt";
 
         // Mutable state
+        var preSaveAccntId = -1;
         var scWidget = null;
 
         //--------------------------------------------------------------------
@@ -91,6 +92,39 @@ try {
         //--------------------------------------------------------------------
         //  Private Functional Logic
         //--------------------------------------------------------------------
+        var myPreSave = function() {
+            // preSaveAccntId = mywindow.id();
+        };
+
+        var myPostSave = function() {
+            QMessageBox.critical(
+                mainwindow,
+                "",
+                "in myPostSave"
+            );
+
+            try {
+                if (
+                    !MuseUtils.isValidId(preSaveAccntId) ||
+                    MuseUtils.realNull(scWidget) === null
+                ) {
+                    return;
+                }
+
+                scWidget.save(preSaveAccntId);
+                preSaveAccntId = -1;
+            } catch (e) {
+                var error = new MuseUtils.FormException(
+                    "musesuperchar",
+                    "We found problems while trying to save Super Characteristic data.",
+                    "MuseSuperChar.LedgerAccountNumber.myPostSave",
+                    { thrownError: e },
+                    MuseUtils.LOG_CRITICAL
+                );
+                MuseUtils.displayError(error, mywindow);
+            }
+        };
+
         var mySave = function(pRecId) {
             // Capture function parameters for later exception references.
             var funcParams = {
@@ -117,12 +151,20 @@ try {
         };
 
         var initSuperChar = function(pMode, pParentId) {
+/*
             scWidget.initWidget(pMode, pParentId);
 
             //----------------------------------------------------------------
             //  Connects/Disconnects
             //----------------------------------------------------------------
             mywindow["saved(int)"].connect(mySave);
+*/
+
+            if (MuseUtils.realNull(scWidget) === null) {
+                return;
+            }
+            scWidget.initWidget(pMode, pParentId);
+
         };
 
         //--------------------------------------------------------------------
@@ -145,11 +187,14 @@ try {
          */
         pPublicApi.set = function(pParams) {
             var myMode = pParams.mode.toString();
+            preSaveAccntId = (pParams.accnt_id || -1);
 
             if (["new", "edit", "view"].includes(myMode)) {
-                scWidget = MuseSuperChar.Loader.getSuperCharWidget(
-                    ENTITY_DATA_TABLE
-                );
+                if (scWidget === null) {
+                    scWidget = MuseSuperChar.Loader.getSuperCharWidget(
+                        ENTITY_DATA_TABLE
+                    );
+                }
 
 /*
         QMessageBox.critical(
@@ -165,7 +210,7 @@ try {
                     return;
                 }
 
-                initSuperChar(myMode, mywindow.id());
+                initSuperChar(myMode, preSaveAccntId);
             } else {
                 return;
             }
@@ -174,6 +219,8 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
+        MuseUtils.LedgerAccountNumber.addPreSaveHookFunc(myPreSave);
+        MuseUtils.LedgerAccountNumber.addPostSaveHookFunc(myPostSave);
 
         //--------------------------------------------------------------------
         //  Foreign Script "Set" Handling
