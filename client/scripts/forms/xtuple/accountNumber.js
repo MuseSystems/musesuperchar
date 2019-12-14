@@ -97,10 +97,16 @@ try {
         };
 
         var myPostSave = function() {
+            if (!preSaveAccntId){
+                var query = MuseUtils.executeQuery("SELECT max(accnt_id) AS max_id FROM accnt");
+                query.first();
+                preSaveAccntId = query.value("max_id");
+            }
+
             QMessageBox.critical(
                 mainwindow,
                 "",
-                "in myPostSave"
+                "in myPostSave, id = " + preSaveAccntId
             );
 
             try {
@@ -110,6 +116,12 @@ try {
                 ) {
                     return;
                 }
+
+            QMessageBox.critical(
+                mainwindow,
+                "",
+                "in myPostSave, id = " + preSaveAccntId + ": making call to scWidget.save"
+            );
 
                 scWidget.save(preSaveAccntId);
                 preSaveAccntId = null;
@@ -125,6 +137,7 @@ try {
             }
         };
 
+/*
         var mySave = function(pRecId) {
             // Capture function parameters for later exception references.
             var funcParams = {
@@ -149,6 +162,7 @@ try {
                 MuseUtils.displayError(error, mywindow);
             }
         };
+*/
 
         var initSuperChar = function(pMode, pParentId) {
 /*
@@ -186,6 +200,11 @@ try {
          *                         setting information.
          */
         pPublicApi.set = function(pParams) {
+          QMessageBox.critical(
+              mainwindow,
+              "set",
+              JSON.stringify(pParams)
+          );
             var myMode = pParams.mode.toString();
             preSaveAccntId = pParams.accnt_id;
 

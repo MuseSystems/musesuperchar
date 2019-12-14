@@ -263,6 +263,12 @@ try {
                     pParentRecId: pParentRecId
                 };
 
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        "arguments to initWidget: " + JSON.stringify(funcParams)
+    );
+
                 if (!["new", "edit", "view"].includes(pFormMode)) {
                     throw new MuseUtils.ParameterException(
                         "musesuperchar",
@@ -316,6 +322,12 @@ try {
                     entity_object_name: entityObjectName,
                     data_record_id: dataRecId
                 };
+
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        "widgetParams: " + JSON.stringify(widgetParams)
+    );
 
                 try {
                     for (var i = 0; i < this.memberSetFuncs.length; i++) {
