@@ -205,7 +205,7 @@ try {
 */
 
                 if (scWidget !== null) {
-                    mywindow.layout().addWidget(scWidget, 10, 0);
+                    mywindow.layout().addWidget(scWidget, 10, 0, 1, 5);
                 } else {
                     return;
                 }
