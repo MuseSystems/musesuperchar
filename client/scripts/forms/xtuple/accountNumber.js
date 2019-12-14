@@ -78,7 +78,7 @@ try {
         var ENTITY_DATA_TABLE = "public_accnt";
 
         // Mutable state
-        var preSaveAccntId = -1;
+        var preSaveAccntId = null;
         var scWidget = null;
 
         //--------------------------------------------------------------------
@@ -112,7 +112,7 @@ try {
                 }
 
                 scWidget.save(preSaveAccntId);
-                preSaveAccntId = -1;
+                preSaveAccntId = null;
             } catch (e) {
                 var error = new MuseUtils.FormException(
                     "musesuperchar",
@@ -187,7 +187,7 @@ try {
          */
         pPublicApi.set = function(pParams) {
             var myMode = pParams.mode.toString();
-            preSaveAccntId = (pParams.accnt_id || -1);
+            preSaveAccntId = pParams.accnt_id;
 
             if (["new", "edit", "view"].includes(myMode)) {
                 if (scWidget === null) {
@@ -210,7 +210,7 @@ try {
                     return;
                 }
 
-                initSuperChar(myMode, preSaveAccntId);
+                initSuperChar(myMode, preSaveAccntId || 7777777);
             } else {
                 return;
             }
