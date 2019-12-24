@@ -93,15 +93,62 @@ try {
         //  Private Functional Logic
         //--------------------------------------------------------------------
         var myPreSave = function() {
-            // preSaveAccntId = mywindow.id();
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        ">>> in myPreSave: preSaveAccntId = " + preSaveAccntId
+    );
+            var get_param = function (name, property){
+                return mywindow.findChild(name)[property || "currentText"];
+            };
+
+            if (!preSaveAccntId){
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        ">>> in myPreSave: trying to get params"
+    );
+
+                var params = {};
+                params.number  = get_param("_number", "text");
+                params.profit  = get_param("_profit");
+                params.sub     = get_param("_sub");
+                params.company = get_param("_company");
+
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        ">>> " + JSON.stringify(params)
+    );
+
+                var query = MuseUtils.executeQuery(
+                    "SELECT accnt_id " +
+                    "FROM   accnt " +
+                    "WHERE  accnt_number = <? value('number') ?> " +
+                    "  AND  accnt_profit = <? value('profit') ?> " +
+                    "  AND  accnt_sub = <? value('sub') ?> " +
+                    "  AND  accnt_company = <? value('company') ?> ", params
+                );
+                query.first();   // TODO: check this for error
+                preSaveAccntId = query.value("accnt_id");
+
+    QMessageBox.critical(
+        mainwindow,
+        "",
+        ">>> got preSaveAccntId " + preSaveAccntId
+    );
+
+            }
         };
 
         var myPostSave = function() {
+/*
             if (!preSaveAccntId){
                 var query = MuseUtils.executeQuery("SELECT max(accnt_id) AS max_id FROM accnt");
                 query.first();
                 preSaveAccntId = query.value("max_id");
             }
+*/
 
             QMessageBox.critical(
                 mainwindow,
