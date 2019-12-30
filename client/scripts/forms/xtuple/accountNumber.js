@@ -92,7 +92,7 @@ try {
         //--------------------------------------------------------------------
         //  Private Functional Logic
         //--------------------------------------------------------------------
-        var myPreSave = function() {
+        var getAccntIdIfNecessary = function() {
     QMessageBox.critical(
         mainwindow,
         "",
@@ -149,6 +149,8 @@ try {
                 preSaveAccntId = query.value("max_id");
             }
 */
+
+            getAccntIdIfNecessary();
 
             QMessageBox.critical(
                 mainwindow,
@@ -285,7 +287,7 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
-        MuseUtils.LedgerAccountNumber.addPreSaveHookFunc(myPreSave);
+//        MuseUtils.LedgerAccountNumber.addPreSaveHookFunc(myPreSave);
         MuseUtils.LedgerAccountNumber.addPostSaveHookFunc(myPostSave);
 
         //--------------------------------------------------------------------
