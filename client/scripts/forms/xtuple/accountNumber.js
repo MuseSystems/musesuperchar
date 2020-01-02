@@ -93,33 +93,16 @@ try {
         //  Private Functional Logic
         //--------------------------------------------------------------------
         var getAccntIdIfNecessary = function() {
-    QMessageBox.critical(
-        mainwindow,
-        "",
-        ">>> in myPreSave: preSaveAccntId = " + preSaveAccntId
-    );
             var get_param = function (name, property){
                 return mywindow.findChild(name)[property || "currentText"];
             };
 
             if (!preSaveAccntId){
-    QMessageBox.critical(
-        mainwindow,
-        "",
-        ">>> in myPreSave: trying to get params"
-    );
-
                 var params = {};
                 params.number  = get_param("_number", "text");
                 params.profit  = get_param("_profit");
                 params.sub     = get_param("_sub");
                 params.company = get_param("_company");
-
-    QMessageBox.critical(
-        mainwindow,
-        "",
-        ">>> " + JSON.stringify(params)
-    );
 
                 var query = MuseUtils.executeQuery(
                     "SELECT accnt_id " +
@@ -131,32 +114,11 @@ try {
                 );
                 query.first();   // TODO: check this for error
                 preSaveAccntId = query.value("accnt_id");
-
-    QMessageBox.critical(
-        mainwindow,
-        "",
-        ">>> got preSaveAccntId " + preSaveAccntId
-    );
-
             }
         };
 
         var myPostSave = function() {
-/*
-            if (!preSaveAccntId){
-                var query = MuseUtils.executeQuery("SELECT max(accnt_id) AS max_id FROM accnt");
-                query.first();
-                preSaveAccntId = query.value("max_id");
-            }
-*/
-
             getAccntIdIfNecessary();
-
-            QMessageBox.critical(
-                mainwindow,
-                "",
-                "in myPostSave, id = " + preSaveAccntId
-            );
 
             try {
                 if (
@@ -165,12 +127,6 @@ try {
                 ) {
                     return;
                 }
-
-            QMessageBox.critical(
-                mainwindow,
-                "",
-                "in myPostSave, id = " + preSaveAccntId + ": making call to scWidget.save"
-            );
 
                 scWidget.save(preSaveAccntId);
                 preSaveAccntId = null;
@@ -186,43 +142,7 @@ try {
             }
         };
 
-/*
-        var mySave = function(pRecId) {
-            // Capture function parameters for later exception references.
-            var funcParams = {
-                pRecId: pRecId
-            };
-
-            if (scWidget == null) {
-                // Nothing to do here.
-                return;
-            }
-
-            try {
-                scWidget.save(pRecId);
-            } catch (e) {
-                var error = new MuseUtils.FormException(
-                    "musesuperchar",
-                    "We found problems while trying to save Super Characteristic data.",
-                    "MuseSuperChar.LedgerAccountNumber.mySave",
-                    { params: funcParams, thrownError: e },
-                    MuseUtils.LOG_CRITICAL
-                );
-                MuseUtils.displayError(error, mywindow);
-            }
-        };
-*/
-
         var initSuperChar = function(pMode, pParentId) {
-/*
-            scWidget.initWidget(pMode, pParentId);
-
-            //----------------------------------------------------------------
-            //  Connects/Disconnects
-            //----------------------------------------------------------------
-            mywindow["saved(int)"].connect(mySave);
-*/
-
             if (MuseUtils.realNull(scWidget) === null) {
                 return;
             }
@@ -249,11 +169,6 @@ try {
          *                         setting information.
          */
         pPublicApi.set = function(pParams) {
-          QMessageBox.critical(
-              mainwindow,
-              "set",
-              JSON.stringify(pParams)
-          );
             var myMode = pParams.mode.toString();
             preSaveAccntId = pParams.accnt_id;
 
@@ -263,14 +178,6 @@ try {
                         ENTITY_DATA_TABLE
                     );
                 }
-
-/*
-        QMessageBox.critical(
-            mainwindow,
-            "scWidget",
-            "" + scWidget
-        );
-*/
 
                 if (scWidget !== null) {
                     mywindow.layout().addWidget(scWidget, 10, 0, 1, 5);
