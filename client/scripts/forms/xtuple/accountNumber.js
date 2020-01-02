@@ -93,26 +93,27 @@ try {
         //  Private Functional Logic
         //--------------------------------------------------------------------
         var getAccntIdIfNecessary = function() {
-            var get_param = function (name, property){
+            var get_param = function(name, property) {
                 return mywindow.findChild(name)[property || "currentText"];
             };
 
-            if (!preSaveAccntId){
+            if (!preSaveAccntId) {
                 var params = {};
-                params.number  = get_param("_number", "text");
-                params.profit  = get_param("_profit");
-                params.sub     = get_param("_sub");
+                params.number = get_param("_number", "text");
+                params.profit = get_param("_profit");
+                params.sub = get_param("_sub");
                 params.company = get_param("_company");
 
                 var query = MuseUtils.executeQuery(
                     "SELECT accnt_id " +
-                    "FROM   accnt " +
-                    "WHERE  accnt_number = <? value('number') ?> " +
-                    "  AND  accnt_profit = <? value('profit') ?> " +
-                    "  AND  accnt_sub = <? value('sub') ?> " +
-                    "  AND  accnt_company = <? value('company') ?> ", params
+                        "FROM   accnt " +
+                        "WHERE  accnt_number = <? value('number') ?> " +
+                        "  AND  accnt_profit = <? value('profit') ?> " +
+                        "  AND  accnt_sub = <? value('sub') ?> " +
+                        "  AND  accnt_company = <? value('company') ?> ",
+                    params
                 );
-                query.first();   // TODO: check this for error
+                query.first(); // TODO: check this for error
                 preSaveAccntId = query.value("accnt_id");
             }
         };
@@ -147,7 +148,6 @@ try {
                 return;
             }
             scWidget.initWidget(pMode, pParentId);
-
         };
 
         //--------------------------------------------------------------------
@@ -194,7 +194,7 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
-//        MuseUtils.LedgerAccountNumber.addPreSaveHookFunc(myPreSave);
+        //        MuseUtils.LedgerAccountNumber.addPreSaveHookFunc(myPreSave);
         MuseUtils.LedgerAccountNumber.addPostSaveHookFunc(myPostSave);
 
         //--------------------------------------------------------------------
