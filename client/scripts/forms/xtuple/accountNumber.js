@@ -113,8 +113,20 @@ try {
                         "  AND  accnt_company = <? value('company') ?> ",
                     params
                 );
-                query.first(); // TODO: check this for error
-                preSaveAccntId = query.value("accnt_id");
+
+                if (query.first()) {
+                    preSaveAccntId = query.value("accnt_id");
+                } else {
+                    throw new MuseUtils.NotFoundException(
+                        "musesuperchar",
+                        "We encountered an error while loading the new account record.",
+                        "MuseSuperChar.LedgerAccountNumber.getAccntIdIfNecessary",
+                        {
+                            params: params
+                        },
+                        MuseUtils.LOG_CRITICAL
+                    );
+                }
             }
         };
 
