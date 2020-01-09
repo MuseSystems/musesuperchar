@@ -43,6 +43,7 @@
             --,('public','prjtask','prjtask_id','Project Task',true)
             ,('public','tohead','tohead_id','Transfer Order',true)
             ,('public','toitem','toitem_id','Transfer Order Item',true)
+            ,('public','accnt','accnt_id', 'General Ledger Account',true)
             )
         AS q(    entity_schema
                 ,entity_table
