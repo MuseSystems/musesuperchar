@@ -2,7 +2,7 @@
          name="musesuperchar"
          developer="Muse Systems"
          descrip="A package to provide an enhanced, more broadly functional user defined field functionality."
-         version="2.1.1"
+         version="2.2.0"
          updater="2.5.2">
 
     <pkgnotes>
@@ -12,10 +12,10 @@
         <message>
 &lt;p>
 Muse Systems Super Characteristics for xTuple ERP (musesuperchar) &lt;br/>
-Version 2.1.1
+Version 2.2.0
 &lt;/p>
 &lt;p>
-Copyright (C) 2017-2019 &lt;br/>
+Copyright (C) 2017-2020 &lt;br/>
 Lima Buttgereit Holdings LLC (d/b/a Muse Systems)&lt;br/>
 All Rights Reserved
 &lt;/p>
@@ -57,13 +57,13 @@ See the NOTICE file in the project root for full copyright ownership information
                     WHERE pkghead_name = 'musextputils'
                 )
                 SELECT
-                       (major_version = 6 AND minor_version = 0 AND patch_version >= 0)
-                   OR  (major_version = 6 AND minor_version > 0)
+                       (major_version = 6 AND minor_version = 1 AND patch_version >= 0)
+                   OR  (major_version = 6 AND minor_version > 1)
                    OR  (major_version > 6)
                 FROM version;
          </query>
          <message>
-             This package requires that the Muse Systems xTuple Utilities version 6.0.0 or any higher version 4 series is installed prior to installation of this package.
+             This package requires that the Muse Systems xTuple Utilities version 6.1.0 or any higher version 6 series is installed prior to installation of this package.
          </message>
      </prerequisite>
     <loadpriv name="maintainSuperCharateristics" module="Muse Systems Super Characteristics">
@@ -200,6 +200,7 @@ See the NOTICE file in the project root for full copyright ownership information
     <loadappscript file="client/scripts/forms/xtuple/purchaseOrder.js" name="purchaseOrder" order="8">Muse Super Characteristics Purchase Order Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/purchaseOrderItem.js" name="purchaseOrderItem" order="8">Muse Super Characteristics Purchase Order Item Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/xtuple/shipTo.js" name="shipTo" order="8">Muse Super Characteristics Customer Ship-To Form Loader</loadappscript>
+    <loadappscript file="client/scripts/forms/xtuple/accountNumber.js" name="accountNumber" order="8">Muse Super Characteristics Ledger Account Number Form Loader.</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuote.js" name="museRequestForQuote" order="8">Muse Super Characteristics Muse Request for Quote Form Loader</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteItem.js" name="museRequestForQuoteItem" order="8">Muse Super Characteristics Muse Request for Quote Item Form Loader</loadappscript>
     <loadappscript file="client/scripts/forms/muse_ext/museRequestForQuoteVendItem.js" name="museRequestForQuoteVendItem" order="8">Muse Super Characteristics Muse Request for Quote Vendor Item Form Loader</loadappscript>

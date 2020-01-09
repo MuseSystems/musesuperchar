@@ -294,7 +294,7 @@ try {
                 var dataRecId;
 
                 try {
-                    if (pParentRecId !== null) {
+                    if (MuseUtils.realNull(pParentRecId) !== null) {
                         dataRecId = pEntityObject.initFormData(
                             pEntityObject.getDataRecIdByParentId(pParentRecId)
                         );
