@@ -197,7 +197,7 @@ try {
                     return;
                 }
 
-                initSuperChar(myMode, preSaveAccntId || 7777777);
+                initSuperChar(myMode, preSaveAccntId);
             } else {
                 return;
             }
