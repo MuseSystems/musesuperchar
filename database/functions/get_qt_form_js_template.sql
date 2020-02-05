@@ -25,7 +25,7 @@ CREATE OR REPLACE FUNCTION musesuperchar.get_qt_form_js_template()
 $JS$
 // File:        %8$s%2$s
 // Project:     Muse Systems Super Characteristics for xTuple ERP
-// Version:     2.2.0
+// Version:     2.2.1
 // Created:     %9$s Script Automatically Generated On %10$s
 //
 // Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or

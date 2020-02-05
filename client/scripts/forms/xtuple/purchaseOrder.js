@@ -36,7 +36,8 @@ try {
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_JSPOLYFILL,
         MuseUtils.MOD_JS,
-        MuseUtils.MOD_CONFIG
+        MuseUtils.MOD_CONFIG,
+        MuseUtils.MOD_QT
     ]);
 
     if (typeof MuseSuperChar.Loader === "undefined") {
@@ -81,7 +82,7 @@ try {
 
         // Mutable state
         var scWidget = null;
-
+        var isFormAlreadyStarted = false;
         //--------------------------------------------------------------------
         //  Get Object References From Screen Definitions
         //--------------------------------------------------------------------
@@ -150,12 +151,37 @@ try {
             //----------------------------------------------------------------
             //  Connects/Disconnects
             //----------------------------------------------------------------
-            mywindow["saved(int)"].connect(mySave);
+            if (!isFormAlreadyStarted) {
+                mywindow["saved(int)"].connect(mySave);
+            }
         };
 
         //--------------------------------------------------------------------
         //  Public Interface -- Slots
         //--------------------------------------------------------------------
+        pPublicApi.sModeUpdate = function(pNewModeEnum) {
+            var resolvedMode = MuseUtils.getModeFromXtpEnumId(pNewModeEnum);
+            var resolvedId = mywindow.id();
+
+            if (
+                ["new", "edit", "view"].includes(resolvedMode) &&
+                MuseUtils.isValidId(resolvedId)
+            ) {
+                initSuperChar(resolvedMode, resolvedId);
+            }
+        };
+
+        pPublicApi.sNewId = function(pNewId) {
+            var resolvedMode = MuseUtils.getModeFromXtpEnumId(mywindow.mode());
+            var resolvedId = pNewId;
+
+            if (
+                ["new", "edit", "view"].includes(resolvedMode) &&
+                MuseUtils.isValidId(resolvedId)
+            ) {
+                initSuperChar(resolvedMode, resolvedId);
+            }
+        };
 
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
@@ -170,8 +196,19 @@ try {
 
             if (["new", "edit", "view"].includes(myMode) && scWidget !== null) {
                 initSuperChar(myMode, mywindow.id());
+            } else if (myMode == "releasePr") {
+                initSuperChar(
+                    MuseUtils.getModeFromXtpEnumId(mywindow.mode()),
+                    mywindow.id() == -1 ? null : mywindow.id()
+                );
             } else {
                 return;
+            }
+
+            if (!isFormAlreadyStarted) {
+                mywindow["newMode(int)"].connect(pPublicApi.sModeUpdate);
+                mywindow["newId(int)"].connect(pPublicApi.sNewId);
+                isFormAlreadyStarted = true;
             }
         };
 
