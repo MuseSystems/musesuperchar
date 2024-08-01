@@ -14,10 +14,24 @@
 DO
     $BODY$
         DECLARE
-            vCurrEntity musesuperchar.entity;
+            vCurrEntity record;
             vEntityFkColmnName text;
             vEntityFkUnqCnstName text;
+
         BEGIN
+            IF
+                NOT EXISTS (
+                    SELECT TRUE
+                    FROM information_schema.tables
+                    WHERE table_schema ='musesuperchar'
+                    AND table_name = 'entity'
+                )
+            THEN
+
+                RETURN;
+
+            END IF;
+
             FOR vCurrEntity IN
                 SELECT *
                 FROM musesuperchar.entity
